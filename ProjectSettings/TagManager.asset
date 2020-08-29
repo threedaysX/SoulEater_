@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Enemy
+  - Transition
+  - AttackHitBox
+  - AttackHitArea
+  - PlayerUI
+  - SkillSlot
+  - slot
+  - BossRoom
+  - MasterAudio
+  - MusicAudio
+  - EffectSoundAudio
+  - Soul
+  - putFrag
+  - EnvironmentCollider
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - Player
+  - Ground
+  - Enemy
+  - Room Boundry
+  - AttackHitBox
+  - Skill
+  - Stage
+  - Wall
+  - Soul
+  - PostProcessing
+  - UIText
+  - Projectile
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: FarBackGround
+    uniqueID: 515337585
+    locked: 0
+  - name: BackGround
+    uniqueID: 2860364485
+    locked: 0
+  - name: BehindObject
+    uniqueID: 2954446289
+    locked: 0
+  - name: ActiveObject
+    uniqueID: 2068822577
+    locked: 0
+  - name: BackEffect
+    uniqueID: 3496975689
+    locked: 0
+  - name: PlayerLayerObject
+    uniqueID: 3745107527
+    locked: 0
+  - name: Effect
+    uniqueID: 924926267
+    locked: 0
+  - name: FrontLightObject
+    uniqueID: 37619453
+    locked: 0
+  - name: FrontObject
+    uniqueID: 3638542883
+    locked: 0
+  - name: InFront
+    uniqueID: 2077110459
+    locked: 0
+  - name: InFrontEffect
+    uniqueID: 1507853709
+    locked: 0
+  - name: UI
+    uniqueID: 4285868917
+    locked: 0
