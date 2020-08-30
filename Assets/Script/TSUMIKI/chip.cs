@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 /*
 碎片限制
@@ -30,6 +31,12 @@ using UnityEngine.UI;
  3. NeighborReDetectEdge()  >>  提醒鄰居也要重新計算觸發邊
  */
 
+/// <summary>
+/// 現在
+/// 不需要知道有幾條邊觸發
+/// 但需要知道，哪些邊有觸發，哪些Affix可以使用
+/// </summary>
+
 //所有碎片繼承此物件
 public class Chip : Singleton<Chip>
 {
@@ -42,7 +49,7 @@ public class Chip : Singleton<Chip>
         LockStar(theF);
 
         FreshNeighborStars(theF);       //鄰居綁訂星星位置
-        ThisReDetectEdge(theF);
+        ThisReDetectAffix(theF);
         NeighborReDetectEdge(theF);
 
     }
@@ -54,7 +61,7 @@ public class Chip : Singleton<Chip>
 
         NeighborReDetectEdge(theF);
         FreshNeighborStars(theF);
-        ThisReDetectEdge(theF);
+        ThisReDetectAffix(theF);
 
     }
 
@@ -85,17 +92,17 @@ public class Chip : Singleton<Chip>
     }
 
     //重新計算此碎片的觸發邊
-    public void ThisReDetectEdge(Fragment theF)/////////////////////////////////////////////////////////////////OK
+    /*public void ThisReDetectEdge(Fragment theF)/////////////////////////////////////////////////////////////////OK
     {
         theF.m_Data.triggerCount = 0;               //中多少條邊就triggerCount++
 
         //先觀察有哪些鄰居存在
-        for (int i = 0; i < theF.m_Data.neighborRelative_id.Count; i++)         //幾個邊
+        for (int i = 0; i < theF.m_Data.neighborRelativeInfo.Count; i++)         //幾個邊
         {
             bool AllOK = true;
-            for (int j = 0; j < theF.m_Data.neighborRelative_id[i].Count; j++)  //幾個點組成一個邊
+            for (int j = 0; j < theF.m_Data.neighborRelativeInfo[i].neighborRelative_id.Count; j++)  //幾個點組成一個邊
             {
-                if (AllStar.Instance.stars[theF.m_Data.neighbors[theF.m_Data.neighborRelative_id[i][j]].starID].fragID == -1)
+                if (AllStar.Instance.stars[theF.m_Data.neighbors[theF.m_Data.neighborRelativeInfo[i].neighborRelative_id[j]].starID].fragID == -1)
                 {
                     AllOK = false;
                     break;
@@ -106,8 +113,88 @@ public class Chip : Singleton<Chip>
                 theF.m_Data.triggerCount++;
             }
         }
-    }
+    }*/
 
+    /************************************************************/
+    /************************************************************/
+    /************************************************************/
+    /************************************************************/
+    /************************************************************/
+    /************************************************************/
+    /************************************************************/
+    /************************************************************/
+
+    //檢查哪些Affix可以用
+    public void ThisReDetectAffix(Fragment theF)/////////////////////////////////////////////////////////////////OK
+    {
+        theF.m_Data.triggerCount = 0;               //中多少條邊就triggerCount++
+
+        //先觀察有哪些鄰居存在
+        for (int i = 0; i < theF.m_Data.neighborRelativeInfo.Count; i++)         //幾個邊
+        {
+            bool AllOK = true;
+            for (int j = 0; j < theF.m_Data.neighborRelativeInfo[i].relativeInfo.Count; j++)  //幾個點組成一個邊
+            {
+                triggerInfo t = theF.m_Data.neighborRelativeInfo[i].relativeInfo[j];
+                Vector2 temp;
+                switch (t.edgeT)
+                {
+                    case edgeTrigger.上:
+                        temp = new Vector2(theF.m_Data.centerAbsPos.x + t.triPos.x, theF.m_Data.centerAbsPos.y + t.triPos.y + 1);
+                        break;
+                    case edgeTrigger.下:
+                        temp = new Vector2(theF.m_Data.centerAbsPos.x + t.triPos.x, theF.m_Data.centerAbsPos.y + t.triPos.y - 1);
+                        break;
+                    case edgeTrigger.右:
+                        temp = new Vector2(theF.m_Data.centerAbsPos.x + t.triPos.x + 1, theF.m_Data.centerAbsPos.y + t.triPos.y);
+                        break;
+                    default://case edgeTrigger.左:
+                        temp = new Vector2(theF.m_Data.centerAbsPos.x + t.triPos.x - 1, theF.m_Data.centerAbsPos.y + t.triPos.y);
+                        break;
+                }
+
+                int sId = AllStar.Instance.stars.FindIndex(x => x.pos == temp);
+                if (sId == -1)
+                {
+                    AllOK = false;
+                    break;
+                }
+                if (AllStar.Instance.stars[sId].fragID == -1)
+                {
+                    AllOK = false;
+                    break;
+                }
+            }
+            if (AllOK)
+            {
+                theF.m_Data.triggerCount++;
+                //Debug.Log(theF.m_Data.fragmentID + theF.name+ " 's Affix : " + theF.m_Data.neighborRelativeInfo[i].theAffix.description);
+                theF.m_Data.neighborRelativeInfo[i].check = true;
+                //邊亮起來
+                //theF.m_Data.neighborRelativeInfo[i].relativeInfo[1].
+                //ing
+
+
+                //觸發對應Affix
+                /*BuffController BuffContr;
+                UnityAction affect1, endAffect1;
+                BuffContr.AddBuff("newBuff1", affect1, endAffect1, -1);
+                */
+            }
+            else
+            {
+                theF.m_Data.neighborRelativeInfo[i].check = false;
+            }
+        }
+        //Debug.Log("-------------------------------------------");
+    }
+    /************************************************************/
+    /************************************************************/
+    /************************************************************/
+    /************************************************************/
+    /************************************************************/
+    /************************************************************/
+    /************************************************************/
 
 
     //鄰居碎片們重新計算邊的觸發
@@ -119,7 +206,7 @@ public class Chip : Singleton<Chip>
         {
             int id = AllStar.Instance.stars[theF.m_Data.neighbors[i].starID].fragID;
             if (id != -1)
-                ThisReDetectEdge(AllFragment.Instance.fragments[id]);
+                ThisReDetectAffix(AllFragment.Instance.fragments[id]);
         }
     }
 

@@ -1,6 +1,41 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+
+[CreateAssetMenu(fileName = "Fragment", menuName = "Endowment/FagmentModel", order = 1)]
+public class Fragment : ScriptableObject
+{
+    public F_Data m_Data;
+}
+
+public enum edgeTrigger { 上, 下, 左, 右 }
+
+[System.Serializable]
+public class neighborRelative
+{
+    public List<triggerInfo> relativeInfo = new List<triggerInfo>();
+    public Affix theAffix;
+    public bool check=false;
+    public neighborRelative(neighborRelative copy)
+    {
+        relativeInfo = new List<triggerInfo>(copy.relativeInfo);
+        theAffix = copy.theAffix;
+        check = copy.check;
+    }
+}
+
+[System.Serializable]
+public class triggerInfo
+{
+    public Vector2 triPos;
+    public edgeTrigger edgeT;
+    public triggerInfo(triggerInfo copy)
+    {
+        triPos = copy.triPos;
+        edgeT = copy.edgeT;
+    }
+}
 
 //在寫touchStars(相對位置)時
 //(0,0)一定要是正三角形!!!
@@ -11,8 +46,8 @@ public class F_Data
     string fName;
     //int edgeCount;
     int triggerAffixIndex;
-    //class[] Affix;
-    enum FragmentType { }
+
+    public Vector2 centerAbsPos;
 
     public int fragmentID;
     public int triggerCount;
@@ -21,23 +56,27 @@ public class F_Data
 
 
     //*****star(絕對位置)*****
-    [SerializeField]
+    //[SerializeField]
     public List<int> touchStarsID = new List<int>();                          //用來記錄此碎片和哪個star交疊
 
     //*****相對位置*****
     [SerializeField]
-    public List<List<int>> neighborRelative_id = new List<List<int>>();  //此碎片邊上的鄰居關係 
-    [SerializeField]
+    public List<neighborRelative> neighborRelativeInfo = new List<neighborRelative>();  //此碎片邊上的鄰居關係 
+
+    //[SerializeField]
     public List<NeighborInfo> neighbors = new List<NeighborInfo>();         //相對位置上 所有鄰居
 
-    public void init(string _fName,List<Vector2> _touchPos_v2, int _id)   //回傳此Fragment在AllFragment的id
+    
+
+    public void init(string _fName,List<Vector2> _touchPos_v2, List<neighborRelative> _neighborRelativeInfo, int _id)   //回傳此Fragment在AllFragment的id
     {
         fName = _fName;
         touchPos_v2 = _touchPos_v2;
+        neighborRelativeInfo = _neighborRelativeInfo.ConvertAll(x => new neighborRelative(x));
         fragmentID = _id;
 
         FindNeighbors();
-        NeighborRelative();
+        //NeighborRelative();
     }
 
     void FindNeighbors()////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -68,7 +107,7 @@ public class F_Data
         NeighborInfo temp = new NeighborInfo(neighbors.Count, Star_pos, _tri, _to);
         neighbors.Add(temp);
     }
-
+    /*
     void NeighborRelative()//////////////////////////////////////////////////////////////////////////////////////////////////
     {
         List<NeighborInfo> nei_D_U = new List<NeighborInfo>();//存放 下三角形的鄰居中，以 上邊 觸發的三角形
@@ -130,17 +169,17 @@ public class F_Data
         CutEdge(nei_U_R, "nei_U_R");
 
     }
-
-    void CutEdge(List<NeighborInfo> list, string _n)////////////////////////////////////////////////////////////////////////////////
+    */
+    /*void CutEdge(List<NeighborInfo> list, string _n)////////////////////////////////////////////////////////////////////////////////
     {
         if (list.Count == 0) return;
 
-        List<int> temp = new List<int>();
-        temp.Add(list[0].neighborInfoID);
+        neighborRelative temp=new neighborRelative();
+        temp.neighborRelative_id.Add(list[0].neighborInfoID);
 
         if (list.Count == 1)
         {
-            neighborRelative_id.Add(temp);
+            neighborRelativeInfo.Add(temp);
             return;
         }
 
@@ -181,22 +220,22 @@ public class F_Data
 
             if (juge)
             {
-                temp.Add(list[i].neighborInfoID);
+                temp.neighborRelative_id.Add(list[i].neighborInfoID);
             }
             else//斷掉了
             {
-                neighborRelative_id.Add(new List<int>(temp));
-                temp.Clear();
-                temp.Add(list[i].neighborInfoID);
+                neighborRelativeInfo.Add(temp);
+                temp.neighborRelative_id.Clear();
+                temp.neighborRelative_id.Add(list[i].neighborInfoID);
             }
             if (i == list.Count - 1)        //最後一個
-                neighborRelative_id.Add(new List<int>(temp));
+                neighborRelativeInfo.Add(temp);
 
 
         }
     }
-
-    void bubbleSort(List<NeighborInfo> list)//////////////////////////////////////////////////////////// //以x座標大小排序，由小到大
+    */
+    /*void bubbleSort(List<NeighborInfo> list)//////////////////////////////////////////////////////////// //以x座標大小排序，由小到大
     {
         if (list.Count <= 1) return;
         for (int i = 0; i < list.Count; i++)
@@ -210,25 +249,27 @@ public class F_Data
                     list[j] = temp;
                 }
             }
-    }
+    }*/
 
-    public string PrintTriggerCount() { 
+    public string PrintTriggerCount() {
+        string reternString=" ";
+        for (int i = 0; i < neighborRelativeInfo.Count; i++)
+        {
+            if(neighborRelativeInfo[i].check)
+                reternString+= neighborRelativeInfo[i].theAffix.description;
+
+        }
         //return  "此碎片"+ fName+"觸發了" + triggerCount+"條邊";
-        return  "此碎片觸發了" + triggerCount+"條邊";
+        return reternString;
     }
 }
 
-[CreateAssetMenu(fileName = "Fragment", menuName = "Tsumiki/Create Fagment Asset", order = 1)]
-public class Fragment : ScriptableObject
-{
-    public F_Data m_Data;
-}
 
 
-[System.Serializable]
+//[System.Serializable]
 public class NeighborInfo//////////////////////////////////////////////////////////////////////////// OK
 {
-    public int neighborInfoID;
+    public int neighborInfoID;  //自己在neighbors是第幾個
     public int starID;
     public Vector2 pos;
     public int tri;            //UpTriangle=1  //DownTriangle=0

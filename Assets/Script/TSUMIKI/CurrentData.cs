@@ -6,20 +6,20 @@ using UnityEngine.UI;
 
 public class CurrentData : Singleton<CurrentData>
 {
-    public int currentFragmentID;       //目前碎片
-    public int currentStarID;           //存放當前點(三角形)在AllStar的ID<<中心點
-    public Vector2 currentPos;           //存放當前點(三角形)在AllStar的ID<<中心點
+    public int currentFragmentID;           //目前碎片ID
+    public int currentStarID;               //存放當前點(三角形)在AllStar的ID<<中心點
+    public Vector2 currentPos;              //存放當前點(三角形)在AllStar的ID<<中心點
     public int lastStarID;
-    public List<int> coverStarsID = new List<int>();           //存放 此碎片會覆蓋到的點(三角形)們
+    public List<int> coverStarsID = new List<int>();   //存放 此碎片會覆蓋到的點(三角形)們
     ///
     public GameObject followObj;
     public Vector2 tempOriginPos;
     ///
-    public Text appearTriggerCount;
-    public Image textImage;
-    bool windowsAppear = false;         //顯示碎片的玩意
+    //public Text appearTriggerCount;
+    //public Image textImage;
+    //bool windowsAppear = false;           //顯示碎片數量、名稱的視窗
 
-    bool positionError = false;         //碎片位置卡到
+    bool positionError = false;             //放置碎片位置卡到，顯示紅色不能放置
 
     private void Start()
     {
@@ -50,13 +50,14 @@ public class CurrentData : Singleton<CurrentData>
                     AllStar.Instance.stars[coverStarsID[i]].ExitColor();
                 }
             }
-            else if (windowsAppear)
+            //先拿掉視窗顯示，改用Debug.Log
+            /*else if (windowsAppear)
             {
                 windowsAppear = false;
                 appearTriggerCount.text = "";
                 textImage.color = new Color(0, 0, 0, 0);
                 return;
-            }
+            }*/
         }
 
         if (ExtendedStandaloneInputModule.GetPointerEventData().pointerCurrentRaycast.gameObject.tag != "slot")
@@ -71,14 +72,18 @@ public class CurrentData : Singleton<CurrentData>
                 star getTemp = ExtendedStandaloneInputModule.GetPointerEventData().pointerCurrentRaycast.gameObject.GetComponent<star>();
                 //Debug.Log(AllFragment.Instance.fragments[getTemp.fragID].m_Data.PrintTriggerCount());
 
-                appearTriggerCount.text = AllFragment.Instance.fragments[getTemp.fragID].m_Data.PrintTriggerCount();
-                ///
+                //文字框顯示
+                /*appearTriggerCount.text = AllFragment.Instance.fragments[getTemp.fragID].m_Data.PrintTriggerCount();
                 appearTriggerCount.transform.position = Input.mousePosition;
                 textImage.transform.position = Input.mousePosition;
-                ///
                 textImage.color = new Color(1, 1, 0, 0.7f);
                 appearTriggerCount.color = new Color(0, 0, 0, 1);
                 windowsAppear = true;
+                */
+
+                //Debug顯示
+                Debug.Log( AllFragment.Instance.fragments[getTemp.fragID].m_Data.PrintTriggerCount());
+
                 return;
             }
             if (Input.GetMouseButtonDown(0))    //拿起來
@@ -102,13 +107,15 @@ public class CurrentData : Singleton<CurrentData>
             {
                 if (followObj != null)
                 {
-                    followObj.transform.position = tempOriginPos;
+                    Destroy(followObj);
+                    /*followObj.transform.position = tempOriginPos;
                     followObj.GetComponent<Image>().raycastTarget = true;
                     followObj.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                    followObj = null;
+                    followObj = null;*/
                     //Destroy(followObj);
                 }
 
+                AllFragment.Instance.fragments[currentFragmentID].m_Data.centerAbsPos = currentPos;
                 Chip.Instance.PutOn(AllFragment.Instance.fragments[currentFragmentID], coverStarsID);
 
                 //Debug.Log("放下currentFragmentID:" + currentFragmentID);

@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a74bf9dbba1db8499fac0a67d142f3d, type: 3}
+  m_Name: 0trapezoid
+  m_EditorClassIdentifier: 
+  m_Data:
+    touchPos_v2:
+    - {x: 0, y: 0}
+    - {x: -1, y: 0}
+    - {x: 0, y: -1}
+    centerAbsPos: {x: 0, y: 0}
+    fragmentID: 0
+    triggerCount: 0
+    fragColor: {r: 0.60948366, g: 0.43867922, b: 1, a: 1}
+    touchStarsID: 980000001900000038000000
+    neighborRelativeInfo:
+    - relativeInfo:
+      - triPos: {x: 0, y: 0}
+        edgeT: 3
+      theAffix: {fileID: 11400000, guid: d82c5b26ad1fcd1488bd4f207681b959, type: 2}
+      check: 0
+    - relativeInfo:
+      - triPos: {x: -1, y: 0}
+        edgeT: 0
+      theAffix: {fileID: 11400000, guid: c40fb0f0c1d070640967d40bf125bf6a, type: 2}
+      check: 0
+    - relativeInfo:
+      - triPos: {x: 0, y: -1}
+        edgeT: 3
+      theAffix: {fileID: 11400000, guid: 590506675c23b5f4cbc816d789a13e68, type: 2}
+      check: 0
+    - relativeInfo:
+      - triPos: {x: -1, y: 0}
+        edgeT: 2
+      - triPos: {x: 0, y: -1}
+        edgeT: 2
+      theAffix: {fileID: 11400000, guid: df13d16c2936ccb46b52e29d299b6255, type: 2}
+      check: 0
