@@ -339,6 +339,12 @@ public class Character : MonoBehaviour
             });
         }
 
+        //用來計算成功攻擊了幾次 by積木
+        if (attackSuccess)
+        {
+            Test.Instance.attackTimes++;
+        }
+
         return attackSuccess;
     }
     #endregion

@@ -170,24 +170,25 @@ public class Chip : Singleton<Chip>
                 theF.m_Data.triggerCount++;
                 //Debug.Log(theF.m_Data.fragmentID + theF.name+ " 's Affix : " + theF.m_Data.neighborRelativeInfo[i].theAffix.description);
                 theF.m_Data.neighborRelativeInfo[i].check = true;
+
                 //邊亮起來
                 //theF.m_Data.neighborRelativeInfo[i].relativeInfo[1].
                 //ing
 
 
                 //觸發對應Affix
-                /*BuffController BuffContr;
-                UnityAction affect1, endAffect1;
-                BuffContr.AddBuff("newBuff1", affect1, endAffect1, -1);
-                */
+                Debug.Log("D*****************************");
+                Test.Instance.AddBuffs("002");
+
             }
             else
             {
                 theF.m_Data.neighborRelativeInfo[i].check = false;
             }
         }
-        //Debug.Log("-------------------------------------------");
     }
+    
+
     /************************************************************/
     /************************************************************/
     /************************************************************/

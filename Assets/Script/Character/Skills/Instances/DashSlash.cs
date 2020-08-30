@@ -58,31 +58,31 @@ public class DashSlash : DisposableSkill
         soundControl.PlaySound(slashHitSound);
     }
 
-    //private void AddBuffs()
-    //{
-    //    // 【自身每扣100血，會再額外受到10點傷害】
-    //    void Affect() { sourceCaster.TakeDamage(new DamageData(ElementType.None, 10)); }
-    //    // 【效果移除時，自身恢復100hp】
-    //    void EndAffect() { sourceCaster.CurrentHealth += 100f; }
-    //    sourceCaster.damageStoreController.AddDamageStoreData(TestFor100Hp, dscType, 0);
-    //    // 效果持續5秒，持續期間 【自身每扣100血，會再額外受到10點傷害】
-    //    sourceCaster.buffController.AddBuff(TestFor100Hp, Affect, EndAffect, 5f, delegate { return TriggerPer100Health(); });
-    //}
+    private void AddBuffs()
+    {
+        // 【自身每扣100血，會再額外受到10點傷害】
+        void Affect() { sourceCaster.TakeDamage(new DamageData(ElementType.None, 10)); }
+        // 【效果移除時，自身恢復100hp】
+        void EndAffect() { sourceCaster.CurrentHealth += 100f; }
+        sourceCaster.damageStoreController.AddDamageStoreData(TestFor100Hp, dscType, 0);
+        // 效果持續5秒，持續期間 【自身每扣100血，會再額外受到10點傷害】
+        sourceCaster.buffController.AddBuff(TestFor100Hp, Affect, EndAffect, 5f, delegate { return TriggerPer100Health(); });
+    }
 
     //// 儲存傷害用
-    //public const string TestFor100Hp = "TestFor100Hp";
-    //public DamageStoreType dscType = DamageStoreType.Take;
-    //private bool TriggerPer100Health()
-    //{
-    //    var dsc = sourceCaster.damageStoreController;
-    //    int cumulativeDamageTake = dsc.GetDamageData(TestFor100Hp, dscType);
-    //    if (cumulativeDamageTake >= 100)
-    //    {
-    //        dsc.ModifyDamageData(TestFor100Hp, dscType, 0);
-    //        return true;
-    //    }
-    //    return false;
-    //}
+    public const string TestFor100Hp = "TestFor100Hp";
+    public DamageStoreType dscType = DamageStoreType.Take;
+    private bool TriggerPer100Health()
+    {
+        var dsc = sourceCaster.damageStoreController;
+        int cumulativeDamageTake = dsc.GetDamageData(TestFor100Hp, dscType);
+        if (cumulativeDamageTake >= 100)
+        {
+            dsc.ModifyDamageData(TestFor100Hp, dscType, 0);
+            return true;
+        }
+        return false;
+    }
 
     // 使用技能後，立即鎖定敵人動作
     private void BindEnemyAction(Character target, float duration)
