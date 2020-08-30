@@ -25,6 +25,8 @@ public class OperationSoundController : MonoBehaviour
 
     private void Start()
     {
+        masterSoundAudio = AudioControl.Instance.masterSoundAudio;
+        effectSoundAudio = AudioControl.Instance.effectSoundAudio;
         character = GetComponent<Character>();
         soundPoint = Camera.main;
         ResetCharacterWeaponSoundData(character.data.weaponSoundSet);

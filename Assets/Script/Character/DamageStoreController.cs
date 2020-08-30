@@ -30,7 +30,7 @@ public class DamageStoreController : MonoBehaviour
     public int GetDamageData(string name, DamageStoreType type)
     {
         var datas = GetStoreDataDict(type);
-        if (datas.TryGetValue(name, out int resultData))
+        if (datas != null && datas.TryGetValue(name, out int resultData))
         {
             return resultData;
         }
@@ -64,6 +64,8 @@ public class DamageStoreController : MonoBehaviour
                 return damageTakeStoreDatas;
             case DamageStoreType.Dealt:
                 return damageDealtStoreDatas;
+            default:
+                break;
         }
         return null;
     }

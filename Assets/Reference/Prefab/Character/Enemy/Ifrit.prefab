@@ -21304,7 +21304,7 @@ GameObject:
   m_Layer: 10
   m_Name: AttackCenterPoint
   m_TagString: Untagged
-  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_Icon: {fileID: 6519382022992737161, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -24703,7 +24703,7 @@ ParticleSystem:
     range: {x: 1, y: 1}
     separateAxes: 0
   RotationBySpeedModule:
-    enabled: 0
+    enabled: 1
     x:
       serializedVersion: 2
       minMaxState: 0
@@ -24813,7 +24813,7 @@ ParticleSystem:
     curve:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.7853982
+      scalar: 0.34906584
       minScalar: 0.7853982
       maxCurve:
         serializedVersion: 2
@@ -51145,6 +51145,7 @@ GameObject:
   - component: {fileID: 1099385220}
   - component: {fileID: 6295895507406651273}
   - component: {fileID: 1356556669}
+  - component: {fileID: 356379952}
   m_Layer: 10
   m_Name: Ifrit
   m_TagString: Enemy
@@ -51244,8 +51245,6 @@ MonoBehaviour:
   isManaDirty: 0
   _currentHealth: 0
   _currentMana: 0
-  cumulativeDamageTake: 0
-  cumulativeDamageDealt: 0
   isLockAction: 0
   move:
     canDo: 0
@@ -51289,6 +51288,7 @@ MonoBehaviour:
   knockBackSystem: {fileID: 0}
   dieController: {fileID: 0}
   iconController: {fileID: 0}
+  damageStoreController: {fileID: 0}
   anim: {fileID: 0}
   _switchOn: 1
   detects:
@@ -51629,6 +51629,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   debuffSlots: {fileID: 8647687527791766500}
+--- !u!114 &356379952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8172391987346870631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29624799acfabc44bbadbe48e6cdbd4e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8854814543459209883
 GameObject:
   m_ObjectHideFlags: 0

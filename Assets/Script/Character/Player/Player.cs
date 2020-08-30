@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(PlayerSkillSlotKeyControl))]
@@ -11,21 +12,23 @@ public class Player : Character
     public ParticleSystem burstEffect;
     public ParticleSystem manaAbsorbEffect;
 
-    [Header("死亡特效")]
+    [Header("死亡相關")]
     public ParticleSystem dieParticle;
+    public Light2D playerLight;
 
     [Header("玩家UI")]
     public UIShake healthUI;
     public Image staminaBarUI;
     public Image manaAbsorbBarUI;
 
-    private readonly string dscManaAbsorbName = DamageStoreController.Cumulative_DamageDealt_ManaAbsorb;
+    private string dscManaAbsorbName;
 
     private void Start()
     {
         this.tag = "Player";
         this.gameObject.layer = LayerMask.NameToLayer("Player");
-        // Set UIbar.
+        // Set ManaAbsorb UIbar.
+        dscManaAbsorbName = DamageStoreController.Cumulative_DamageDealt_ManaAbsorb;
         manaAbsorbBarUI.fillAmount = damageStoreController.GetDamageData(dscManaAbsorbName, DamageStoreType.Dealt) / data.manaStealOfDamage.Value;
     }
 
@@ -64,6 +67,7 @@ public class Player : Character
     {
         ResetBarUI();
         TimeScaleController.Instance.DoSlowMotion(0.05f, dieController.dieDuration);
+        playerLight.gameObject.SetActive(false);
         base.Die();
     }
 

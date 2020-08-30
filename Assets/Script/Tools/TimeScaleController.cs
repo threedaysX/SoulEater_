@@ -1,0 +1,169 @@
+﻿using System.Collections;
+using UnityEngine;
+
+public class TimeScaleController : Singleton<TimeScaleController>
+{
+    private void Start()
+    {
+        TimeScale.global = new TimeScaleData();    
+    }
+
+    private void Update()
+    {
+        Time.timeScale = TimeScale.global.currentTimeScale;
+    }
+
+    /// <summary>
+    /// Custom for UI use.
+    /// (Flexable in any project).
+    /// </summary>
+    public void OpenUI(bool open)
+    {
+        if (open)
+        {
+            TimeScale.global.PauseMotion(true);
+            TimeScale.global.originTimeScale = TimeScale.global.currentTimeScale;
+            TimeScale.global.currentTimeScale = 0f;
+        }
+        else
+        {
+            TimeScale.global.PauseMotion(false);
+            TimeScale.global.currentTimeScale = TimeScale.global.originTimeScale;
+        }
+    }
+
+    public void ResetTimeScale()
+    {
+        TimeScale.global.currentTimeScale = 1f;
+    }
+
+    /// <summary>
+    /// Set time scale to factor, 
+    /// after delay, time scale will recover within slowdownLength(duration)
+    /// </summary>
+    /// <param name="slowdownFactor">Set to time scale</param>
+    /// <param name="slowdownLength">Recover time scale duration</param>
+    /// <param name="recoverDelay">Delay duration with recovering</param>
+    /// <param name="recoverFactor">How much will time scale recover to</param>
+    public void DoSlowMotion(float slowdownFactor, float slowdownLength, float recoverDelay = 0f, float recoverFactor = 1f)
+    {
+        TimeScale.global.currentTimeScale = slowdownFactor;
+        RecoverSlowMotion(recoverDelay, slowdownLength, recoverFactor);
+    }
+
+    public void DoSlowMotion(float slowdownFactor)
+    {
+        TimeScale.global.currentTimeScale = slowdownFactor;
+    }
+
+    /// <summary>
+    /// After delay, time scale will recover within slowdownLength(duration)
+    /// </summary>
+    /// <param name="recoverDelay">Delay duration with recovering</param>
+    /// <param name="slowdownLength">Recover time scale duration</param>
+    /// <param name="recoverFactor">How much will time scale recover to</param>
+    public void RecoverSlowMotion(float recoverDelay, float slowdownLength, float recoverFactor = 1f)
+    {
+        StartCoroutine(TimeScale.global.CallMotion(EaseOut(recoverDelay, slowdownLength, recoverFactor)));
+    }
+
+    private IEnumerator EaseOut(float recoverDelay, float slowdownLength, float recoverFactor)
+    {
+        yield return new WaitForSecondsRealtime(recoverDelay);
+        Time.fixedDeltaTime = TimeScale.global.currentTimeScale * 0.02f;
+        float timeleft = slowdownLength;
+        while (timeleft > 0)
+        {
+            TimeScale.global.currentTimeScale += (recoverFactor / slowdownLength) * Time.unscaledDeltaTime;
+            TimeScale.global.currentTimeScale = Mathf.Clamp(TimeScale.global.currentTimeScale, 0f, recoverFactor);
+            timeleft -= Time.deltaTime;
+            yield return null;
+        }
+    }
+
+    // 調整整體動畫速度
+    public void ModifyAllAnimSpeed(Animator anim, float newSpeed)
+    {
+        anim.speed = newSpeed;
+    }
+}
+
+public enum SlowMotionTargetType
+{
+    Player,
+    Enemy,
+    Global
+}
+
+public class TimeScale
+{
+    // Default Timescales
+    public static TimeScaleData global;
+}
+
+public class TimeScaleData
+{
+    public float originTimeScale = 1;
+    public float currentTimeScale = 1;
+    public float slowdownDuration = 1;
+
+    public bool stop;
+    public bool running;
+    public bool paused;
+    public bool finished;
+
+    public IEnumerator CallMotion(IEnumerator action)
+    {
+        if (running)
+        {
+            StopMotion();
+            yield return new WaitForEndOfFrame();
+        }
+        if (!running)
+        {
+            StartMotion();
+        }
+
+        IEnumerator e = action;
+        while (running)
+        {
+            if (stop)
+                break;
+
+            if (paused)
+                yield return null;
+            else
+            {
+                if (e != null && e.MoveNext())
+                {
+                    yield return e.Current;
+                }
+                else
+                {
+                    running = false;
+                    break;
+                }
+            }
+        }
+        finished = true;
+    }
+
+    public void StartMotion()
+    {
+        stop = false;
+        finished = false;
+        paused = false;
+        running = true;
+    }
+
+    public void StopMotion()
+    {
+        stop = true;
+        running = false;
+    }
+
+    public void PauseMotion(bool paused)
+    {
+        this.paused = paused;
+    }
+}

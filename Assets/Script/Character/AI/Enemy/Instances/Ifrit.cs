@@ -23,6 +23,8 @@ public class Ifrit : BossModel
     public override void Start()
     {
         base.Start();
+        healthUI = EnemyUIControl.Instance.healthWhite.GetComponent<UIShake>();
+
         SetEnemyLevel(EnemyLevel.Boss);
         ResetFlamethrowerData();
         ForceAdjustAttackDelay();
