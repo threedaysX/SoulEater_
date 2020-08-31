@@ -13,14 +13,16 @@ MonoBehaviour:
   m_Name: 0trapezoid
   m_EditorClassIdentifier: 
   m_Data:
+    fName: trapezoidFrag
     touchPos_v2:
     - {x: 0, y: 0}
     - {x: -1, y: 0}
     - {x: 0, y: -1}
+    fragColor: {r: 0.60948366, g: 0.43867922, b: 1, a: 1}
+    fragImage: {fileID: 21300000, guid: 73b9708762c171e4e93601717955e5b1, type: 3}
     centerAbsPos: {x: 0, y: 0}
     fragmentID: 0
     triggerCount: 0
-    fragColor: {r: 0.60948366, g: 0.43867922, b: 1, a: 1}
     touchStarsID: 980000001900000038000000
     neighborRelativeInfo:
     - relativeInfo:

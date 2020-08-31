@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "Fragment", menuName = "Endowment/FagmentModel", order = 1)]
 public class Fragment : ScriptableObject
@@ -42,39 +43,46 @@ public class triggerInfo
 [System.Serializable]
 public class F_Data
 {
+
+    [Header("碎片名稱")]
+    public string fName;
+    [Header("碎片相對位置(原點自定)")]
     public List<Vector2> touchPos_v2;
-    string fName;
+    [Header("碎片顏色")]
+    public Color fragColor;
+    [Header("碎片圖片")]
+    public Sprite fragImage;
+
     //int edgeCount;
-    int triggerAffixIndex;
+    //int triggerAffixIndex;
 
+    [HideInInspector]
     public Vector2 centerAbsPos;
-
+    [HideInInspector]
     public int fragmentID;
+    [HideInInspector]
     public int triggerCount;
 
-    public Color fragColor;
-
-
     //*****star(絕對位置)*****
-    //[SerializeField]
+    [HideInInspector]
     public List<int> touchStarsID = new List<int>();                          //用來記錄此碎片和哪個star交疊
 
     //*****相對位置*****
+    [Header("組成碎片的三角形中，哪些邊一組是一個邊")]
     [SerializeField]
     public List<neighborRelative> neighborRelativeInfo = new List<neighborRelative>();  //此碎片邊上的鄰居關係 
 
-    //[SerializeField]
+    [HideInInspector]
     public List<NeighborInfo> neighbors = new List<NeighborInfo>();         //相對位置上 所有鄰居
 
     
 
-    public void init(string _fName,List<Vector2> _touchPos_v2, List<neighborRelative> _neighborRelativeInfo, int _id)   //回傳此Fragment在AllFragment的id
+    public void init(List<Vector2> _touchPos_v2, List<neighborRelative> _neighborRelativeInfo, int _id,Sprite _fragImage)   //回傳此Fragment在AllFragment的id
     {
-        fName = _fName;
         touchPos_v2 = _touchPos_v2;
         neighborRelativeInfo = _neighborRelativeInfo.ConvertAll(x => new neighborRelative(x));
         fragmentID = _id;
-
+        fragImage = _fragImage;
         FindNeighbors();
         //NeighborRelative();
     }
@@ -252,15 +260,16 @@ public class F_Data
     }*/
 
     public string PrintTriggerCount() {
-        string reternString=" ";
+        string reternString="";
         for (int i = 0; i < neighborRelativeInfo.Count; i++)
         {
             if(neighborRelativeInfo[i].check)
                 reternString+= "/"+neighborRelativeInfo[i].theAffix.description+"/";
-
         }
+        if (reternString == "")
+            return fName+" : 無";
         //return  "此碎片"+ fName+"觸發了" + triggerCount+"條邊";
-        return reternString;
+        return fName + " : "+reternString;
     }
 }
 
