@@ -12,39 +12,39 @@ public class CurrentData : Singleton<CurrentData>
     public int lastStarID;
     public List<int> coverStarsID = new List<int>();   //存放 此碎片會覆蓋到的點(三角形)們
     ///
-    public GameObject followObj;
-    public Vector2 tempOriginPos;
-    ///
     //public Text appearTriggerCount;
     //public Image textImage;
     //bool windowsAppear = false;           //顯示碎片數量、名稱的視窗
 
     bool positionError = false;             //放置碎片位置卡到，顯示紅色不能放置
-
+    public Image chip2Mouse;                //碎片跟隨滑鼠
+    public Frag_m f_m;                      //當前是抓哪個預留位置的資料
     private void Start()
     {
-        followObj = null;
+        chip2Mouse.gameObject.SetActive(false);
         currentFragmentID = -1;
     }
     void Update()
     {
-        if (followObj != null)
+        if (chip2Mouse != null)
         {
-            followObj.transform.position = Input.mousePosition;
+            Vector3 temp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            chip2Mouse.transform.position = new Vector3(temp.x, temp.y, 10) ;
         }
 
         if (!EventSystem.current.IsPointerOverGameObject())
             return;
 
+        //點到範圍外
         if (Input.GetMouseButtonDown(0) )
         {
-            if (followObj != null && ExtendedStandaloneInputModule.GetPointerEventData().pointerCurrentRaycast.gameObject.tag != "putFrag" && ExtendedStandaloneInputModule.GetPointerEventData().pointerCurrentRaycast.gameObject.tag != "slot")
+            if (chip2Mouse.sprite != null && ExtendedStandaloneInputModule.GetPointerEventData().pointerCurrentRaycast.gameObject.tag != "putFrag" && ExtendedStandaloneInputModule.GetPointerEventData().pointerCurrentRaycast.gameObject.tag != "slot")
             {
                 currentFragmentID = -1;
-                followObj.transform.position = tempOriginPos;
-                followObj.GetComponent<Image>().raycastTarget = true;
-                followObj.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                followObj = null;
+                //碎片未用，放回原位------------------------------------------------------------------------
+                f_m.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+                chip2Mouse.gameObject.SetActive(false);
+
                 for (int i = 0; i < coverStarsID.Count; i++)
                 {
                     AllStar.Instance.stars[coverStarsID[i]].ExitColor();
@@ -70,7 +70,6 @@ public class CurrentData : Singleton<CurrentData>
                 if (AllFragment.Instance.fragments.Count == 0)
                     return;
                 star getTemp = ExtendedStandaloneInputModule.GetPointerEventData().pointerCurrentRaycast.gameObject.GetComponent<star>();
-                //Debug.Log(AllFragment.Instance.fragments[getTemp.fragID].m_Data.PrintTriggerCount());
 
                 //文字框顯示
                 /*appearTriggerCount.text = AllFragment.Instance.fragments[getTemp.fragID].m_Data.PrintTriggerCount();
@@ -94,7 +93,10 @@ public class CurrentData : Singleton<CurrentData>
                     currentFragmentID = getTemp.fragID;
                     //Debug.Log("拿起來currentFragmentID:" + currentFragmentID);
                     //Debug.Log("拿起來fragmentID:" + getTemp.fragID);
-                    Chip.Instance.PullUp(AllFragment.Instance.fragments[getTemp.fragID]);
+                    Chip.Instance.PullUp(AllFragment.Instance.fragments[currentFragmentID]);
+                    chip2Mouse.gameObject.SetActive(true);
+                    chip2Mouse.sprite = AllFragment.Instance.fragments[currentFragmentID].m_Data.fragImage;
+                    //Debug.LogWarning("getTemp.fragID---" + currentFragmentID);
                 }
                 return;
             }
@@ -105,14 +107,11 @@ public class CurrentData : Singleton<CurrentData>
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////確認好位置要放下了
             if (Input.GetMouseButtonDown(0) && !positionError)  //放下
             {
-                if (followObj != null)
+                if (chip2Mouse != null)
                 {
-                    Destroy(followObj);
-                    /*followObj.transform.position = tempOriginPos;
-                    followObj.GetComponent<Image>().raycastTarget = true;
-                    followObj.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                    followObj = null;*/
-                    //Destroy(followObj);
+                    chip2Mouse.gameObject.SetActive(false);
+                    //原本位置(左右上下)的資料清空-------------------------------------------------------
+                    f_m.Clean();
                 }
 
                 AllFragment.Instance.fragments[currentFragmentID].m_Data.centerAbsPos = currentPos;
