@@ -123,7 +123,36 @@ namespace StatsModel
             }
             return false;
         }
+		
+		public bool RemoveAllModifier()
+        {
+            modifiers.Clear();
+            return true;
+        }
 
+		public bool RemoveAllModifierByName(string name)
+        {
+            foreach (StatModifier mod in modifiers)
+            {
+                if (mod.SourceName == name)
+                {
+                    modifiers.Remove(mod);
+                }
+            }
+            return true;
+        }
+		
+        public bool RemoveAllModifierByType(StatModType type)
+        {
+            foreach (StatModifier mod in modifiers)
+            {
+                if (mod.Type == type)
+                {
+                    modifiers.Remove(mod);
+                }
+            }
+            return true;
+        }
 
         public void ForceToChangeValue(float value)
         {

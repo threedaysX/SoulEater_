@@ -28,8 +28,8 @@ public class Player : Character
         this.tag = "Player";
         this.gameObject.layer = LayerMask.NameToLayer("Player");
         // Set ManaAbsorb UIbar.
-        dscManaAbsorbName = DamageStoreController.Cumulative_DamageDealt_ManaAbsorb;
-        manaAbsorbBarUI.fillAmount = damageStoreController.GetDamageData(dscManaAbsorbName, DamageStoreType.Dealt) / data.manaStealOfDamage.Value;
+        dscManaAbsorbName = CumulativeDataController.Cumulative_DamageDealt_ManaAbsorb;
+        manaAbsorbBarUI.fillAmount = cumulativeDataController.GetData(dscManaAbsorbName, CumulativeDataType.Dealt) / data.manaStealOfDamage.Value;
     }
 
     private void Update()
@@ -73,7 +73,7 @@ public class Player : Character
 
     protected override void ManaSteal(float damage)
     {
-        float percent = damageStoreController.GetDamageData(dscManaAbsorbName, DamageStoreType.Dealt) / data.manaStealOfDamage.Value;
+        float percent = cumulativeDataController.GetData(dscManaAbsorbName, CumulativeDataType.Dealt) / data.manaStealOfDamage.Value;
         if (percent >= 1)
         {
             percent = 1;

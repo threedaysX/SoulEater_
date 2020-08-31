@@ -12,7 +12,7 @@ using UnityEngine;
 [RequireComponent(typeof(IconController))]
 [RequireComponent(typeof(KnockStunSystem))]
 [RequireComponent(typeof(DieController))]
-[RequireComponent(typeof(DamageStoreController))]
+[RequireComponent(typeof(CumulativeDataController))]
 public class Character : MonoBehaviour
 {
     #region 基礎參數
@@ -109,7 +109,7 @@ public class Character : MonoBehaviour
     [HideInInspector] public KnockStunSystem knockBackSystem; // 擊退控制
     [HideInInspector] public DieController dieController; // 死亡控制
     [HideInInspector] public IconController iconController; // 提示圖示控制
-    [HideInInspector] public DamageStoreController damageStoreController; // 傷害儲存控制
+    [HideInInspector] public CumulativeDataController cumulativeDataController; // 傷害儲存控制
     [HideInInspector] public Animator anim;
     #endregion
 
@@ -124,7 +124,7 @@ public class Character : MonoBehaviour
         knockBackSystem = GetComponent<KnockStunSystem>();
         dieController = GetComponent<DieController>();
         iconController = GetComponent<IconController>();
-        damageStoreController = GetComponent<DamageStoreController>();
+        cumulativeDataController = GetComponent<CumulativeDataController>();
         anim = GetComponent<Animator>();
 
         ReBorn();
@@ -156,7 +156,7 @@ public class Character : MonoBehaviour
         if (data.timesOfPerDamage <= 0 || data.duration <= 0)
         {
             CurrentHealth -= data.damage;
-            damageStoreController.DamageStore(DamageStoreType.Take, data.damage);
+            cumulativeDataController.DataStore(CumulativeDataType.Take, data.damage);
             if (CurrentHealth <= 0)
             {
                 Die();
@@ -182,12 +182,12 @@ public class Character : MonoBehaviour
     private void KnockBackCheck(float damageDirectionX, float knockBackForce)
     {
         float knockbackDamage = data.knockBackDamage.Value;
-        string dscName = DamageStoreController.Cumulative_DamageTake_KnockBack;
-        DamageStoreType dscType = DamageStoreType.Take;
-        if (damageStoreController.GetDamageData(dscName, dscType) >= knockbackDamage && damageDirectionX != 0)
+        string dscName = CumulativeDataController.Cumulative_DamageTake_KnockBack;
+        CumulativeDataType dscType = CumulativeDataType.Take;
+        if (cumulativeDataController.GetData(dscName, dscType) >= knockbackDamage && damageDirectionX != 0)
         {
             knockBackSystem.KnockStun(this, damageDirectionX, knockBackForce);
-            damageStoreController.ModifyDamageData(dscName, dscType, 0);
+            cumulativeDataController.ModifyData(dscName, dscType, 0);
         }
     }
 
@@ -215,7 +215,7 @@ public class Character : MonoBehaviour
     /// <param name="isAttack">【True】為一般攻擊 ||【False】為技能攻擊</param>
     public void DamageDealtSteal(float damage, bool isAttack)
     {
-        damageStoreController.DamageStore(DamageStoreType.Dealt, (int)damage);
+        cumulativeDataController.DataStore(CumulativeDataType.Dealt, (int)damage);
         LifeSteal(damage, isAttack);
         ManaSteal(damage);
     }
@@ -257,12 +257,12 @@ public class Character : MonoBehaviour
 
         // 造成N點傷害量，就回復N點魔力
         float manaStealOfDamage = data.manaStealOfDamage.Value;
-        string dscName = DamageStoreController.Cumulative_DamageDealt_ManaAbsorb;
-        DamageStoreType dscType = DamageStoreType.Dealt;
-        if (damageStoreController.GetDamageData(dscName, dscType) >= manaStealOfDamage)
+        string dscName = CumulativeDataController.Cumulative_DamageDealt_ManaAbsorb;
+        CumulativeDataType dscType = CumulativeDataType.Dealt;
+        if (cumulativeDataController.GetData(dscName, dscType) >= manaStealOfDamage)
         {
             CurrentMana += Mathf.Ceil(data.manaStealOfPoint.Value);
-            damageStoreController.ModifyDamageData(dscName, dscType, 0);
+            cumulativeDataController.ModifyData(dscName, dscType, 0);
         }
     }
 
@@ -337,12 +337,6 @@ public class Character : MonoBehaviour
             { 
                 return combatController.Attack(attackType, elementType); 
             });
-        }
-
-        //用來計算成功攻擊了幾次 by積木
-        if (attackSuccess)
-        {
-            Test.Instance.attackTimes++;
         }
 
         return attackSuccess;

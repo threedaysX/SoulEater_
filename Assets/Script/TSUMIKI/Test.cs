@@ -5,7 +5,6 @@ using UnityEngine;
 public class Test : Singleton<Test>
 {
     public Character sourceCaster;
-    public int attackTimes = 0;
 
     public void AddBuffs(string affixName)
     {
@@ -41,21 +40,21 @@ public class Test : Singleton<Test>
 
         // 【效果移除時，自身恢復100hp】
         void EndAffect() { sourceCaster.CurrentHealth += 100f; }
-        sourceCaster.damageStoreController.AddDamageStoreData(TestFor100Hp, dscType, 0);
+        sourceCaster.cumulativeDataController.AddData(TestFor100Hp, cdType, 0);
 
         // 效果持續5秒，持續期間 【自身每扣100血，會再額外受到10點傷害】
         sourceCaster.buffController.AddBuff(TestFor100Hp, Affect, EndAffect, 5f, delegate { return TriggerPer100Health(); });
     }
 
     //// 儲存傷害用
-    public DamageStoreType dscType = DamageStoreType.Take;
+    public CumulativeDataType cdType = CumulativeDataType.Take;
     private bool TriggerPer100Health()
     {
-        var dsc = sourceCaster.damageStoreController;
-        int cumulativeDamageTake = dsc.GetDamageData(TestFor100Hp, dscType);
+        var cdc = sourceCaster.cumulativeDataController;
+        int cumulativeDamageTake = cdc.GetData(TestFor100Hp, cdType);
         if (cumulativeDamageTake >= 100)
         {
-            dsc.ModifyDamageData(TestFor100Hp, dscType, 0);
+            cdc.ModifyData(TestFor100Hp, cdType, 0);
             return true;
         }
         return false;
@@ -83,17 +82,22 @@ public class Test : Singleton<Test>
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     // 【當成功攻擊4次時..........】
     public const string TestForAttack4Times = "TestForAttack4Times";
+    public CumulativeDataType cdHitType = CumulativeDataType.HitTimes;
     public void AddBuff002_TriggerAttack4Times()
     {
-        attackTimes = 0;
         void Affect() { Debug.LogWarning("當成功攻擊4次時.........."); }
         void EndAffect() { }
+        sourceCaster.cumulativeDataController.AddData(TestForAttack4Times, cdHitType, 0);
         sourceCaster.buffController.AddBuff(TestForAttack4Times, Affect, EndAffect, -1, delegate { return TriggerAttack4Times(); });
     }
     private bool TriggerAttack4Times()
     {
-        if (attackTimes >= 4)
+        var cdc = sourceCaster.cumulativeDataController;
+        if (cdc.GetData(TestForAttack4Times, cdHitType) >= 4)
+        {
+            cdc.ModifyData(TestForAttack4Times, cdHitType, 0);
             return true;
+        }
         return false;
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////
