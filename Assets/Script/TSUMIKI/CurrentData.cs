@@ -42,9 +42,11 @@ public class CurrentData : Singleton<CurrentData>
             {
                 currentFragmentID = -1;
                 //碎片未用，放回原位------------------------------------------------------------------------
-                f_m.GetComponent<Image>().color = new Color(1, 1, 1, 1);
-                chip2Mouse.gameObject.SetActive(false);
-
+                if (f_m.putFrag != null)
+                {
+                    f_m.GetComponent<Image>().color = new Color(1, 1, 1, 1);
+                    chip2Mouse.gameObject.SetActive(false);
+                }
                 for (int i = 0; i < coverStarsID.Count; i++)
                 {
                     AllStar.Instance.stars[coverStarsID[i]].ExitColor();
@@ -70,7 +72,7 @@ public class CurrentData : Singleton<CurrentData>
                 if (AllFragment.Instance.fragments.Count == 0)
                     return;
                 star getTemp = ExtendedStandaloneInputModule.GetPointerEventData().pointerCurrentRaycast.gameObject.GetComponent<star>();
-
+                if (getTemp.fragID == -1) return;
                 //文字框顯示
                 /*appearTriggerCount.text = AllFragment.Instance.fragments[getTemp.fragID].m_Data.PrintTriggerCount();
                 appearTriggerCount.transform.position = Input.mousePosition;
