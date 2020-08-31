@@ -259,12 +259,16 @@ public class F_Data
             }
     }*/
 
-    public string PrintTriggerCount() {
+    public string PrintAndExeAffixs() {
         string reternString="";
         for (int i = 0; i < neighborRelativeInfo.Count; i++)
         {
-            if(neighborRelativeInfo[i].check)
-                reternString+= "/"+neighborRelativeInfo[i].theAffix.description+"/";
+            if (neighborRelativeInfo[i].check)
+            {
+                //執行Affix
+                Test.Instance.AddBuffs(neighborRelativeInfo[i].theAffix.name);
+                reternString += "/" + neighborRelativeInfo[i].theAffix.description + "/";
+            }
         }
         if (reternString == "")
             return fName+" : 無";

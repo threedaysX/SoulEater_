@@ -83,7 +83,7 @@ public class CurrentData : Singleton<CurrentData>
                 */
 
                 //Debug顯示
-                Debug.Log( AllFragment.Instance.fragments[getTemp.fragID].m_Data.PrintTriggerCount());
+                Debug.Log( AllFragment.Instance.fragments[getTemp.fragID].m_Data.PrintAndExeAffixs());
 
                 return;
             }

@@ -10,27 +10,32 @@ public class Test : Singleton<Test>
     {
         switch (affixName)
         {
-            case "001":
+            case "001TestFor100Hp":
                 AddBuff001_TriggerPer100Health();
                 break;
-            case "002":
+            case "002TestForEvading":
                 AddBuff002_TriggerAttack4Times();
                 break;
-            case "005":
+            case "005TestForAttack4Times":
                 AddBuff005_TriggerIsEvading();
                 break;
-            case "006":
+            case "006TestForKeyQ":
                 AddBuff006_TriggerKeyQ();
                 break;
-
+            case "A000":
+                Debug.LogWarning("尚沒有輸入任何功能 : " + affixName);
+                break;
+            default:
+                Debug.LogWarning("沒有這一個Affix資訊被輸入 : " + affixName);
+                break;
         }
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     // 【自身每扣100血，會再額外受到10點傷害】
-    public const string TestFor100Hp = "TestFor100Hp";
-    public void AddBuff001_TriggerPer100Health()
+    private const string TestFor100Hp = "TestFor100Hp";
+    private void AddBuff001_TriggerPer100Health()
     {
         void Affect()
         {
@@ -47,7 +52,7 @@ public class Test : Singleton<Test>
     }
 
     //// 儲存傷害用
-    public CumulativeDataType cdType = CumulativeDataType.Take;
+    private CumulativeDataType cdType = CumulativeDataType.Take;
     private bool TriggerPer100Health()
     {
         var cdc = sourceCaster.cumulativeDataController;
@@ -63,8 +68,8 @@ public class Test : Singleton<Test>
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     // 【每當翻滾時..........】
-    public const string TestForEvading = "TestForEvading";
-    public void AddBuff005_TriggerIsEvading()
+    private const string TestForEvading = "TestForEvading";
+    private void AddBuff005_TriggerIsEvading()
     {
         void Affect() { Debug.LogWarning("每當跳躍時.........."); }
         void EndAffect() { }
@@ -81,9 +86,9 @@ public class Test : Singleton<Test>
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     // 【當成功攻擊4次時..........】
-    public const string TestForAttack4Times = "TestForAttack4Times";
-    public CumulativeDataType cdHitType = CumulativeDataType.HitTimes;
-    public void AddBuff002_TriggerAttack4Times()
+    private const string TestForAttack4Times = "TestForAttack4Times";
+    private CumulativeDataType cdHitType = CumulativeDataType.HitTimes;
+    private void AddBuff002_TriggerAttack4Times()
     {
         void Affect() { Debug.LogWarning("當成功攻擊4次時.........."); }
         void EndAffect() { }
@@ -104,8 +109,8 @@ public class Test : Singleton<Test>
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     // 【當按下按鍵Q時..........】
-    public const string TestForKeyQ = "TestForKeyQ";
-    public void AddBuff006_TriggerKeyQ()
+    private const string TestForKeyQ = "TestForKeyQ";
+    private void AddBuff006_TriggerKeyQ()
     {
         void Affect() { Debug.LogWarning("當按下按鍵Q時.........."); }
         void EndAffect() { }

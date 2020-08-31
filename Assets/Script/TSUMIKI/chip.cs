@@ -176,9 +176,7 @@ public class Chip : Singleton<Chip>
                 //ing
 
 
-                //觸發對應Affix
-                Debug.Log("D*****************************");
-                Test.Instance.AddBuffs("002");
+                //若要單一 一次對一個Affix觸發 則要在這做
 
             }
             else
