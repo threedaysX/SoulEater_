@@ -66,7 +66,7 @@ public class Player : Character
     public override void Die()
     {
         ResetBarUI();
-        TimeScaleController.Instance.DoSlowMotion(0.05f, dieController.dieDuration);
+        TimeScaleController.Instance.DoSlowMotion(0.05f, 0f, dieController.dieDuration);
         playerLight.gameObject.SetActive(false);
         base.Die();
     }

@@ -116,7 +116,7 @@ public class Flamethrower : LastingSkill
 
     private void CameraShakeWhenTrigger()
     {
-        CameraShake.Instance.ShakeCamera(0.8f, 1f, 3f, 0f, true);
+        CameraShake.Instance.ShakeCamera(0.8f, 1f, 3f, false, 0f, true);
     }
 
     private void RenderHint()

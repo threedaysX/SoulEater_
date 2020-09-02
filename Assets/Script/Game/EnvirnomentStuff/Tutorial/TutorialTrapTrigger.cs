@@ -20,7 +20,7 @@ public class TutorialTrapTrigger : MonoBehaviour
     {
         if (collision.CompareTag("Player") && canSpawn)
         {
-            TimeScaleController.Instance.DoSlowMotion(slowDownFactor, slowDownTime);
+            TimeScaleController.Instance.DoSlowMotion(slowDownFactor, 0f, slowDownTime);
             ProjectileSpawner.Instance.InstantiateProjectile(projectile, projectileSetting, projectileDirectSetting);
             canSpawn = false;
         }

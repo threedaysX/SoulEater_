@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DG.Tweening;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -75,13 +76,25 @@ public class PlayerUIControl : Singleton<PlayerUIControl>
                 if (skillSlot.skill == null ||
                    (skillSlot.skill != null && !skillSlot.skill.cooling))
                 {
-                    skillSlotsIsDirtyDict[skillSlot] = false;
-                    skillSlot.background.fillAmount = 1;
-                    skillSlot.background.color = originHintColor;
-                    slotRefreshEffect.transform.position = skillSlot.transform.position;
-                    slotRefreshEffect.Play(true);
+                    RefreshSkillSlot(skillSlot);
                 }
             }
         }
+    }
+
+    private void RefreshSkillSlot(MenuSkillSlot skillSlot)
+    {
+        skillSlotsIsDirtyDict[skillSlot] = false;
+        skillSlot.background.fillAmount = 1;
+        skillSlot.background.color = originHintColor;
+        slotRefreshEffect.transform.position = skillSlot.transform.position;
+        slotRefreshEffect.Play(true);
+        Sequence sequence = DOTween.Sequence();
+        Tweener uiEffect = skillSlot.transform.DOScale(new Vector3(1.2f, 1.2f, 1.2f), 0.1f);
+        Tweener uiEffect2 = skillSlot.transform.DOScale(new Vector3(1f, 1f, 1f), 0.1f);
+        uiEffect.SetUpdate(true);
+        uiEffect.SetEase(Ease.OutSine);
+        sequence.Append(uiEffect)
+                .Append(uiEffect2);
     }
 }

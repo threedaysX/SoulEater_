@@ -37,6 +37,6 @@ public class Teleport : DisposableSkill
 
     private void TimeSlow()
     {
-        TimeScaleController.Instance.DoSlowMotion(0.05f, timeSlowDuration);
+        TimeScaleController.Instance.DoSlowMotion(0.1f, 0f, timeSlowDuration);
     }
 }

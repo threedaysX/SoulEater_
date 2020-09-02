@@ -25,7 +25,6 @@ public class DashSlash : DisposableSkill
         immediatelyAffect.AddListener(GetInDarkScreenAndZoomIn);
         immediatelyAffect.AddListener(MoveFoward);
         immediatelyAffect.AddListener(delegate { StartCoroutine(HitDetect()); });
-        //immediatelyAffect.AddListener(AddBuffs);
     }
 
     public override void OnTriggerEnter2D(Collider2D targetCol)
@@ -56,32 +55,6 @@ public class DashSlash : DisposableSkill
         slashHitEffect.transform.position = target.transform.position;
         slashHitEffect.Play(true);
         soundControl.PlaySound(slashHitSound);
-    }
-
-    private void AddBuffs()
-    {
-        // 【自身每扣100血，會再額外受到10點傷害】
-        void Affect() { sourceCaster.TakeDamage(new DamageData(ElementType.None, 10)); }
-        // 【效果移除時，自身恢復100hp】
-        void EndAffect() { sourceCaster.CurrentHealth += 100f; }
-        sourceCaster.cumulativeDataController.AddData(TestFor100Hp, dscType, 0);
-        // 效果持續5秒，持續期間 【自身每扣100血，會再額外受到10點傷害】
-        sourceCaster.buffController.AddBuff(TestFor100Hp, Affect, EndAffect, 5f, delegate { return TriggerPer100Health(); });
-    }
-
-    //// 儲存傷害用
-    public const string TestFor100Hp = "TestFor100Hp";
-    public CumulativeDataType dscType = CumulativeDataType.Take;
-    private bool TriggerPer100Health()
-    {
-        var dsc = sourceCaster.cumulativeDataController;
-        int cumulativeDamageTake = dsc.GetData(TestFor100Hp, dscType);
-        if (cumulativeDamageTake >= 100)
-        {
-            dsc.ModifyData(TestFor100Hp, dscType, 0);
-            return true;
-        }
-        return false;
     }
 
     // 使用技能後，立即鎖定敵人動作
@@ -139,18 +112,15 @@ public class DashSlash : DisposableSkill
     private IEnumerator HitDetect()
     {
         yield return new WaitForSeconds(currentSkill.castTime.Value + 0.1f);
-        if (isHit)
+        StartCoroutine(SetActiveAfterSkillDone(1.9f));
+        if (!isHit)
         {
-            StartCoroutine(SetActiveAfterSkillDone(1.9f));
-        }
-        else
-        {
-            SetActiveAfterSkillDone(false);
+            SetSkillEnable(false);
         }
     }
 
     private void CameraShakeWhenHit()
     {
-        CameraShake.Instance.ShakeCamera(1f, 8f, 0.1f, 0f, true);
+        CameraShake.Instance.ShakeCamera(1f, 8f, 0.1f, false, 0f, true);
     }
 }

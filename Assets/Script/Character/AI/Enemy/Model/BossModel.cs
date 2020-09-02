@@ -49,7 +49,7 @@ public class BossModel : EnemyModel
         operationController.InterruptAnimOperation();
         GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         StartCoroutine(FadeScreen.Instance.FadeIn(duration));
-        TimeScaleController.Instance.DoSlowMotion(0.05f, duration);
+        TimeScaleController.Instance.DoSlowMotion(0.05f, 0f, duration);
 
         // Highlight Objs
         List<GameObject> highlightObjs = new List<GameObject>();

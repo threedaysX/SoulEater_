@@ -50,7 +50,7 @@ public class CombatController : MonoBehaviour
                         float damage = DamageController.Instance.GetAttackDamage(character, enemyDetails, attackType, elementType, out bool isCritical);
                         DamageData data = new DamageData(character.gameObject, elementType, (int)damage, isCritical, damageDirectionX, character.data.weaponKnockBackForce);
                         enemyDetails.TakeDamage(data);
-                        CameraShake.Instance.ShakeCamera(basicShakeCameraForce * character.data.weaponKnockBackForce, 0.02f, 0.1f, 0f, true);
+                        CameraShake.Instance.ShakeCamera(basicShakeCameraForce * character.data.weaponKnockBackForce, 0.02f, 0.1f, false, 0f, true);
                         character.DamageDealtSteal(damage, true);
                         TriggerHitEffect(target.transform);
                         attackSuccess = true;
