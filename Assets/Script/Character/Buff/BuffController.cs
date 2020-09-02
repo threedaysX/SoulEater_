@@ -55,9 +55,9 @@ public class BuffController : MonoBehaviour
                 if (buff.Value.removeEvent != null)
                 {
                     buff.Value.removeEvent.Invoke();
-                    buff.Value.StopTick();
-                    RemoveMemory(buff.Key);
                 }
+                buff.Value.StopTick();
+                RemoveMemory(buff.Key);
             }
             else
             {

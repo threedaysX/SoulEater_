@@ -9918,7 +9918,7 @@ MonoBehaviour:
   knockBackSystem: {fileID: 0}
   dieController: {fileID: 0}
   iconController: {fileID: 0}
-  damageStoreController: {fileID: 0}
+  cumulativeDataController: {fileID: 0}
   anim: {fileID: 0}
   burstParticle: {fileID: 1405821121871157194}
   soulParticle: {fileID: 8257254016354476944}
@@ -10030,7 +10030,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8180456596061003219}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29624799acfabc44bbadbe48e6cdbd4e, type: 3}
+  m_Script: {fileID: 11500000, guid: d98629aa3230f664ea3d37101ff1cdac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8257254016354476945

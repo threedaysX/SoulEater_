@@ -118,7 +118,7 @@ public class Ifrit : BossModel
 
     public override void Die()
     {
-        CameraShake.Instance.ShakeCamera(1f, 4f, dieController.dieDissolveDuration, 0f, true);
+        CameraShake.Instance.ShakeCamera(1f, 4f, dieController.dieDissolveDuration);
         base.Die();
     }
 }

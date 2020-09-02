@@ -11,7 +11,7 @@ public class SoulCharacter : Character
     public override void Die()
     {
         // Give Frag.
-        TimeScaleController.Instance.DoSlowMotion(0.05f, 3f);
+        TimeScaleController.Instance.DoSlowMotion(0.05f, 0f, 3f);
         TriggerDieEffect();
         BurstSoul();
         StartCoroutine(DelayDestory(soulDieDuration));
@@ -52,7 +52,7 @@ public class SoulCharacter : Character
             ChnageLayer(soulParticle.gameObject, true, 1);
 
             pl.TriggerAttractorBurstEffect(duration);
-            CameraShake.Instance.ShakeCamera(4f, 4f, 0.2f, duration, true);
+            CameraShake.Instance.ShakeCamera(4f, 4f, 0.2f, false, duration, true);
             ZoomInSetting zoomInSetting = new ZoomInSetting { finalZoomSize = 5.6f, duration = duration - offset, startDelay = 0f };
             ZoomInSetting zoomOutSetting = new ZoomInSetting { finalZoomSize = 6f, duration = 0.2f, startDelay = offset };
             CinemachineCameraControl.Instance.ZoomInCamera(zoomInSetting, zoomOutSetting);

@@ -132,25 +132,13 @@ namespace StatsModel
 
 		public bool RemoveAllModifierByName(string name)
         {
-            foreach (StatModifier mod in modifiers)
-            {
-                if (mod.SourceName == name)
-                {
-                    modifiers.Remove(mod);
-                }
-            }
+            modifiers.RemoveAll(x => x.SourceName == name);
             return true;
         }
-		
+
         public bool RemoveAllModifierByType(StatModType type)
         {
-            foreach (StatModifier mod in modifiers)
-            {
-                if (mod.Type == type)
-                {
-                    modifiers.Remove(mod);
-                }
-            }
+            modifiers.RemoveAll(x => x.Type == type);
             return true;
         }
 

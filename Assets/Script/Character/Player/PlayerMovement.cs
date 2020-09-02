@@ -157,6 +157,6 @@ public class PlayerMovement : MonoBehaviour
         player.staminaBarUI.fillAmount = 0;
         // Stamina Regen(fillAmount to 1).
         float originCoolDown = player.data.evadeCoolDown.Value;
-        Counter.Instance.CountDown(originCoolDown, (x) => player.staminaBarUI.fillAmount = (originCoolDown - x) / originCoolDown);
+        Counter.Instance.CountDown(originCoolDown, false, (x) => player.staminaBarUI.fillAmount = (originCoolDown - x) / originCoolDown);
     }
 }

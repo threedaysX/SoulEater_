@@ -6,16 +6,16 @@ public class CumulativeDataController : MonoBehaviour
     public const string Cumulative_DamageTake_KnockBack = "Cumulative_DamageTake_KnockBack";    // 累積受到的擊退傷害
     public const string Cumulative_DamageDealt_ManaAbsorb = "Cumulative_DamageDealt_ManaAbsorb";   // 累積造成的吸魔傷害
 
-    private ConcurrentDictionary<string, int> damageTakeStoreDatas;
-    private ConcurrentDictionary<string, int> damageDealtStoreDatas;
-    private ConcurrentDictionary<string, int> attackHitTimesStoreDatas;
+    private CumulativeData<int> damageTakeObservers;
+    private CumulativeData<int> damageDealtObservers;
+    private CumulativeData<int> attackHitTimesObservers;
 
     // Start is called before the first frame update
     private void Start()
     {
-        damageTakeStoreDatas = new ConcurrentDictionary<string, int>();
-        damageDealtStoreDatas = new ConcurrentDictionary<string, int>();
-        attackHitTimesStoreDatas = new ConcurrentDictionary<string, int>();
+        damageTakeObservers = new CumulativeData<int>();
+        damageDealtObservers = new CumulativeData<int>();
+        attackHitTimesObservers = new CumulativeData<int>();
         AddData(Cumulative_DamageTake_KnockBack, CumulativeDataType.Take, 0);
         AddData(Cumulative_DamageDealt_ManaAbsorb, CumulativeDataType.Dealt, 0);
     }
@@ -58,21 +58,23 @@ public class CumulativeDataController : MonoBehaviour
             datas.TryRemove(name, out _);
     }
 
-    private ConcurrentDictionary<string, int> GetCumulativeDataDict(CumulativeDataType type)
+    private CumulativeData<int> GetCumulativeDataDict(CumulativeDataType type)
     {
         switch (type)
         {
             case CumulativeDataType.Take:
-                return damageTakeStoreDatas;
+                return damageTakeObservers;
             case CumulativeDataType.Dealt:
-                return damageDealtStoreDatas;
+                return damageDealtObservers;
             case CumulativeDataType.HitTimes:
-                return attackHitTimesStoreDatas;
+                return attackHitTimesObservers;
             default:
                 break;
         }
         return null;
     }
+
+    public class CumulativeData<T> : ConcurrentDictionary<string, T> { }
 }
 
 public struct DamageStoreData 

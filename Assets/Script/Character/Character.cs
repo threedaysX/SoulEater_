@@ -1,7 +1,9 @@
 ﻿using StatsModel;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(OperationSoundController))]
 [RequireComponent(typeof(WeaponController))]
@@ -156,7 +158,10 @@ public class Character : MonoBehaviour
         if (data.timesOfPerDamage <= 0 || data.duration <= 0)
         {
             CurrentHealth -= data.damage;
-            cumulativeDataController.DataStore(CumulativeDataType.Take, data.damage);
+            if (cumulativeDataController != null)
+            {
+                cumulativeDataController.DataStore(CumulativeDataType.Take, data.damage);
+            }
             if (CurrentHealth <= 0)
             {
                 Die();
@@ -337,6 +342,11 @@ public class Character : MonoBehaviour
             { 
                 return combatController.Attack(attackType, elementType); 
             });
+        }
+
+        if (attackSuccess)
+        {
+            cumulativeDataController.DataStore(CumulativeDataType.HitTimes, 1);
         }
 
         return attackSuccess;
