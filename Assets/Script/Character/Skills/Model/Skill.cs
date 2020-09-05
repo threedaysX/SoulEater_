@@ -57,9 +57,9 @@ public class Skill : ScriptableObject
     /// 技能冷卻
     /// </summary>
     public Stats coolDown;
-    public float trueCoolDown;
-    public float coolDownTimer;
-    public bool cooling = false;
+    [HideInInspector] public float trueCoolDown;
+    [HideInInspector] public float coolDownTimer;
+    [HideInInspector] public bool cooling = false;
     public SkillCoolDownType coolDownType;
 
     /// <summary>

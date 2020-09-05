@@ -7,44 +7,62 @@ public class Counter : Singleton<Counter>
     /// <summary>
     /// CountDown and get coroutine data, and set float with setter.
     /// </summary>
-    public Coroutine CountDown(float timer, bool ignoreTimeScale, Action<float> setter)
+    public Coroutine StartCountDown(float timer, bool ignoreTimeScale, Action<float> setter, params Action[] callback)
     {
-        return StartCoroutine(StartCountDown(timer, ignoreTimeScale, setter));
+        return StartCoroutine(CountDownCoroutine(timer, ignoreTimeScale, setter, callback));
     }
 
-    /// <summary>
-    /// CountDown and get coroutine data, and set float with setter.
-    /// </summary>
-    public Coroutine CountDown(float timer, bool ignoreTimeScale, Action<float> setter, params Action[] callback)
+    public Coroutine StartCountDown(MonoBehaviour where, float timer, bool ignoreTimeScale, Action<float> setter, params Action[] callback)
     {
-        return StartCoroutine(StartCountDown(timer, ignoreTimeScale, setter, callback));
+        return where.StartCoroutine(CountDownCoroutine(timer, ignoreTimeScale, setter, callback));
     }
 
     /// <summary>
     /// CountDown a number within duration, and set float with setter.
     /// And get coroutine data.
     /// </summary>
-    public Coroutine CountDownInTimes(float originNumber, float endNumber, float duration, bool ignoreTimeScale, Action<float> setter, params Action[] callback)
+    public Coroutine StartCountDownInTimes(float originNumber, float endNumber, float duration, bool ignoreTimeScale, Action<float> setter, params Action[] callback)
     {
         if (duration <= 0)
         {
             setter.Invoke(endNumber);
             return null;
         }
-        return StartCoroutine(StartCountInTimes(originNumber, endNumber, duration, ignoreTimeScale, setter, callback));
+        return StartCoroutine(CountInTimesCoroutine(originNumber, endNumber, duration, ignoreTimeScale, setter, callback));
     }
 
-    /// <summary>
-    /// CountDown a number within duration, and callback action at the end.
-    /// And get coroutine data.
-    /// </summary>
-    public Coroutine CountDownInTimes(float originNumber, float endNumber, float duration, bool ignoreTimeScale, params Action[] callback)
+    public Coroutine StartCountDownInTimes(MonoBehaviour where, float originNumber, float endNumber, float duration, bool ignoreTimeScale, Action<float> setter, params Action[] callback)
     {
-        return StartCoroutine(StartCountInTimes(originNumber, endNumber, duration, ignoreTimeScale, callback));
+        if (duration <= 0)
+        {
+            setter.Invoke(endNumber);
+            return null;
+        }
+        return where.StartCoroutine(CountInTimesCoroutine(originNumber, endNumber, duration, ignoreTimeScale, setter, callback));
+    }
+
+    public void StopCountDown(Coroutine which)
+    {
+        this.StopCoroutine(which);
+    }
+
+    public void StopCountDown(MonoBehaviour where, Coroutine which)
+    {
+        where.StopCoroutine(which);
+    }
+
+    public void StopAllCountDown()
+    {
+        this.StopAllCoroutines();
+    }
+
+    public void StopAllCountDown(MonoBehaviour where)
+    {
+        where.StopAllCoroutines();
     }
 
     #region IEnumerator
-    private IEnumerator StartCountDown(float timer, bool ignoreTimeScale, Action<float> setter, params Action[] callback)
+    private IEnumerator CountDownCoroutine(float timer, bool ignoreTimeScale, Action<float> setter, params Action[] callback)
     {
         while (timer > 0)
         {
@@ -62,7 +80,7 @@ public class Counter : Singleton<Counter>
         }
     }
 
-    private IEnumerator StartCountInTimes(float originNumber, float endNumber, float duration, bool ignoreTimeScale, Action<float> setter, params Action[] callback)
+    private IEnumerator CountInTimesCoroutine(float originNumber, float endNumber, float duration, bool ignoreTimeScale, Action<float> setter, params Action[] callback)
     {
         float timeleft = duration;
         float step = originNumber - endNumber;
@@ -80,29 +98,6 @@ public class Counter : Singleton<Counter>
             {
                 setter.Invoke(resultCount);
             }
-            yield return resultCount;
-        }
-
-        foreach (Action item in callback)
-        {
-            item.Invoke();
-        }
-    }
-
-    private IEnumerator StartCountInTimes(float originNumber, float endNumber, float duration, bool ignoreTimeScale, params Action[] callback)
-    {
-        float timeleft = duration;
-        float step = originNumber - endNumber;
-        float resultCount = originNumber;
-        while (timeleft > 0)
-        {
-            float trueDeltaTime = GetDeltaTime(ignoreTimeScale);
-            if (timeleft > trueDeltaTime)
-                resultCount -= (step * trueDeltaTime / duration);
-            else
-                resultCount -= (step * timeleft / duration);
-
-            timeleft -= Time.deltaTime;
             yield return resultCount;
         }
 

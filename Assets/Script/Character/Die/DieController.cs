@@ -50,7 +50,7 @@ public class DieController : MonoBehaviour
     {
         // Dissolve Shader Graph Effect
         Material material = GetComponent<SpriteRenderer>().material;
-        Counter.Instance.CountDownInTimes(1f, 0f, duration, false, (x) => material.SetFloat("_Fade", x), callBacks);
+        Counter.Instance.StartCountDownInTimes(1f, 0f, duration, false, (x) => material.SetFloat("_Fade", x), callBacks);
     }
 
     public void TriggerDieParticle()

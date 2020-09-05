@@ -5,12 +5,20 @@ using UnityEngine;
 public class Accumulation : DisposableSkill
 {
     public const string accumulationForceField = "AccumulationForceField";
+    public int maxEnergeBallAmount = 20;
     public float slowSelfValue = 20f;
+    public GameObject energeBall;
 
     protected override void AddAffectEvent()
     {
         immediatelyAffect.AddListener(ApplyForceField);
         immediatelyAffect.AddListener(SlowSelf);
+    }
+
+    private void Start()
+    {
+        // Render Objects with pools in parent.
+        ResetEnergeBallOnStart();
     }
 
     private void ApplyForceField()
@@ -30,8 +38,6 @@ public class Accumulation : DisposableSkill
         sourceCaster.buffController.AddBuff(accumulationForceField, FieldEffect, null, currentSkill.duration, IsAttacked);
     }
 
-    
-
     private void SlowSelf()
     {
         Debuff.Instance.SlowMoveSpeed(sourceCaster, slowSelfValue, currentSkill.duration);
@@ -39,7 +45,22 @@ public class Accumulation : DisposableSkill
 
     private void GenerateEnergeBall()
     {
-        Vector3 ballPos = GetBallPos();
+        // Re-position energeBall.
+        GameObject ballObj = ObjectPools.Instance.GetObjectInPools(energeBall.name, GetBallPos());
+        ResetEnergeBallLifeTime(ballObj);
+        // Start to aim target or front side.
+    }
+
+    private void ResetEnergeBallLifeTime(GameObject energeBall)
+    {
+        energeBall.SetActive(true);
+        Counter.Instance.StopAllCountDown(energeBall.GetComponent<MonoBehaviour>());
+        Counter.Instance.StartCountDown(energeBall.GetComponent<MonoBehaviour>(), 20f, false, null, delegate { energeBall.SetActive(false); });
+    }
+
+    private void ResetEnergeBallOnStart()
+    {
+        ObjectPools.Instance.RenderObjectPoolsInParent(energeBall, maxEnergeBallAmount, this.transform);
     }
 
     private Vector3 GetBallPos()

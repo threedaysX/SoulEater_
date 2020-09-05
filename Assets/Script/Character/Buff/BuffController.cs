@@ -164,6 +164,8 @@ public class BuffController : MonoBehaviour
 
     private UnityEvent CreateAffectEvent(UnityAction call)
     {
+        if (call == null)
+            return null;
         UnityEvent affect = new UnityEvent();
         affect.AddListener(call);
 

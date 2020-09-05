@@ -10,7 +10,7 @@ public class UIImageControll : Singleton<UIImageControll>
     public float SetImageFillAmount(Image image, Image fadeImage, float max, float current)
     {
         float resultPercentage = (image.fillAmount = current / max);
-        Counter.Instance.CountDownInTimes(fadeImage.fillAmount, resultPercentage, 0.15f, false, (x) => fadeImage.fillAmount = x);
+        Counter.Instance.StartCountDownInTimes(fadeImage.fillAmount, resultPercentage, 0.15f, false, (x) => fadeImage.fillAmount = x);
         return resultPercentage;
     }
 }

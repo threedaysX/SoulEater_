@@ -63,7 +63,7 @@ public abstract class SkillEventBase : MonoBehaviour, ISkillGenerator, ISkillUse
         soundControl = sourceCaster.operationSoundController;
 
         // 禁用技能Hitbox與貼圖 (避免生成技能時直接播放動畫與觸發效果)
-        SetSkillEnable(false);
+        SetSkillCollisionEnable(false);
 
         if (soundControl != null && inRenderSound != null)
         {
@@ -90,7 +90,7 @@ public abstract class SkillEventBase : MonoBehaviour, ISkillGenerator, ISkillUse
         }
 
         // 啟用技能
-        SetSkillEnable(true);
+        SetSkillCollisionEnable(true);
 
         // 觸發立即性效果
         InvokeAffect(immediatelyAffect);
@@ -120,7 +120,7 @@ public abstract class SkillEventBase : MonoBehaviour, ISkillGenerator, ISkillUse
     /// <summary>
     /// 技能開始施放，可將Enabled為True
     /// </summary>
-    protected void SetSkillEnable(bool enable)
+    protected void SetSkillCollisionEnable(bool enable)
     {
         // 技能貼圖
         SpriteRenderer sprite = GetComponent<SpriteRenderer>();
@@ -183,7 +183,7 @@ public abstract class SkillEventBase : MonoBehaviour, ISkillGenerator, ISkillUse
     protected virtual IEnumerator DamageTargetTimes(float firstHitDelay = 0, float damageDirectionX = 0)
     {
         // 避免觸發二次傷害，內心也會受傷
-        SetSkillEnable(false);
+        SetSkillCollisionEnable(false);
         yield return new WaitForSeconds(firstHitDelay);
 
         for (int i = 0; i < currentSkill.damageHitTimes.Value; i++)

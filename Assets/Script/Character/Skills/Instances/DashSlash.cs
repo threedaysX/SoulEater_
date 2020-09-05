@@ -115,7 +115,7 @@ public class DashSlash : DisposableSkill
         StartCoroutine(SetActiveAfterSkillDone(1.9f));
         if (!isHit)
         {
-            SetSkillEnable(false);
+            SetSkillCollisionEnable(false);
         }
     }
 
