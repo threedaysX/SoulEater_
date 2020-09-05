@@ -46,16 +46,10 @@ public class Accumulation : DisposableSkill
     private void GenerateEnergeBall()
     {
         // Re-position energeBall.
-        GameObject ballObj = ObjectPools.Instance.GetObjectInPools(energeBall.name, GetBallPos());
-        ResetEnergeBallLifeTime(ballObj);
+        EnergeBall ballObj = ObjectPools.Instance.GetObjectInPools(energeBall.name, GetBallPos()).GetComponent<EnergeBall>();
+        ballObj.lifeTime = 20f;
+        ballObj.ResetEnergeBallLifeTime();
         // Start to aim target or front side.
-    }
-
-    private void ResetEnergeBallLifeTime(GameObject energeBall)
-    {
-        energeBall.SetActive(true);
-        Counter.Instance.StopAllCountDown(energeBall.GetComponent<MonoBehaviour>());
-        Counter.Instance.StartCountDown(energeBall.GetComponent<MonoBehaviour>(), 20f, false, null, delegate { energeBall.SetActive(false); });
     }
 
     private void ResetEnergeBallOnStart()
