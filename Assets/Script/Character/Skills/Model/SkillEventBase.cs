@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -220,7 +221,7 @@ public abstract class SkillEventBase : MonoBehaviour, ISkillGenerator, ISkillUse
     /// 讓技能跟隨施法者
     /// </summary>
     /// <returns></returns>
-    protected IEnumerator FollowCaster(float duration)
+    protected IEnumerator FollowCaster(float duration, params Action[] callback)
     {
         float timeleft = duration;
         while (timeleft > 0)
@@ -231,6 +232,11 @@ public abstract class SkillEventBase : MonoBehaviour, ISkillGenerator, ISkillUse
             this.transform.position = sourceCaster.transform.position;
             timeleft -= Time.deltaTime;
             yield return null;
+        }
+
+        foreach (var call in callback)
+        {
+            call.Invoke();
         }
     }
     #endregion

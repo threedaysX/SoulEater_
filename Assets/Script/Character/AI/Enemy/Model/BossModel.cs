@@ -1,12 +1,32 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class BossModel : EnemyModel
+public abstract class BossModel : EnemyModel, IBossOpeningEvent, IBossRootEvemt
 {
+    [Header("Boss開場效果")]
+    public ParticleSystem openingEffect;
+
     [Header("Boss觸發根性效果")]
     public ParticleSystem knockOutRootParticle;
     public AudioClip knockOutRootSound;
     protected bool startDie = false;
+
+    public virtual bool StartOpeningAction()
+    {
+        openingEffect.Play(true);
+        this.LockOperation(LockType.TypeChange, true);
+        return true;
+    }
+
+    public virtual bool EndOpeningAction()
+    {
+        return true;
+    }
+
+    /// <summary>
+    /// Trigger some story or event.
+    /// </summary>
+    public abstract void OnRootStart();
 
     public override void Start()
     {
@@ -27,6 +47,7 @@ public class BossModel : EnemyModel
                 operationSoundController.PlaySound(knockOutRootSound);
                 knockOutRootParticle.Play(true);
                 LockHealthAvoidDie(2f);
+                OnRootStart();
             }
             // True Die (And Generate Soul)
             else
@@ -57,7 +78,7 @@ public class BossModel : EnemyModel
         highlightObjs.Add(this.gameObject);
         FadeScreen.Instance.HighlightObjects(0.4f, highlightObjs.ToArray());
 
-        FaceTarget(true);
+        _facement.FaceTarget(this, ChaseTarget, true);
 
         startDie = true;
     }

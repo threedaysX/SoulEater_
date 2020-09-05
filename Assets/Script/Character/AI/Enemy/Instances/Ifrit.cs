@@ -24,7 +24,7 @@ public class Ifrit : BossModel
     {
         base.Start();
         healthUI = EnemyUIControl.Instance.healthWhite.GetComponent<UIShake>();
-
+        _facement = new HorizontalFacement();
         SetEnemyLevel(EnemyLevel.Boss);
         ResetFlamethrowerData();
         ForceAdjustAttackDelay();
@@ -120,5 +120,10 @@ public class Ifrit : BossModel
     {
         CameraShake.Instance.ShakeCamera(1f, 4f, dieController.dieDissolveDuration);
         base.Die();
+    }
+
+    public override void OnRootStart()
+    {
+        // Trigger Some story.
     }
 }

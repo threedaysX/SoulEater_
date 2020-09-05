@@ -88,3 +88,21 @@ public enum EnemyLevel
     Normal
 }
 
+public class HorizontalFacement : IFacement
+{
+    public void FaceTarget(Character self, Transform target, bool force = false)
+    {
+        if ((target == null || !self.freeDirection.canDo) && !force)
+            return;
+
+        float faceDirX = self.transform.position.x - target.transform.position.x;
+        if (faceDirX < 0)
+        {
+            self.transform.eulerAngles = new Vector3(0, 0, 0);
+        }
+        else if (faceDirX > 0)
+        {
+            self.transform.eulerAngles = new Vector3(0, 180, 0);
+        }
+    }
+}

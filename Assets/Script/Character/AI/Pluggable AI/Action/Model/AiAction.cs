@@ -34,7 +34,7 @@ public abstract class AiAction : AiHaviourBase
 
     public float originalActionWeight;
 
-    [Header("行為延遲")]
+    [Header("行為後延遲")]
     public float commonActionDelay;
     public AnimationClip[] clips;
 

@@ -24,11 +24,6 @@ public class NaraBurst : DisposableSkill
         bursts = new List<NaraCircleBurstData>();
         burstHint.SetActive(false);
         burstHint.transform.localScale = new Vector3(burstHint.transform.localScale.x * burstRadius, burstHint.transform.localScale.y * burstRadius, 0);  // 調整爆炸半徑
-        foreach (Transform item in burstHint.transform)
-        {
-            if (item.GetComponent<ParticleSystem>() != null)
-                item.localScale = new Vector3(item.localScale.x * burstRadius, item.localScale.y * burstRadius, 0);  // 調整特效半徑
-        }
         ObjectPools.Instance.RenderObjectPoolsInParent(burstHint, burstLimitCount);
     }
 

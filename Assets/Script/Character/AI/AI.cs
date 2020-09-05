@@ -49,6 +49,8 @@ public abstract class AI : Character
     private bool inCombatStateTrigger = false; // 是否進入戰鬥狀態
     private bool outOfCombatTrigger = false;
 
+    protected IFacement _facement;
+
     [HideInInspector] public Transform ChaseTarget { get; protected set; }
     [HideInInspector] public Transform LastChaseTarget { get; protected set; }
     [HideInInspector] public LayerMask playerLayer;
@@ -150,7 +152,7 @@ public abstract class AI : Character
                 // 每次開始執行動作之前，回到Idle狀態
                 ReturnDefaultAction();
                 // 在執行Action時，會持續面對目標
-                FaceTarget();
+                _facement.FaceTarget(this, ChaseTarget);
                 DoActions();
             }
         }
@@ -263,22 +265,6 @@ public abstract class AI : Character
         defaultAction.StartActHaviour();
         if (setToLastAction)
             lastAction = defaultAction;
-    }
-
-    public void FaceTarget(bool force = false)
-    {
-        if ((ChaseTarget == null || !freeDirection.canDo) && !force)
-            return;
-
-        float faceDirX = gameObject.transform.position.x - ChaseTarget.transform.position.x;
-        if (faceDirX < 0)
-        {
-            gameObject.transform.eulerAngles = new Vector3(0, 0, 0);
-        }
-        else if (faceDirX > 0)
-        {
-            gameObject.transform.eulerAngles = new Vector3(0, 180, 0);
-        }
     }
 
     private void OnDrawGizmosSelected()

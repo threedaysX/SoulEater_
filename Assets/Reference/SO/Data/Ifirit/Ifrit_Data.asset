@@ -15,7 +15,7 @@ MonoBehaviour:
   maxHealth:
     BaseValue: 3595
     AdditionalValue: 3500
-    FinalValue: 95
+    FinalValue: 7095
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
@@ -49,8 +49,8 @@ MonoBehaviour:
     modifiers: []
   critical:
     BaseValue: 20
-    AdditionalValue: 60
-    FinalValue: 80
+    AdditionalValue: 200
+    FinalValue: 220
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
