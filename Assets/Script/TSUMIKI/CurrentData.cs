@@ -42,6 +42,7 @@ public class CurrentData : Singleton<CurrentData>
             {
                 currentFragmentID = -1;
                 //碎片未用，放回原位------------------------------------------------------------------------
+                if (f_m == null) return;
                 if (f_m.putFrag != null)
                 {
                     f_m.GetComponent<Image>().color = new Color(1, 1, 1, 1);

@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class TestPutFrag : MonoBehaviour
 {
-    public GameObject leftUp;         //拉 左上那格
-    public GameObject leftDown;       //拉 左下那格
-    public Fragment fragSO;
+    public Fragment fragSO;     //得到碎片的 Scriptable object
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.B))
-            leftUp.GetComponent<Frag_m>().PutNewFrag(fragSO);
+            PutFrag.Instance.PutFragment(fragSO, FragSpot.left_Up); //把這個碎片放在左上位置
         if (Input.GetKeyDown(KeyCode.N))
-            leftDown.GetComponent<Frag_m>().PutNewFrag(fragSO);
-
+            PutFrag.Instance.PutFragment(fragSO,FragSpot.right_Up); //把這個碎片放在右上位置
     }
 }
