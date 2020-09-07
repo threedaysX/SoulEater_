@@ -8,6 +8,9 @@
 public class Judgement : AiHaviourBase
 {
     public int actionWeightAfterJudge;
+#if UNITY_EDITOR
+    [ReadOnly]
+#endif
     public int conditionTrueCount;
     public JudgeCondition[] conditions;
 

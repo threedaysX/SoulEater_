@@ -76,9 +76,17 @@ public class ObjectPools : Singleton<ObjectPools>
         poolDictionary.Add(obj.name, objPool);
     }
 
-    public GameObject GetObjectInPools(string name, Vector3 position)
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="position"></param>
+    /// <param name="exhaust">Objects in pools will be exhaust with its pools capacity. 
+    /// Need to use 【Reload】 method and can use again.</param>
+    /// <returns></returns>
+    public GameObject GetObjectInPools(string name, Vector3 position, bool exhaust = false)
     {
-        if (poolDictionary == null || !poolDictionary.ContainsKey(name))
+        if (CheckPool(name))
             return null;
 
         GameObject objectToSpawn = poolDictionary[name].Dequeue();
@@ -86,50 +94,42 @@ public class ObjectPools : Singleton<ObjectPools>
         objectToSpawn.SetActive(true);
         objectToSpawn.transform.position = position;
 
-        poolDictionary[name].Enqueue(objectToSpawn);
+        if (!exhaust)
+            poolDictionary[name].Enqueue(objectToSpawn);
 
         return objectToSpawn;
     }
 
-    public GameObject PopText(string name, bool isCritical, int damageAmount, Color color, Vector3 position)
+    public T GetObjectInPools<T>(string name, Vector3 position, bool exhaust = false)
     {
-        if (poolDictionary == null || !poolDictionary.ContainsKey(name))
-            return null;
+        if (CheckPool(name))
+            return default;
 
         GameObject objectToSpawn = poolDictionary[name].Dequeue();
 
-        IDamageGenerator pooledObj = objectToSpawn.GetComponent<IDamageGenerator>();
+        objectToSpawn.SetActive(true);
+        objectToSpawn.transform.position = position;
 
-        if (pooledObj != null)
-        {
-            objectToSpawn.SetActive(true);
-            objectToSpawn.transform.position = position;
-            pooledObj.SetupDamage(isCritical, damageAmount, color);
-        }
+        if (!exhaust)
+            poolDictionary[name].Enqueue(objectToSpawn);
 
-        poolDictionary[name].Enqueue(objectToSpawn);
-
-        return objectToSpawn;
+        return objectToSpawn.GetComponent<T>();
     }
 
-    public GameObject PopText(string name, string message, Color color, Vector3 position)
+    public void Reload(string name, List<GameObject> objects)
     {
         if (poolDictionary == null || !poolDictionary.ContainsKey(name))
-            return null;
+            return;
 
-        GameObject objectToSpawn = poolDictionary[name].Dequeue();
-
-        ITextGenerator pooledObj = objectToSpawn.GetComponent<ITextGenerator>();
-
-        if (pooledObj != null)
+        foreach (var obj in objects)
         {
-            objectToSpawn.SetActive(true);
-            objectToSpawn.transform.position = position;
-            pooledObj.SetupTextMessage(message, color);
+            obj.SetActive(false);
+            poolDictionary[name].Enqueue(obj);
         }
+    }
 
-        poolDictionary[name].Enqueue(objectToSpawn);
-
-        return objectToSpawn;
+    private bool CheckPool(string name)
+    {
+        return poolDictionary == null || !poolDictionary.ContainsKey(name) || poolDictionary[name].Count == 0;
     }
 }

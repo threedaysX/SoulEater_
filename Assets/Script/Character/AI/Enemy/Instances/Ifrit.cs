@@ -109,7 +109,7 @@ public class Ifrit : BossModel
 
     public override bool StartAttack(AttackType attackType = AttackType.Attack, ElementType elementType = ElementType.None)
     {
-        if (attack.canDo)
+        if (attack.CanDo)
         {
             DoPreActHint();
         }

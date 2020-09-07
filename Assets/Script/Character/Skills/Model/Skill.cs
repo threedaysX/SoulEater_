@@ -63,7 +63,7 @@ public class Skill : ScriptableObject
     public SkillCoolDownType coolDownType;
 
     /// <summary>
-    /// 技能的持續時間
+    /// 技能的持續時間(將影響動作持續時間)
     /// </summary>
     public float duration = 1f;
 

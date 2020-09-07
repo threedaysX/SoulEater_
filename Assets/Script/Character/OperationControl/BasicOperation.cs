@@ -4,29 +4,40 @@ using UnityEngine;
 [System.Serializable]
 public class BasicOperation
 {
-    public bool canDo;
+    public bool CanDo { get; private set; }
     public BasicOperationType operationType;
     public Dictionary<LockType, LockData> locks;
+    private Coroutine last = null;
 
-    public void Lock(LockType lockType, float nextUnLockTime = 0)
+    public void Lock(LockType lockType, MonoBehaviour where = null, bool ignoreTimeScale = false, float duration = -1)
     {
         if (locks == null)
             locks = new Dictionary<LockType, LockData>();
 
         if (locks.ContainsKey(lockType))
         {
-            locks[lockType].nextUnLockTime = Time.time + nextUnLockTime;
+            locks[lockType].duration = duration;
         }
         else
         {
-            locks.Add(lockType, new LockData(1, Time.time + nextUnLockTime));
+            locks.Add(lockType, new LockData(1, duration));
         }
-        if (canDo)
-            canDo = false;
+
+        CanDo = false;
+
+        if (duration >= 0)
+        {
+            CountDown(where, lockType, duration, ignoreTimeScale);
+        }
     }
 
-    public void UnLock(LockType lockType)
+    public void UnLock(LockType lockType = LockType.@Ignore)
     {
+        if (lockType == LockType.@Ignore)
+        {
+            CanDo = true;
+            return;
+        }
         if (locks == null)
             locks = new Dictionary<LockType, LockData>();
 
@@ -39,7 +50,16 @@ public class BasicOperation
             }
         }
         if (locks.Count == 0)
-            canDo = true;
+            CanDo = true;
+    }
+
+    private void CountDown(MonoBehaviour where, LockType lockType, float duration, bool ignoreTimeScale)
+    {
+        if (last != null)
+        {
+            Counter.Instance.StopCountDown(where, last);
+        }
+        last = Counter.Instance.StartCountDown(where, duration, ignoreTimeScale, null, delegate { UnLock(lockType); });
     }
 }
 
@@ -55,6 +75,7 @@ public enum BasicOperationType
 
 public enum LockType 
 {
+    @Ignore,
     OperationAction,
     SkillAction,
     Stun,
@@ -69,11 +90,11 @@ public enum LockType
 public class LockData
 {
     public int lockNum;
-    public float nextUnLockTime;
+    public float duration;
 
     public LockData(int lockNum, float nextUnlockTime)
     {
         this.lockNum = lockNum;
-        this.nextUnLockTime = nextUnlockTime;
+        this.duration = nextUnlockTime;
     }
 }

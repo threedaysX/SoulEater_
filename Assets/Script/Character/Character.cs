@@ -1,9 +1,7 @@
 ﻿using StatsModel;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 [RequireComponent(typeof(OperationSoundController))]
 [RequireComponent(typeof(WeaponController))]
@@ -20,12 +18,12 @@ public class Character : MonoBehaviour
     #region 基礎參數
     [Header("基礎參數")]
     public string characterName;
-    public bool isHealthDirty = false;
-    public bool isManaDirty = false;
-    private float lastHealth = 0;   // 儲存上次的血量
-    private float lastMana = 0;   // 儲存上次的魔力
+    [HideInInspector] public bool isHealthDirty = false;
+    [HideInInspector] public bool isManaDirty = false;
     [SerializeField] private float _currentHealth = 0;
     [SerializeField] private float _currentMana = 0;
+    private float lastHealth = 0;   // 儲存上次的血量
+    private float lastMana = 0;   // 儲存上次的魔力
     public float CurrentHealth
     {
         get
@@ -72,17 +70,29 @@ public class Character : MonoBehaviour
 
     #region 狀態判定
     [Header("操作狀態判定")]
-    public bool isLockAction = false;   // 用來判斷是否完全無法行動
-    public BasicOperation move;
-    public BasicOperation jump;
-    public BasicOperation evade;
-    public BasicOperation attack;
-    public BasicOperation useSkill;
-    public BasicOperation freeDirection;  // 判斷是否被鎖定面對方向
+    [HideInInspector] public BasicOperation move;
+    [HideInInspector] public BasicOperation jump;
+    [HideInInspector] public BasicOperation evade;
+    [HideInInspector] public BasicOperation attack;
+    [HideInInspector] public BasicOperation useSkill;
+    [HideInInspector] public BasicOperation freeDirection;  // 判斷是否被鎖定面對方向
+    // 用來判斷是否完全無法行動
+    public bool IsLockAction
+    {
+        get
+        {
+            if (move.CanDo && jump.CanDo && evade.CanDo
+                && attack.CanDo && useSkill.CanDo && freeDirection.CanDo)
+            {
+                return false;
+            }
+            return true;
+        }
+    }
 
     [Header("特殊狀態判定")]
-    public GameObject lastAttackMeTarget;   // 上一個攻擊我的目標是?
-    public bool isKnockStun = false;   // 判斷是否被擊暈
+    [HideInInspector] public GameObject lastAttackMeTarget;   // 上一個攻擊我的目標是?
+    [HideInInspector] public bool isKnockStun = false;   // 判斷是否被擊暈
     [SerializeField] private bool isImmune = false;  // 用來判斷角色是否無敵(不會被命中)
     #endregion
 
@@ -94,7 +104,8 @@ public class Character : MonoBehaviour
     private Dictionary<string, int> skillDictionary;
 
     [Header("彈出文字訊息中心點")]
-    public Transform popupTextCenter;
+    public Transform popupDamageTextCenter;
+    public Transform popupMessageCenter;
 
     [Header("受傷數字顏色")]
     public Color normalDamagedColor = new Color32(255, 255, 255, 255);
@@ -275,20 +286,20 @@ public class Character : MonoBehaviour
     {
         if (isCritical)
         {
-            ObjectPools.Instance.PopText("CriticalDamageText", isCritical, damage, criticalDamagedColor, popupTextCenter.position);
+            ObjectPools.Instance.GetObjectInPools<IDamageGenerator>("CriticalDamageText", popupDamageTextCenter.position).SetupDamage(isCritical, damage, criticalDamagedColor);
         }
         else
         {
-            ObjectPools.Instance.PopText("DamageText", isCritical, damage, normalDamagedColor, popupTextCenter.position);
+            ObjectPools.Instance.GetObjectInPools<IDamageGenerator>("DamageText", popupDamageTextCenter.position).SetupDamage(isCritical, damage, normalDamagedColor);
         }
     }
 
     /// <summary>
     /// Pop english string message Only!
     /// </summary>
-    public void PopTextMessage(string message, Color color)
+    public void PopTextMessage(string message, Color color, float? startSize = null)
     {
-        ObjectPools.Instance.PopText("PopText", message, color, popupTextCenter.position);
+        ObjectPools.Instance.GetObjectInPools<ITextGenerator>("PopText", popupMessageCenter.position).SetupTextMessage(message, color, startSize);
     }
 
     public IEnumerator TakeDamageColorChanged(float duration)
@@ -309,7 +320,7 @@ public class Character : MonoBehaviour
     #region Skill
     public virtual bool UseSkill(Skill skill, bool ignoreCoolDown = false, bool ignoreCanDo = false)
     {
-        if (skill == null || (!useSkill.canDo && !ignoreCanDo))
+        if (skill == null || (!useSkill.CanDo && !ignoreCanDo))
             return false;
         return skillController.Trigger(skill, ignoreCoolDown);
     }
@@ -336,7 +347,7 @@ public class Character : MonoBehaviour
     public virtual bool StartAttack(AttackType attackType = AttackType.Attack, ElementType elementType = ElementType.None)
     {
         bool attackSuccess = false;
-        if (attack.canDo)
+        if (attack.CanDo)
         {
             attackSuccess = operationController.StartAttackAnim(delegate 
             { 
@@ -358,17 +369,16 @@ public class Character : MonoBehaviour
     /// 一次調整所有行動 (用在擊暈等重大影響的異常or特定動作，表示在此影響結束前，不得進行其他動作)
     /// </summary>
     /// <param name="islock">若True，代表鎖定所有行動，反之則恢復正常行動</param>
-    public void LockOperation(LockType lockType, bool islock, float nextUnLockTime = 0)
+    public void LockOperation(LockType lockType, bool islock, bool ignoreTimeScale = false, float duration = 0)
     {
         if (islock)
         {
-            move.Lock(lockType, nextUnLockTime);
-            jump.Lock(lockType, nextUnLockTime);
-            evade.Lock(lockType, nextUnLockTime);
-            attack.Lock(lockType, nextUnLockTime);
-            useSkill.Lock(lockType, nextUnLockTime);
-            freeDirection.Lock(lockType, nextUnLockTime);
-            isLockAction = true;
+            move.Lock(lockType, this, ignoreTimeScale, duration);
+            jump.Lock(lockType, this, ignoreTimeScale, duration);
+            evade.Lock(lockType, this, ignoreTimeScale, duration);
+            attack.Lock(lockType, this, ignoreTimeScale, duration);
+            useSkill.Lock(lockType, this, ignoreTimeScale, duration);
+            freeDirection.Lock(lockType, this, ignoreTimeScale, duration);
         }
         else
         {
@@ -378,7 +388,6 @@ public class Character : MonoBehaviour
             attack.UnLock(lockType);
             useSkill.UnLock(lockType);
             freeDirection.UnLock(lockType);
-            isLockAction = false;
         }
     }
 
@@ -537,17 +546,17 @@ public class Character : MonoBehaviour
     private void InitBasicOperation()
     {
         move.operationType = BasicOperationType.Move;
-        move.canDo = true;
+        move.UnLock();
         jump.operationType = BasicOperationType.Jump;
-        jump.canDo = true;
+        jump.UnLock();
         evade.operationType = BasicOperationType.Evade;
-        evade.canDo = true;
+        evade.UnLock();
         attack.operationType = BasicOperationType.Attack;
-        attack.canDo = true;
+        attack.UnLock();
         useSkill.operationType = BasicOperationType.UseSkill;
-        useSkill.canDo = true;
+        useSkill.UnLock();
         freeDirection.operationType = BasicOperationType.LockDirection;
-        freeDirection.canDo = true;
+        freeDirection.UnLock();
     }
     #endregion
 

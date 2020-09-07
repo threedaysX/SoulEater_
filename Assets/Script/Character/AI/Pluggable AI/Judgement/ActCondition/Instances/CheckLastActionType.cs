@@ -1,13 +1,12 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [CreateAssetMenu(menuName = "Character/AI/JudgeCondition/CheckLastActionType")]
 public class CheckLastActionType : JudgeCondition
 {
-    public AiAction lastActionToCheckType;
-    [Header("非上一個動作")]
-    public bool isFalse;
+    [Header("非此Type")]
+    public bool isReverse;
+    public AiActionType isLastActionType;
+
     public override bool CheckActConditionHaviour()
     {
         return LastActionType();
@@ -15,20 +14,20 @@ public class CheckLastActionType : JudgeCondition
 
     private bool LastActionType()
     {
-        bool isTargetActionType = false;
+        bool result = false;
         if(ai.lastAction != null)
         {
-            if (ai.lastAction.actionType == lastActionToCheckType.actionType) //lastAction null!!!
+            if (ai.lastAction.actionType == isLastActionType)
             {
-                isTargetActionType = true;
+                result = true;
             }
         }
 
-        if (isFalse)
+        if (isReverse)
         {
-            isTargetActionType = !isTargetActionType;
+            result = !result;
         }
 
-        return isTargetActionType;
+        return result;
     }
 }

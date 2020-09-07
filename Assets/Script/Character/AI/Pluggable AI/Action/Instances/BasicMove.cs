@@ -11,7 +11,7 @@ public class BasicMove : AiAction
 
     private bool Move()
     {
-        if (!ai.move.canDo)
+        if (!ai.move.CanDo)
             return false;
 
         Vector3 chaseDirection = Vector3.Normalize(ai.ChaseTarget.position - ai.transform.position);

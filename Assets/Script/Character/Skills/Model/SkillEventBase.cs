@@ -55,13 +55,14 @@ public abstract class SkillEventBase : MonoBehaviour, ISkillGenerator, ISkillUse
     /// </summary>
     public virtual void GenerateSkill(Character character, Skill skill)
     {
-        this.gameObject.SetActive(true);
         sourceCaster = character;
         currentSkill = skill;
 
         anim = GetComponent<Animator>();
         soundControl = sourceCaster.operationSoundController;
 
+        // Active
+        this.gameObject.SetActive(true);
         // 禁用技能Hitbox與貼圖 (避免生成技能時直接播放動畫與觸發效果)
         SetSkillCollisionEnable(false);
 

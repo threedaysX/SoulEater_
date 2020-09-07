@@ -39,7 +39,7 @@ public class DamagePopup : MonoBehaviour, IDamageGenerator
         }
     }
 
-    public void SetupDamage(bool isCritical, int damageAmount, Color color)
+    public void SetupDamage(bool isCritical, int damageAmount, Color color, float? startSize = null)
     {
         textMesh.SetText(damageAmount.ToString());
 

@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnergeBall : DisposableSkill
 {
-    public float lifeTime = 20f;
+    public float lifeTime = 12f;
+    private Coroutine last = null;
 
     protected override void AddAffectEvent()
     {
@@ -14,8 +13,10 @@ public class EnergeBall : DisposableSkill
     public void ResetEnergeBallLifeTime()
     {
         this.gameObject.SetActive(true);
-        var mono = this.GetComponent<MonoBehaviour>();
-        Counter.Instance.StopAllCountDown(mono);
-        Counter.Instance.StartCountDown(mono, lifeTime, false, null, delegate { this.gameObject.SetActive(false); });
+        if (last != null)
+        {
+            Counter.Instance.StopCountDown(this, last);
+        }
+        last = Counter.Instance.StartCountDown(this, lifeTime, false, null, delegate { this.gameObject.SetActive(false); });
     }
 }

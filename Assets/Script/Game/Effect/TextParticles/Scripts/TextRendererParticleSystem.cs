@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+public interface ITextGenerator
+{
+    void SetupTextMessage(string message, Color color, float? startSize = null);
+}
+
 namespace Necromancy.UI
 {
-    public interface ITextGenerator
-    {
-        void SetupTextMessage(string message, Color color);
-    }
-
     [Serializable]
     public struct SymbolsTextureData
     {

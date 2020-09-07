@@ -11,16 +11,12 @@ public abstract class BossModel : EnemyModel, IBossOpeningEvent, IBossRootEvemt
     public AudioClip knockOutRootSound;
     protected bool startDie = false;
 
-    public virtual bool StartOpeningAction()
+    public virtual float StartOpeningAction()
     {
+        float duration = openingEffect.main.startLifetime.constant + 1f;
         openingEffect.Play(true);
-        this.LockOperation(LockType.TypeChange, true);
-        return true;
-    }
-
-    public virtual bool EndOpeningAction()
-    {
-        return true;
+        this.LockOperation(LockType.TypeChange, true, false, duration);
+        return duration;
     }
 
     /// <summary>
