@@ -12,6 +12,13 @@ public abstract class SkillAiAction : AiAction
 
     protected virtual bool TriggerSkill()
     {
+        ApplySkillActionDelay();
         return ai.UseSkill(skillActionObject);
+    }
+
+    protected virtual void ApplySkillActionDelay()
+    {
+        float delay = skillActionObject.castTime.Value + skillActionObject.fixedCastTime.Value + skillActionObject.duration;
+        ApplyActionDelay(delay);
     }
 }

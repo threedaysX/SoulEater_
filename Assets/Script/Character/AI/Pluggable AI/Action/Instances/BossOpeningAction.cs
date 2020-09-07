@@ -1,4 +1,7 @@
-﻿public class BossOpeningAction : AiAction
+﻿using UnityEngine;
+
+[CreateAssetMenu(menuName = "Character/AI/Action/Boss/OpeningAction")]
+public class BossOpeningAction : AiAction
 {
     public override bool StartActHaviour()
     {
@@ -7,6 +10,10 @@
 
     private bool StartBossOpeningAction()
     {
-        return ai.GetComponent<IBossOpeningEvent>().StartOpeningAction();
+        float duration = ai.GetComponent<IBossOpeningEvent>().StartOpeningAction();
+        ApplyActionDelay(duration);
+        // Just do this action once.
+        SetAiActionSwitchOn(false);
+        return true;
     }
 }

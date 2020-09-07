@@ -164,7 +164,7 @@ MonoBehaviour:
   manaStealOfDamage:
     BaseValue: 1700
     AdditionalValue: 0
-    FinalValue: 1700
+    FinalValue: 100
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []

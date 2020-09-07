@@ -29,7 +29,7 @@ MonoBehaviour:
   cost:
     BaseValue: 1
     AdditionalValue: 0
-    FinalValue: 0
+    FinalValue: 1
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
@@ -59,22 +59,22 @@ MonoBehaviour:
   fixedCastTime:
     BaseValue: 0.4
     AdditionalValue: 0
-    FinalValue: 0
+    FinalValue: 0.4
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   coolDown:
     BaseValue: 12
     AdditionalValue: 0
-    FinalValue: 0
+    FinalValue: 12
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
-  trueCoolDown: 0
-  coolDownTimer: 0
-  cooling: 0
+  trueCoolDown: 11.04
+  coolDownTimer: 6.7203517
+  cooling: 1
   coolDownType: 1
-  duration: 2
+  duration: 0
   prefab: {fileID: 946227562164428516, guid: 7a13cf14359a056469b9089e67d49b88, type: 3}
   immediatelyEvent:
     m_PersistentCalls:

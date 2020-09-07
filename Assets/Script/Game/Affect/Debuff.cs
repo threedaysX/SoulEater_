@@ -35,6 +35,9 @@ public class Debuff : Singleton<Debuff>
         affectEvent.AddListener(data.applyAffect);
         endEvent.AddListener(data.endAffect);
 
+        // Pop Text Hint
+        affectEvent.AddListener(delegate { target.PopTextMessage(data.name, Color.white, 0.8f); });
+        endEvent.AddListener(delegate { target.PopTextMessage("-" + data.name, Color.white, 0.4f); });
         // Add icon remove event when debuff end.
         endEvent.AddListener(delegate { target.iconController.RemoveIcon(data.name); });
 
@@ -53,7 +56,7 @@ public class Debuff : Singleton<Debuff>
             icon = bindIcon,
             name = bindDebuffName,
             duration = duration,
-            applyAffect = delegate { target.LockOperation(LockType.SkillAction, true, duration); },
+            applyAffect = delegate { target.LockOperation(LockType.SkillAction, true); },
             endAffect = delegate { target.LockOperation(LockType.SkillAction, false); },
         };
 
@@ -112,7 +115,7 @@ public class Debuff : Singleton<Debuff>
     /// </summary>
     public void ArmorBreakWithLevel(Character target, int level, float duration)
     {
-        var armorstat = target.data.defense;
+        var armorStat = target.data.defense;
         float value = 0;
         switch (level) 
         {
@@ -134,9 +137,16 @@ public class Debuff : Singleton<Debuff>
         }
 
         var mod = new StatModifier(value, StatModType.PercentageAdd, armorBreakDebuffName);
-        void affect() { armorstat.AddModifier(mod); }
-        void remove() { armorstat.RemoveModifier(mod); }
-        target.buffController.AddBuff(armorBreakDebuffName, affect, remove, duration);
+        DebuffData debuffData = new DebuffData
+        {
+            icon = armorBreakIcon,
+            name = armorBreakDebuffName,
+            duration = duration,
+            applyAffect = delegate { armorStat.AddModifier(mod); },
+            endAffect = delegate { armorStat.RemoveModifier(mod); },
+        };
+
+        ApplyDebuff(target, debuffData);
     }
 
     /// <summary>

@@ -45,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void SideChange()
     {
-        if (!player.freeDirection.canDo)
+        if (!player.freeDirection.CanDo)
             return;
 
         if (x > 0)
@@ -60,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void HoriMove()
     {
-        if (player.move.canDo)
+        if (player.move.CanDo)
         {
             player.operationController.StartMoveAnim(x);
             rb.velocity = new Vector2(moveDir.x * player.data.moveSpeed.Value * basicMoveSpeed, rb.velocity.y);
@@ -85,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
     private void Jump()
     {
         if (Input.GetKeyDown(HotKeyController.GetHotKey(HotKeyType.JumpKey)) 
-            && player.jump.canDo 
+            && player.jump.CanDo 
             && player.operationController.isGrounding)   // 或有多段跳躍
         {
             player.operationController.StartJumpAnim(delegate { JumpAction(); });
@@ -144,7 +144,7 @@ public class PlayerMovement : MonoBehaviour
     private void Evade()
     {
         if (Input.GetKeyDown(HotKeyController.GetHotKey(HotKeyType.EvadeKey))
-            && player.evade.canDo)
+            && player.evade.CanDo)
         {
             player.operationController.StartEvadeAnim(delegate { EvadeAction(); });
         }

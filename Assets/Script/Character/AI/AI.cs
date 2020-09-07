@@ -3,11 +3,10 @@ using UnityEngine;
 
 public abstract class AI : Character
 {
-    public bool CanDetect { get; set; }
-    public bool CanAction { get; set; }
-
     [Header("開始運作AI")]
     [SerializeField] private bool _switchOn = true;
+    public bool canDetect = true;
+    public bool canAction = true;
     public bool SwitchOn
     {
         get
@@ -22,21 +21,22 @@ public abstract class AI : Character
         }
     }
     protected bool switchOnTrigger;
+
     [Header("偵測動作")]
     [SerializeField] protected Detect[] detects;
     [Header("行為模式")]
     [SerializeField] protected AiAction[] actions;
     [Header("預設行為模式")]
-    [SerializeField] public AiAction defaultAction;
+    public AiAction defaultAction;
     [Header("上一個行為模式")]
-    [SerializeField] public AiAction lastAction;
+    public AiAction lastAction;
+    public LinkedAction linkedAction;
     private bool lastActionSuccess;
+    private List<AiAction> actionToDoList = new List<AiAction>();
 
     [Header("偵測距離")]
     public float detectDistance;
-    [Header("行為延遲時間(秒)")]
-    public float commonActionDelay = 0f;
-    public float animationActionDelay = 0.1f;
+    [Header("下次可行動時間")]
     private float nextActTimes = 0f;
 
     [Header("最大權重容許區間")]
@@ -60,19 +60,18 @@ public abstract class AI : Character
     {
         this.gameObject.AddComponent(typeof(DistanceDetect));
         distanceDetect = GetComponent<DistanceDetect>();
-        CanDetect = true;
-        CanAction = true;
-        if (ChaseTarget == null)
-        {
-            outOfCombatTrigger = true;
-        }
+        playerLayer = LayerMask.GetMask("Player");
+        
         ReturnDefaultAction(true);
+
+        foreach (AiAction action in actions)
+        {
+            action.ResetActionSwitchOn();
+        }
     }
 
     public virtual void Update()
     {
-        playerLayer = LayerMask.GetMask("Player");
-
         if (switchOnTrigger)
         {
             ReturnDefaultAction();
@@ -114,9 +113,9 @@ public abstract class AI : Character
         }
     }
 
-    public void DoDetects()
+    private void DoDetects()
     {
-        if (!CanDetect)
+        if (!canDetect)
             return;
 
         // 偵測
@@ -136,24 +135,26 @@ public abstract class AI : Character
         }
     }
 
-    public void SetChaseTarget(Transform target)
-    {
-        ChaseTarget = target;
-        LastChaseTarget = ChaseTarget;
-    }
-
-    public void Combat()
+    private void Combat()
     {
         // 進入戰鬥狀態
         if (inCombatStateTrigger && ChaseTarget != null)
         {
-            if (CanAction && Time.time >= nextActTimes)
+            if (canAction && Time.time >= nextActTimes)
             {
                 // 每次開始執行動作之前，回到Idle狀態
                 ReturnDefaultAction();
                 // 在執行Action時，會持續面對目標
                 _facement.FaceTarget(this, ChaseTarget);
-                DoActions();
+                // Do action or linked action.
+                if (linkedAction.action == null)
+                {
+                    DoActions();
+                }
+                else
+                {
+                    DoLinkedAction();
+                }
             }
         }
         else
@@ -162,29 +163,34 @@ public abstract class AI : Character
         }
     }
 
-    public void DoActions()
+    private void DoLinkedAction()
     {
-        List<AiAction> actionToDoList = new List<AiAction>();
+        linkedAction.action.GetCurrentAIHavior(this);
+        // Check linked action condition.(If not ignore)
+        if (linkedAction.ignoreJudgement || linkedAction.action.CheckActionThatCanDo())
+        {
+            DoAction(linkedAction.action, linkedAction.influenceWeight);
+        }
+    }
 
+    private void DoActions()
+    {
+        actionToDoList.Clear();
         // 判斷哪些動作符合條件，代表可以做
         // 若上一個相同的動作執行失敗，則權重降低N一次
         foreach (AiAction action in actions)
         {
+            if (!action.on)
+                continue;
             action.GetCurrentAIHavior(this);
             if (action.CheckActionThatCanDo())
             {
-                if (action == lastAction && !lastActionSuccess)
-                {
-                    float amount = action.minusWeightAmountWhenNotSuccess;
-                    action.ActionWeight -= amount;
-                    action.AddDiffCount(amount);
-                }
                 // 只留下【最大】與【最大-offset】之間權重的動作(相同權重也會留下)。
                 if (actionToDoList.Count != 0)
                 {
-                    if (action.ActionWeight < actionToDoList[0].ActionWeight - maxWeightOffset)
+                    if (action.currentActionWeight < actionToDoList[0].currentActionWeight - maxWeightOffset)
                         continue;
-                    if (action.ActionWeight > actionToDoList[0].ActionWeight)
+                    if (action.currentActionWeight > actionToDoList[0].currentActionWeight)
                     {
                         actionToDoList.Clear();
                     }
@@ -193,72 +199,91 @@ public abstract class AI : Character
             }
         }
 
-        // 如果沒動作可以做，就隨機抓一個
+        // 如果沒動作可以做，就Idle
         if (actionToDoList.Count == 0)
         {
-            AiAction randomAct = actions[Random.Range(0, actions.Length)];
-            actionToDoList.Add(randomAct);
+            ReturnDefaultAction();
+            return;
         }
 
         // 決定最後的動作
         DoHightestWeightAction(actionToDoList);
     }
 
-    protected void DoHightestWeightAction(List<AiAction> actions)
+    private void DoHightestWeightAction(List<AiAction> actions)
     {
         AiAction action;
         if (actions.Count == 1)
         {
             action = actions[0];
-            DoAction(action);
+            DoAction(action, true);
             return;
         }
 
         // 執行任一動作
         action = actions[Random.Range(0, actions.Count - 1)];
-        DoAction(action);
+        DoAction(action, true);
     }
 
     /// <summary>
     /// 動作執行
     /// </summary>
     /// <param name="action">要執行的動作</param>
-    /// <param name="exceptTypesToMinusWeight">除了做哪些類型的動作不會降低權重</param>
-    protected void DoAction(AiAction action)
+    public void DoAction(AiAction action, bool influenceWeight)
     {
-        float amount = action.minusWeightAmountAfterAction;
-        if (amount > 0)
-        {
-            action.ActionWeight -= amount;    // 動作結束後，權重下降N點，降低這個對於動作的慾望
-            action.AddDiffCount(amount);
-        }
-
-        float animDelay = 0f;
-        if (action.clips != null)
-        {
-            foreach (var clip in action.clips)
-            {
-                animDelay += clip.length;
-            }
-        }
-        animationActionDelay = animDelay;
-        commonActionDelay = action.commonActionDelay;
         lastActionSuccess = action.StartActHaviour();
         lastAction = action;
+        linkedAction = action.linkedAction;
 
-        // 只有移動不需要等待延遲，且算是實際的行動數
-        if (lastActionSuccess && lastAction.actionType != AiActionType.Move)
+        if (lastActionSuccess)
         {
-            nextActTimes = Time.time + commonActionDelay + animationActionDelay;
-            cumulativeActionCount++;
+            // 本次動作的行為延遲
+            ResetNextActTimes(action);
+        }
+
+        if (influenceWeight)
+        {
+            float amount;
+            if (lastActionSuccess)
+            {
+                amount = action.minusWeightAmountAfterAction;
+            }
+            else
+            {
+                amount = action.minusWeightAmountWhenNotSuccess;
+            }
+            if (amount > 0)
+            {
+                // 動作結束後，權重將下降N點，降低這個對於動作的慾望
+                action.currentActionWeight -= amount;
+                action.AddDiffCount(amount);
+            }
         }
     }
 
-    protected void ReturnDefaultAction(bool setToLastAction = false)
+    private void ResetNextActTimes(AiAction currentAction)
     {
-        if (lastAction == null || defaultAction == null)
+        // 只有移動不需要等待延遲(且移動不算是實際的行動數)
+        if (lastAction.actionType == AiActionType.Move)
             return;
-        if (lastAction.actionType == AiActionType.Idle)
+        float delay = currentAction.offsetActionDelay + currentAction.additionActionDelay;
+        if (currentAction.linkedAction.action != null)
+        {
+            delay += currentAction.linkedAction.delay;
+        }
+        if (delay <= 0)
+        {
+            delay = 0.02f;  // 行動下限延遲
+        }
+        nextActTimes = Time.time + delay;
+        cumulativeActionCount++;    // 行動次數+1
+    }
+
+    public void ReturnDefaultAction(bool setToLastAction = false)
+    {
+        if (defaultAction == null)
+            return;
+        if (lastAction != null && lastAction.actionType == AiActionType.Idle)
             return;
 
         defaultAction.GetCurrentAIHavior(this);
@@ -267,10 +292,23 @@ public abstract class AI : Character
             lastAction = defaultAction;
     }
 
+    public void SetChaseTarget(Transform target)
+    {
+        if (LastChaseTarget == null)
+        {
+            LastChaseTarget = target;
+        }
+        else
+        {
+            LastChaseTarget = ChaseTarget;
+        }
+        ChaseTarget = target;
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        //Use the same vars you use to draw your Overlap SPhere to draw your Wire Sphere.
+        // Use the same vars you use to draw your Overlap SPhere to draw your Wire Sphere.
         Gizmos.DrawWireSphere(transform.position, detectDistance);
     }
 }

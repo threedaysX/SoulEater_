@@ -30,14 +30,14 @@ public abstract class EnemyModel : AI
         ResetBarUI();
 
         // 外力因素影響會無法行動(異常狀態、使用技能等)
-        if (isLockAction && CanAction)
+        if (IsLockAction && canAction)
         {
-            CanAction = false;
+            canAction = false;
         }
 
-        if (!isLockAction && !CanAction)
+        if (!IsLockAction && !canAction)
         {
-            CanAction = true;
+            canAction = true;
         }
     }
 
@@ -92,7 +92,7 @@ public class HorizontalFacement : IFacement
 {
     public void FaceTarget(Character self, Transform target, bool force = false)
     {
-        if ((target == null || !self.freeDirection.canDo) && !force)
+        if ((target == null || !self.freeDirection.CanDo) && !force)
             return;
 
         float faceDirX = self.transform.position.x - target.transform.position.x;

@@ -20,9 +20,9 @@ MonoBehaviour:
   description: "\u77AC\u79FB\u81F3\u4E0A\u4E00\u653B\u64CA\u76EE\u6A19\u7684\u5F8C\u65B9\u3002"
   centerPositionOffset: 0
   range:
-    BaseValue: 12
+    BaseValue: 15
     AdditionalValue: 0
-    FinalValue: 12
+    FinalValue: 15
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
