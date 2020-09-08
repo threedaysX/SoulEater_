@@ -14,8 +14,9 @@ public class FireBall : DisposableSkill
     private Vector3 fireBallDestination;
     private bool canShootProjectile = false;
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         ProjectileDataInitializer dataInitializer = new ProjectileDataInitializer(projectileSetting);
         projectileDirectSetting.initialAngleArray = dataInitializer.GetInitialAngle();
         projectileDirectSetting.sourceCaster = sourceCaster;

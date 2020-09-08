@@ -17,8 +17,9 @@ public class Accumulation : DisposableSkill
         immediatelyAffect.AddListener(SlowSelf);
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         // Render Objects with pools in parent.
         RenderEnergeBallOnStart();
     }
