@@ -8,12 +8,18 @@ public class ImageEffectController : Singleton<ImageEffectController>
 {
     public Volume volume;
 
+    #region Vignette
     private Vignette _vignette = null;
     private Sequence bleedSequence;
+    #endregion
+    #region MotionBlur
+    private MotionBlur _motionBlur = null;
+    #endregion
 
     private void Start()
     {
         volume.sharedProfile.TryGet(out _vignette);
+        volume.sharedProfile.TryGet(out _motionBlur);
     }
 
     public void BleedVignette(bool start, params VignetteSetting[] settings)
@@ -37,6 +43,17 @@ public class ImageEffectController : Singleton<ImageEffectController>
         }
 
         bleedSequence.Play();
+    }
+
+    public void SetMotionBlur(float intensity, float clamp)
+    {
+        _motionBlur.active = true;
+        _motionBlur.intensity.value = intensity;
+        _motionBlur.clamp.value = clamp;
+    }
+    public void DisableMotionBlur()
+    {
+        _motionBlur.active = false;
     }
 
     #region Old Post-Processing
@@ -72,4 +89,11 @@ public struct VignetteSetting
     public float intensity;
     public float smoothness;
     public float duration;
+}
+
+[Serializable]
+public struct MotionBlurSetting
+{
+    public float intensity;
+    public float clamp;
 }

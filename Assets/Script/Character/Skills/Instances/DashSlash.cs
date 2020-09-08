@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using UnityEngine;
 
 public class DashSlash : DisposableSkill
@@ -25,20 +24,12 @@ public class DashSlash : DisposableSkill
         immediatelyAffect.AddListener(GetInDarkScreenAndZoomIn);
         immediatelyAffect.AddListener(MoveFoward);
         immediatelyAffect.AddListener(delegate { StartCoroutine(HitDetect()); });
-    }
-
-    public override void OnTriggerEnter2D(Collider2D targetCol)
-    {
-        base.OnTriggerEnter2D(targetCol);
-
-        if (!targetCol.CompareTag(sourceCaster.tag))
+        hitAffect.AddListener(delegate 
         {
             isHit = true;
-            Character target = targetCol.GetComponent<Character>();
-            this.target = target;
             BindEnemyAction(target, 1.8f);
             DamageTarget(1f);
-        }
+        });
     }
 
     protected override bool Damage(float damageDirectionX = 0)
@@ -57,7 +48,7 @@ public class DashSlash : DisposableSkill
         soundControl.PlaySound(slashHitSound);
     }
 
-    // 使用技能後，立即鎖定敵人動作
+    // 命中後，立即鎖定敵人動作
     private void BindEnemyAction(Character target, float duration)
     {
         Debuff.Instance.Bind(target, duration);
@@ -121,6 +112,6 @@ public class DashSlash : DisposableSkill
 
     private void CameraShakeWhenHit()
     {
-        CameraShake.Instance.ShakeCamera(1f, 8f, 0.1f, false, 0f, true);
+        CameraShake.Instance.ShakeCamera(2f, 8f, 0.05f, false, 0f, true);
     }
 }

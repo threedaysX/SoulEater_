@@ -3,11 +3,6 @@ using UnityEngine;
 
 public class TimeScaleController : Singleton<TimeScaleController>
 {
-    private void Start()
-    {
-        TimeScale.global = new TimeScaleData();
-    }
-
     private void Update()
     {
         Time.timeScale = TimeScale.global.currentTimeScale;
@@ -164,7 +159,7 @@ public enum SlowMotionTargetType
 public class TimeScale
 {
     // Default Timescales
-    public static TimeScaleData global;
+    public static TimeScaleData global = new TimeScaleData();
 }
 
 public class TimeScaleData

@@ -4,7 +4,11 @@ public class PowerSlam : DisposableSkill
 {
     protected override void AddAffectEvent()
     {
-        hitAffect.AddListener(DebuffArmorBreak);
+        hitAffect.AddListener(delegate
+        {
+            DebuffArmorBreak();
+            DamageTarget();
+        });
     }
 
     public string armorBreak = "破甲LV1";
@@ -14,17 +18,6 @@ public class PowerSlam : DisposableSkill
     private void DebuffArmorBreak()
     {
         Debuff.Instance.ArmorBreakWithLevel(target, 1, 4f);
-    }
-
-    public override void OnTriggerEnter2D(Collider2D targetCol)
-    {
-        base.OnTriggerEnter2D(targetCol);
-
-        if (!targetCol.CompareTag(sourceCaster.tag))
-        {
-            DamageTarget();
-            InvokeHitAffect();
-        }
     }
 }
 

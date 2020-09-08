@@ -13,6 +13,7 @@ public abstract class BossModel : EnemyModel, IBossOpeningEvent, IBossRootEvemt
 
     public virtual float StartOpeningAction()
     {
+        // CinemachineCameraControl.Instance
         float duration = openingEffect.main.startLifetime.constant + 1f;
         openingEffect.Play(true);
         this.LockOperation(LockType.TypeChange, true, false, duration);

@@ -14,6 +14,7 @@ public class Ifrit : BossModel
     public float forceAttackDelay;
 
     [Header("型態改變")]
+    public AudioClip mainThemeBgm;
     public AudioClip typeChangingSound;
     public AudioClip typeChangedBurstSound;
     public ParticleSystem typeChangingEffect;
@@ -23,11 +24,7 @@ public class Ifrit : BossModel
     public override void Start()
     {
         base.Start();
-        healthUI = EnemyUIControl.Instance.healthWhite.GetComponent<UIShake>();
-        _facement = new HorizontalFacement();
-        SetEnemyLevel(EnemyLevel.Boss);
-        ResetFlamethrowerData();
-        ForceAdjustAttackDelay();
+        ResetStats();
     }
 
     public override void LateUpdate()
@@ -35,6 +32,16 @@ public class Ifrit : BossModel
         base.LateUpdate();
         FlamethrowerTypeChange();
         NaraBurstTypeChange();
+    }
+
+    private void ResetStats()
+    {
+        healthUI = EnemyUIControl.Instance.healthWhite.GetComponent<UIShake>();
+        _facement = new HorizontalFacement();
+        SetEnemyLevel(EnemyLevel.Boss);
+        ResetFlamethrowerData();
+        ForceAdjustAttackDelay();
+        AudioControl.Instance.PlayMusic(mainThemeBgm);
     }
 
     protected void ForceAdjustAttackDelay()

@@ -10,8 +10,8 @@ public class PlayerGetCloser : JudgeCondition
     
     public override bool CheckActConditionHaviour()
     {
-        ai.distanceDetect.customDistance = distancePlayerGetClose;
-        ai.distanceDetect.timeToAct = timeToGetClose;
-        return ai.distanceDetect.hasGetClose;
+        ai.detectControl.customDistance = distancePlayerGetClose;
+        ai.detectControl.timeToAct = timeToGetClose;
+        return ai.detectControl.hasGetClose;
     }
 }

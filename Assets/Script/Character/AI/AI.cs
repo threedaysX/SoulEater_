@@ -35,6 +35,7 @@ public abstract class AI : Character
     private List<AiAction> actionToDoList = new List<AiAction>();
 
     [Header("偵測距離")]
+    public DistanceDetect detectControl;
     public float detectDistance;
     [Header("下次可行動時間")]
     private float nextActTimes = 0f;
@@ -54,12 +55,9 @@ public abstract class AI : Character
     [HideInInspector] public Transform ChaseTarget { get; protected set; }
     [HideInInspector] public Transform LastChaseTarget { get; protected set; }
     [HideInInspector] public LayerMask playerLayer;
-    [HideInInspector] public DistanceDetect distanceDetect;
 
     public virtual void Start()
     {
-        this.gameObject.AddComponent(typeof(DistanceDetect));
-        distanceDetect = GetComponent<DistanceDetect>();
         playerLayer = LayerMask.GetMask("Player");
         
         ReturnDefaultAction(true);

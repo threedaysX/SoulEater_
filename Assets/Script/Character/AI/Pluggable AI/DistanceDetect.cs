@@ -3,42 +3,56 @@ using UnityEngine;
 
 public class DistanceDetect : MonoBehaviour
 {
-    [SerializeField] private Transform player;
+    public AI ai;
+    private Transform target;
 
     public float timeToAct;
     public float customDistance;
-    private float lastSecDistance;
     public bool hasGetClose;
 
-    private void Start()
-    {
-        player = GameObject.FindGameObjectWithTag("Player").transform;
-    }
-
+    [SerializeField] private float lastSecDistance;
+    
     private void Update()
     {
-        if (player != null)
+        if (target != ai.ChaseTarget)
         {
-            StartCoroutine(LastSecDistance());
+            target = ai.ChaseTarget;
         }
+        if (target != null)
+        {
+            ResetTargetDistance();
+            if (timeToAct > 0)
+            {
+                StartCoroutine(LastSecDistance());
+            }
+        }
+    }
+
+    private void ResetTargetDistance()
+    {
+        lastSecDistance = (target.position - transform.position).sqrMagnitude;
     }
 
     private IEnumerator LastSecDistance()
     {
-        lastSecDistance = (player.position - transform.position).sqrMagnitude;
-
         yield return new WaitForSeconds(timeToAct);
 
-        if (player == null)
+        if (target == null)
             yield break;
 
-        if (lastSecDistance - (player.position - transform.position).sqrMagnitude >= customDistance * customDistance)
+        if (lastSecDistance - (target.position - transform.position).sqrMagnitude >= customDistance * customDistance)
         {
             hasGetClose = true;
         }
         else
         {
-            hasGetClose = false;
+            ResetStats();
         }
+    }
+
+    private void ResetStats()
+    {
+        timeToAct = 0;
+        hasGetClose = false;
     }
 }

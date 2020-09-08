@@ -8,21 +8,18 @@ public class NaraCircleBurst : DisposableSkill
 
     protected override void AddAffectEvent()
     {
-        hitAffect.AddListener(Ignite);
+        hitAffect.AddListener(delegate
+        {
+            Ignite();
+            DamageTarget();
+        });
     }
 
     public override void OnTriggerEnter2D(Collider2D targetCol)
     {
         base.OnTriggerEnter2D(targetCol);
 
-        if (sourceCaster != null && !targetCol.CompareTag(sourceCaster.tag))
-        {
-            if (DamageTarget())
-            {
-                hitAffect.Invoke();
-            }
-            this.gameObject.SetActive(false);
-        }
+        this.gameObject.SetActive(false);
     }
 
     public override void GenerateSkill(Character character, Skill skill)

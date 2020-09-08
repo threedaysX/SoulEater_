@@ -6,22 +6,16 @@ public class ShockWave : DisposableSkill
     [Header("衝擊擊退力道")]
     public float waveKnockBackForce;
 
-    public override void OnTriggerEnter2D(Collider2D targetCol)
-    {
-        base.OnTriggerEnter2D(targetCol);
-
-        if (!targetCol.CompareTag(sourceCaster.tag))
-        {
-            DamageTarget();
-            InvokeHitAffect();
-        }
-    }
-
     protected override void AddAffectEvent()
     {
-        hitAffect.AddListener(DebuffSlowDown);
-        hitAffect.AddListener(DebuffTired);
-        hitAffect.AddListener(KnockBackHitTarget);
+        hitAffect.AddListener(delegate
+        {
+            TriggerMotionBlur();
+            DebuffSlowDown();
+            DebuffTired();
+            KnockBackHitTarget();
+            DamageTarget();
+        });
     }
 
     public override void CastSkill()
@@ -59,5 +53,13 @@ public class ShockWave : DisposableSkill
         var bodyPosY = sourceCaster.transform.position.y + sourceCaster.GetComponent<SpriteRenderer>().bounds.size.y / 2 - 1f;
         castHintEffect.transform.position = new Vector2(sourceCaster.transform.position.x, bodyPosY);
         castHintEffect.Play(true);
+    }
+
+    private void TriggerMotionBlur()
+    {
+        float blurDuration = 0.2f;
+        var ec = ImageEffectController.Instance;
+        ec.SetMotionBlur(1f, 0.2f);
+        Counter.Instance.StartCountDown(blurDuration, false, null, delegate { ec.DisableMotionBlur(); });
     }
 }

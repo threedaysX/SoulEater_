@@ -5,17 +5,10 @@ using UnityEngine;
 
 public class CinemachineCameraControl : Singleton<CinemachineCameraControl>
 {
-    private List<ZoomInSetting> zoomInSettings;
+    private List<ZoomInSetting> zoomInSettings = new List<ZoomInSetting>();
     private int currentIndex = 0;
     private float nextZoomInStartTime = 0;
     private bool resetZoomTrigger = true;
-
-    private void Start()
-    {
-        zoomInSettings = new List<ZoomInSetting>();
-        resetZoomTrigger = true;
-        currentIndex = 0;
-    }
 
     private void Update()
     {
@@ -100,6 +93,10 @@ public class CinemachineCameraControl : Singleton<CinemachineCameraControl>
 
         return zoomInSettings[currentIndex + 1].startDelay;
     }
+    #endregion
+
+    #region Follow Target
+
     #endregion
 }
 

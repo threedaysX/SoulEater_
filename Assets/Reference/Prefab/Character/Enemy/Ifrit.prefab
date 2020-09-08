@@ -51176,6 +51176,7 @@ GameObject:
   - component: {fileID: 6295895507406651273}
   - component: {fileID: 1356556669}
   - component: {fileID: 593714516}
+  - component: {fileID: 6044229719548048670}
   m_Layer: 10
   m_Name: Ifrit
   m_TagString: Enemy
@@ -51277,7 +51278,6 @@ MonoBehaviour:
   isManaDirty: 0
   _currentHealth: 0
   _currentMana: 0
-  isLockAction: 0
   move:
     operationType: 0
   jump:
@@ -51318,6 +51318,8 @@ MonoBehaviour:
   cumulativeDataController: {fileID: 0}
   anim: {fileID: 0}
   _switchOn: 1
+  canDetect: 1
+  canAction: 1
   detects:
   - {fileID: 11400000, guid: a4a6fb41c5faf8d438940c8b82aca28a, type: 2}
   actions:
@@ -51332,7 +51334,12 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 62ed477627d6dee49adb86610a882723, type: 2}
   defaultAction: {fileID: 11400000, guid: c3a44652899bca642852f1ad66677f7f, type: 2}
   lastAction: {fileID: 0}
-  linkedAction: {fileID: 0}
+  linkedAction:
+    delay: 0
+    ignoreJudgement: 0
+    influenceWeight: 0
+    action: {fileID: 0}
+  detectControl: {fileID: 6044229719548048670}
   detectDistance: 30
   maxWeightOffset: 2
   actionWeightRegen: 1
@@ -51340,7 +51347,6 @@ MonoBehaviour:
   playerLayer:
     serializedVersion: 2
     m_Bits: 0
-  distanceDetect: {fileID: 0}
   enemyLevel: 0
   preActSound: {fileID: 8300000, guid: 51725dde0a95f4049aae736ac906bae3, type: 3}
   preActHint: {fileID: 801679221}
@@ -51349,6 +51355,7 @@ MonoBehaviour:
   knockOutRootSound: {fileID: 8300000, guid: 93066a458874c18429774e3c80a2196c, type: 3}
   healthUI: {fileID: 0}
   forceAttackDelay: 0.7
+  mainThemeBgm: {fileID: 8300000, guid: 806bc66c9db25334a8513595647a5fb9, type: 3}
   typeChangingSound: {fileID: 8300000, guid: 54a1b4f765a54eb4796793eea869def4, type: 3}
   typeChangedBurstSound: {fileID: 8300000, guid: 6370de40894ab8b4a9eb9a4223a08325,
     type: 3}
@@ -51669,6 +51676,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d98629aa3230f664ea3d37101ff1cdac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6044229719548048670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8172391987346870631}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3ccf53a07cee8749a20182f446e28fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ai: {fileID: 8172391987346870630}
+  timeToAct: 0
+  customDistance: 0
+  hasGetClose: 0
 --- !u!1 &8560351283703080147
 GameObject:
   m_ObjectHideFlags: 0
