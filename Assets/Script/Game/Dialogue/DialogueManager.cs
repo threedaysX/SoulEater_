@@ -5,10 +5,10 @@ using UnityEngine.UI;
 
 public class DialogueManager : Singleton<DialogueManager>
 {
-    [SerializeField] private Player player;
-    [SerializeField] private GameObject dialogueDisplay;
-    [SerializeField] private Text dialogueDisplayContent;
-    [SerializeField] private Button[] dialogueChoiceButton;
+    public Player player;
+    public GameObject dialogueDisplay;
+    public Text dialogueDisplayContent;
+    public Button[] dialogueChoiceButton;
     private Queue<string> dialogueText = new Queue<string>();
     private DialogueChunk currentDialogueChunk;
     private bool isDialoguing = false;
