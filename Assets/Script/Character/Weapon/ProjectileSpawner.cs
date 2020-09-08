@@ -27,8 +27,8 @@ public struct ProjectileDirectSetting
 
 public class ProjectileSpawner : Singleton<ProjectileSpawner>
 {
-    [SerializeField] private GameObject projectile;
-    [SerializeField] private int poolSize;
+    public GameObject projectile;
+    public int poolSize;
 
     private void Start()
     {

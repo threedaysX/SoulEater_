@@ -2,11 +2,11 @@
 
 public class TutorialTrapTrigger : MonoBehaviour
 {
-    [SerializeField] private ProjectileSetting projectileSetting;
-    [SerializeField] private ProjectileDirectSetting projectileDirectSetting;
-    [SerializeField] private GameObject projectile;
-    [SerializeField] private float slowDownFactor;
-    [SerializeField] private float slowDownTime;
+    public ProjectileSetting projectileSetting;
+    public ProjectileDirectSetting projectileDirectSetting;
+    public GameObject projectile;
+    public float slowDownFactor;
+    public float slowDownTime;
 
     private bool canSpawn = true;
 
