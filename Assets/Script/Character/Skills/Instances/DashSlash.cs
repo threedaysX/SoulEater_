@@ -63,16 +63,14 @@ public class DashSlash : DisposableSkill
     // 使用技能後，立即進入模糊畫面與畫面特寫
     private void GetInDarkScreenAndZoomIn()
     {
-        //StartCoroutine(FadeScreen.Instance.Fade(1f, 1f));
-        ZoomInSetting zoomInSetting = new ZoomInSetting { finalZoomSize = 5.5f, duration = 0.1f, startDelay = 0f };
-        ZoomInSetting resetCameraSetting = new ZoomInSetting { finalZoomSize = 6f, duration = 0.5f, startDelay = 0.6f };
-        CinemachineCameraControl.Instance.ZoomInCamera(zoomInSetting, resetCameraSetting);
+        ZoomInSetting[] zoomInSetting = new ZoomInSetting[] 
+        {
+            new ZoomInSetting { finalZoomSize = 5.5f, duration = 0.05f, startDelay = 0f },
+            new ZoomInSetting { finalZoomSize = 6f, duration = 0.2f, startDelay = 0.6f }
+        };
+        CameraControl.Zoom.Instance.AddSet(zoomInSetting);
 
-        //// Old Blur for Post-Processing.
-        //ImageEffectController.Instance.StartRadialBlur(DG.Tweening.Ease.Linear,
-        //        new[] {
-        //            new RadialBlurSetting { strength = 2f, dist = 1f, duration = 0.3f },
-        //            new RadialBlurSetting { strength = 0f, dist = 1f, duration = 0.2f }  });
+        ImageEffectController.Instance.SetMotionBlur(1f, 0.2f, 0.3f);
     }
 
     /// <summary>
@@ -112,6 +110,6 @@ public class DashSlash : DisposableSkill
 
     private void CameraShakeWhenHit()
     {
-        CameraShake.Instance.ShakeCamera(2f, 8f, 0.05f, false, 0f, true);
+        CameraControl.Shake.Instance.ShakeCamera(2f, 8f, 0.05f, false, 0f, true);
     }
 }

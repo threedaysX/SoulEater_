@@ -13,12 +13,15 @@ public abstract class BossModel : EnemyModel, IBossOpeningEvent, IBossRootEvemt
 
     public virtual float StartOpeningAction()
     {
-        // CinemachineCameraControl.Instance
+        CameraOpeningMove();
+        CameraControl.Shake.Instance.ShakeCamera(1f, 10f, 1.5f, false, 0.2f);
         float duration = openingEffect.main.startLifetime.constant + 1f;
         openingEffect.Play(true);
         this.LockOperation(LockType.TypeChange, true, false, duration);
         return duration;
     }
+
+    protected abstract void CameraOpeningMove();
 
     /// <summary>
     /// Trigger some story or event.

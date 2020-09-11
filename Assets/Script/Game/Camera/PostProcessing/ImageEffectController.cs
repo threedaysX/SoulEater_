@@ -45,11 +45,16 @@ public class ImageEffectController : Singleton<ImageEffectController>
         bleedSequence.Play();
     }
 
-    public void SetMotionBlur(float intensity, float clamp)
+    public void SetMotionBlur(float intensity, float clamp, float duration = 0)
     {
         _motionBlur.active = true;
         _motionBlur.intensity.value = intensity;
         _motionBlur.clamp.value = clamp;
+
+        if (duration > 0)
+        {
+            Counter.Instance.StartCountDown(duration, false, null, DisableMotionBlur);
+        }
     }
     public void DisableMotionBlur()
     {

@@ -69,6 +69,7 @@ public class Player : Character
         TimeScaleController.Instance.DoSlowMotion(0.05f, 0f, dieController.dieDuration);
         playerLight.gameObject.SetActive(false);
         base.Die();
+        CameraControl.Follow.Instance.FollowTargetSimple(lastAttackMeTarget.transform);
     }
 
     protected override void ManaSteal(float damage)

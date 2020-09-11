@@ -64,7 +64,7 @@ public abstract class AI : Character
 
         foreach (AiAction action in actions)
         {
-            action.ResetActionSwitchOn();
+            action.ResetActionOn();
         }
     }
 
@@ -72,8 +72,7 @@ public abstract class AI : Character
     {
         if (switchOnTrigger)
         {
-            ReturnDefaultAction();
-            switchOnTrigger = false;
+            ResetAiSwitchOn();
         }
         if (SwitchOn)
         {
@@ -301,6 +300,12 @@ public abstract class AI : Character
             LastChaseTarget = ChaseTarget;
         }
         ChaseTarget = target;
+    }
+
+    protected virtual void ResetAiSwitchOn()
+    {
+        ReturnDefaultAction();
+        switchOnTrigger = false;
     }
 
     private void OnDrawGizmosSelected()

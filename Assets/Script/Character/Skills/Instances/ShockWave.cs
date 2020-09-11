@@ -13,9 +13,19 @@ public class ShockWave : DisposableSkill
             TriggerMotionBlur();
             DebuffSlowDown();
             DebuffTired();
-            KnockBackHitTarget();
             DamageTarget();
         });
+    }
+
+    public override void OnTriggerEnter2D(Collider2D col)
+    {
+        base.OnTriggerEnter2D(col);
+
+        if (CheckTargetCollision(col))
+        {
+            // Ignore immune use(still knock back).
+            KnockBackWinds();
+        }
     }
 
     public override void CastSkill()
@@ -41,7 +51,7 @@ public class ShockWave : DisposableSkill
         Debuff.Instance.Lame(target, 0.6f);
     }
 
-    private void KnockBackHitTarget()
+    private void KnockBackWinds()
     {
         KnockStunSystem targetKnock = target.GetComponent<KnockStunSystem>();
         float directionX = new Vector2(sourceCaster.transform.position.x - target.transform.position.x, 0).normalized.x;

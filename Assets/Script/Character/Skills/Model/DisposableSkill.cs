@@ -17,7 +17,7 @@ public abstract class DisposableSkill : SkillEventBase
             return;
 
         // 如果目標是自己，除非技能可以對自己造成效果，否則略過
-        if (!canTriggerSelf && col.CompareTag(sourceCaster.tag))
+        if (CheckTriggerSelf(col))
             return;
 
         // Get target.
@@ -27,5 +27,15 @@ public abstract class DisposableSkill : SkillEventBase
 
         // Trigger affect.
         InvokeHitAffect();
+    }
+
+    protected bool CheckTriggerSelf(Collider2D col)
+    {
+        return !canTriggerSelf && col.CompareTag(sourceCaster.tag);
+    }
+
+    protected bool CheckTargetCollision(Collider2D col)
+    {
+        return !col.CompareTag(sourceCaster.tag);
     }
 }

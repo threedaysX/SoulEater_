@@ -43,7 +43,8 @@ public class DieController : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        Destroy(this.gameObject);
+        //Destroy(this.gameObject);
+        this.gameObject.SetActive(false);
     }
 
     public void DieDissolve(float duration, params Action[] callBacks)
@@ -69,7 +70,7 @@ public class DieController : MonoBehaviour
 
     public void GenerateSoul()
     {
-        Transform soul = Instantiate(soulPrefab, transform.position, transform.rotation);
+        GameObject soul = PrefabRenderer.Instance.RenderPrefab(soulPrefab, soulName, true);
         soul.GetComponent<Character>().GetIntoImmune(dieDuration + 0.1f);
         soul.GetComponent<Character>().characterName = soulName;
         soul.GetComponent<SpriteRenderer>().sortingLayerName = character.GetComponent<SpriteRenderer>().sortingLayerName;
@@ -77,7 +78,7 @@ public class DieController : MonoBehaviour
         soul.tag = character.tag;
         soul.gameObject.layer = character.gameObject.layer;
         soul.name = soulName;
-        StartCoroutine(FollowMaster(transform, soul, dieDuration));
+        StartCoroutine(FollowMaster(transform, soul.transform, dieDuration));
     }
 
     public virtual IEnumerator FollowMaster(Transform master, Transform follower, float duration)

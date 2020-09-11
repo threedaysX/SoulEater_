@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth:
     BaseValue: 2195
-    AdditionalValue: 2000000
-    FinalValue: 2002195
+    AdditionalValue: 30000
+    FinalValue: 32195
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
@@ -49,8 +49,8 @@ MonoBehaviour:
     modifiers: []
   critical:
     BaseValue: 20
-    AdditionalValue: 40
-    FinalValue: 60
+    AdditionalValue: 60
+    FinalValue: 80
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
@@ -84,6 +84,7 @@ MonoBehaviour:
     modifiers: []
   resistance: {fileID: 11400000, guid: a4ac07dda096bc7469d2fbe5a7c908da, type: 2}
   status: {fileID: 11400000, guid: 1ab81751b173d454496b33a3ac4ed2b2, type: 2}
+  characterSize: 2
   jumpForce:
     BaseValue: 1.2
     AdditionalValue: 0
@@ -164,7 +165,7 @@ MonoBehaviour:
   manaStealOfDamage:
     BaseValue: 1700
     AdditionalValue: 0
-    FinalValue: 100
+    FinalValue: 1700
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []

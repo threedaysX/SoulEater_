@@ -98,7 +98,7 @@ public abstract class AiAction : AiHaviourBase
         DiffCount += diff;
     }
 
-    public void ResetActionSwitchOn()
+    public void ResetActionOn()
     {
         if (switchOnActionOnStart)
         {

@@ -13,6 +13,7 @@ public class Projectile : MonoBehaviour
 
     private float timer;
     private Vector2 finalDirection;
+    private bool startLaunch = false;
 
     public void ProjectileSetup(ProjectileDirectSetting projectileDirectSetting)
     {
@@ -27,11 +28,12 @@ public class Projectile : MonoBehaviour
         this.shootAngleIncrement = projectileDirectSetting.angleIncrement;   //deg
         this.target = projectileDirectSetting.target;
         this.freeFlyDuration = projectileDirectSetting.freeFlyDuration;
+        startLaunch = true;
     }
 
     private void LateUpdate()
     {
-        if(gameObject.activeInHierarchy && timer <= duration)
+        if (startLaunch && gameObject.activeInHierarchy && timer <= duration)
         {
             timer += Time.deltaTime;
             ProjectilePattern();
@@ -42,41 +44,42 @@ public class Projectile : MonoBehaviour
     {
         transform.eulerAngles = new Vector3(0 , 0, initialAngle);
 
-        initialAngle += (shootAngleIncrement * Mathf.Deg2Rad * Time.deltaTime);
+        initialAngle += shootAngleIncrement * Mathf.Deg2Rad * Time.deltaTime;
         finalDirection = new Vector2(Mathf.Cos(initialAngle), Mathf.Sin(initialAngle));
 
         if (target != null)
         {
-            if(timer < freeFlyDuration)
+            if (timer < freeFlyDuration)
                 transform.position += (Vector3)finalDirection * moveSpeed * Time.deltaTime;
-            else if(timer < freeFlyDuration + 0.1f) { }
+            else if (timer < freeFlyDuration + 0.1f) { }
             else
                 transform.position = Vector2.MoveTowards(transform.position, target.position, moveSpeed * Time.deltaTime);
         }
         else
             transform.position += (Vector3)finalDirection * moveSpeed * Time.deltaTime;
 
-        if(timer > duration)
+        if (timer > duration)
         {
             gameObject.SetActive(false);
             timer = 0;
+            startLaunch = false;
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Character targetToDamage = collision.GetComponent<Character>();
+        Character target = collision.GetComponent<Character>();
 
-        if (targetToDamage  != null && targetToDamage != sourceCaster && sourceCaster != null)
+        if (target  != null && target != sourceCaster && sourceCaster != null)
         {
-            float damage = DamageController.Instance.GetAttackDamage(sourceCaster, targetToDamage, AttackType.Attack, elementType, out bool isCritical);
-            collision.GetComponent<Character>().TakeDamage(new DamageData(sourceCaster.gameObject, sourceCaster.data.attackElement, (int)damage, isCritical));
+            float damage = DamageController.Instance.GetAttackDamage(sourceCaster, target, AttackType.Attack, elementType, out bool isCritical);
+            target.TakeDamage(new DamageData(sourceCaster.gameObject, sourceCaster.data.attackElement, (int)damage, isCritical));
         }
         else if(sourceCaster == null)   //not character shooting projectile
         {
             //write a GetTrapDamage Function in DamageController
         }
-        else if(targetToDamage == sourceCaster)
+        else if(target == sourceCaster)
         {
             return;
         }

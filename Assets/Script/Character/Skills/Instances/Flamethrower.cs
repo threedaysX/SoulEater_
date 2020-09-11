@@ -14,12 +14,12 @@ public class Flamethrower : LastingSkill
         immediatelyAffect.AddListener(LockDirectionTillEnd);
         immediatelyAffect.AddListener(KnockBackSelf);
         immediatelyAffect.AddListener(BuffFireResistance);
-        immediatelyAffect.AddListener(CameraShakeWhenTrigger);
         hitAffect.AddListener(delegate
         {
             KnockBackEnemy();
             DebuffFireResistance();
             DamageTarget();
+            CameraShakeWhenTrigger();
         });
     }
 
@@ -96,7 +96,7 @@ public class Flamethrower : LastingSkill
 
     private void CameraShakeWhenTrigger()
     {
-        CameraShake.Instance.ShakeCamera(0.8f, 1f, 3f, false, 0f, true);
+        CameraControl.Shake.Instance.ShakeCamera(0.8f, 5f, currentSkill.timesOfPerDamage / 2, false, 0f, true);
     }
 
     private void RenderHint()

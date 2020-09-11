@@ -17,6 +17,7 @@ public class CharacterData : ScriptableObject
     public Stats penetrationMagnification;   // 穿甲倍率
     public Resistance resistance;
     public Status status;
+    public CharacterSize characterSize;
 
     [Header("功能參數")]
     public Stats jumpForce = new Stats(1);

@@ -9,21 +9,21 @@ public class TimeScaleController : Singleton<TimeScaleController>
     }
 
     /// <summary>
-    /// Custom for UI use.
+    /// Custom for UI or application focus use.
     /// (Flexable in any project).
     /// </summary>
-    public void OpenUI(bool open)
+    public void FocusGame(bool on)
     {
-        if (open)
+        if (on)
+        {
+            TimeScale.global.PauseMotion(false);
+            TimeScale.global.currentTimeScale = TimeScale.global.originTimeScale;
+        }
+        else
         {
             TimeScale.global.PauseMotion(true);
             TimeScale.global.originTimeScale = TimeScale.global.currentTimeScale;
             TimeScale.global.currentTimeScale = 0f;
-        }
-        else
-        {
-            TimeScale.global.PauseMotion(false);
-            TimeScale.global.currentTimeScale = TimeScale.global.originTimeScale;
         }
     }
 

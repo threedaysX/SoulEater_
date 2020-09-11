@@ -50,6 +50,14 @@ public abstract class EnemyModel : AI
         }
     }
 
+    protected override void ResetAiSwitchOn()
+    {
+        base.ResetAiSwitchOn();
+        this.StopAllCoroutines();
+        this.operationController.InterruptAnimOperation();
+        this.LockOperation(LockType.All, false);
+    }
+
     public override void Die()
     {
         base.Die();

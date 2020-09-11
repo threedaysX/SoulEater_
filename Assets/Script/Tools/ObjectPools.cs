@@ -8,17 +8,16 @@ public class ObjectPools : Singleton<ObjectPools>
     public class Pool
     {
         public string name;
+        public string ownerName = string.Empty;
         public GameObject prefab;
         public int size;
     }
 
     public List<Pool> pools;
-    public Dictionary<string, Queue<GameObject>> poolDictionary;
+    public OwnerDictionary ownerDictionary = new OwnerDictionary();
 
     private void Start()
     {
-        poolDictionary = new Dictionary<string, Queue<GameObject>>();
-
         GetPoolsOnStart();
     }
 
@@ -26,7 +25,13 @@ public class ObjectPools : Singleton<ObjectPools>
     {
         foreach (Pool pool in pools)
         {
-            Queue<GameObject> objPool = new Queue<GameObject>();
+            string ownerName = pool.ownerName;
+            if (ownerName == string.Empty)
+            {
+                ownerName = this.name;
+                pool.ownerName = this.name;
+            }
+            InitPool(ownerName, pool.name);
 
             for (int i = 0; i < pool.size; i++)
             {
@@ -35,10 +40,8 @@ public class ObjectPools : Singleton<ObjectPools>
                 obj.transform.SetParent(this.transform);
                 obj.transform.localPosition = Vector3.zero;
                 obj.SetActive(false);
-                objPool.Enqueue(obj);
+                ownerDictionary[ownerName][pool.name].Enqueue(obj);
             }
-
-            poolDictionary.Add(pool.name, objPool);
         }
     }
 
@@ -48,19 +51,24 @@ public class ObjectPools : Singleton<ObjectPools>
     /// <param name="obj">哪個物件</param>
     /// <param name="size">欲生成的物件數量</param>
     /// <param name="parent">指定父物件，若無則自動放入物件池中(this.transform)</param>
-    public void RenderObjectPoolsInParent(GameObject obj, float size, Transform parent = null)
+    public void RenderObjectPoolsInParent(GameObject obj, float size, Transform parent = default, string ownerName = default)
     {
+        if (ownerName == default)
+        {
+            ownerName = this.name;
+        }
+
         // 已經生成過的不會再次生成
-        if (poolDictionary == null || poolDictionary.ContainsKey(obj.name))
+        if (ownerDictionary == null || !CheckOwnerExist(ownerName) || ownerDictionary[ownerName].ContainsKey(obj.name))
             return;
 
-        Queue<GameObject> objPool = new Queue<GameObject>();
+        InitPool(ownerName, obj.name);
 
         for (int i = 0; i < size; i++)
         {
             GameObject cloneObj = Instantiate(obj);
             cloneObj.name = obj.name;
-            if (parent == null)
+            if (parent == default)
             {
                 cloneObj.transform.SetParent(this.transform);
             }
@@ -70,66 +78,121 @@ public class ObjectPools : Singleton<ObjectPools>
             }
             cloneObj.transform.localPosition = Vector3.zero;
             cloneObj.SetActive(false);
-            objPool.Enqueue(cloneObj);
+            ownerDictionary[ownerName][obj.name].Enqueue(cloneObj);
         }
-
-        poolDictionary.Add(obj.name, objPool);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     /// <param name="name"></param>
     /// <param name="position"></param>
     /// <param name="exhaust">Objects in pools will be exhaust with its pools capacity. 
     /// Need to use 【Reload】 method and can use again.</param>
     /// <returns></returns>
-    public GameObject GetObjectInPools(string name, Vector3 position, bool exhaust = false)
+    public GameObject GetObjectInPools(string name, Vector3 position, string ownerName = default, bool exhaust = false)
     {
-        if (CheckPool(name))
-            return null;
+        if (ownerName == default)
+            ownerName = this.name;
+        if (ownerDictionary[ownerName].Count == 0 || ownerDictionary[ownerName][name].Count == 0)
+            return default;
 
-        GameObject objectToSpawn = poolDictionary[name].Dequeue();
+        GameObject objectToSpawn = ownerDictionary[ownerName][name].Dequeue();
 
         objectToSpawn.SetActive(true);
         objectToSpawn.transform.position = position;
 
         if (!exhaust)
-            poolDictionary[name].Enqueue(objectToSpawn);
+            ownerDictionary[ownerName][name].Enqueue(objectToSpawn);
 
         return objectToSpawn;
     }
 
-    public T GetObjectInPools<T>(string name, Vector3 position, bool exhaust = false)
+    public T GetObjectInPools<T>(string name, Vector3 position, string ownerName = default, bool exhaust = false)
     {
-        if (CheckPool(name))
+        if (ownerName == default)
+            ownerName = this.name;
+        if (ownerDictionary[ownerName].Count == 0 || ownerDictionary[ownerName][name].Count == 0)
             return default;
 
-        GameObject objectToSpawn = poolDictionary[name].Dequeue();
+        GameObject objectToSpawn = ownerDictionary[ownerName][name].Dequeue();
 
         objectToSpawn.SetActive(true);
         objectToSpawn.transform.position = position;
 
         if (!exhaust)
-            poolDictionary[name].Enqueue(objectToSpawn);
+            ownerDictionary[ownerName][name].Enqueue(objectToSpawn);
 
         return objectToSpawn.GetComponent<T>();
     }
 
-    public void Reload(string name, List<GameObject> objects)
+    public void Reload(string name, GameObject obj, bool setActive = false, string ownerName = default)
     {
-        if (poolDictionary == null || !poolDictionary.ContainsKey(name))
-            return;
+        if (ownerName == default)
+        {
+            ownerName = this.name;
+        }
+        // Needs to check if ownerName not default.
+        else
+        {
+            InitPool(ownerName, name);
+        }
+
+        obj.SetActive(setActive);
+        ownerDictionary[ownerName][name].Enqueue(obj);
+    }
+
+    public void Reload(string name, IEnumerable<GameObject> objects, bool setActive, string ownerName = default)
+    {
+        if (ownerName == default)
+        {
+            ownerName = this.name;
+        }
+        else
+        {
+            InitPool(ownerName, name);
+        }
 
         foreach (var obj in objects)
         {
-            obj.SetActive(false);
-            poolDictionary[name].Enqueue(obj);
+            obj.SetActive(setActive);
+            ownerDictionary[ownerName][name].Enqueue(obj);
         }
     }
 
-    private bool CheckPool(string name)
+    public GameObject Unload(string objName, string ownerName = default)
     {
-        return poolDictionary == null || !poolDictionary.ContainsKey(name) || poolDictionary[name].Count == 0;
+        if (ownerName == default)
+            ownerName = this.name;
+
+        return ownerDictionary[ownerName][objName].Dequeue();
     }
+
+    public IEnumerable<GameObject> UnloadAll(string objName, string ownerName = default)
+    {
+        if (ownerName == default)
+            ownerName = this.name;
+
+        IEnumerable<GameObject> allItem = ownerDictionary[ownerName][objName];
+        ownerDictionary[ownerName][objName].Clear();
+        return allItem;
+    }
+
+    private bool CheckOwnerExist(string name)
+    {
+        return ownerDictionary.ContainsKey(name);
+    }
+
+    private void InitPool(string ownerName, string poolName)
+    {
+        // This two condition means not exists, add new.
+        if (!CheckOwnerExist(ownerName))
+        {
+            ownerDictionary.Add(ownerName, new PoolDictionary());
+        }
+        if (!ownerDictionary[ownerName].ContainsKey(poolName))
+        {
+            ownerDictionary[ownerName].Add(poolName, new Queue<GameObject>());
+        }
+    }
+
+    public class OwnerDictionary : Dictionary<string, PoolDictionary> { }
+    public class PoolDictionary : Dictionary<string, Queue<GameObject>> { }
 }

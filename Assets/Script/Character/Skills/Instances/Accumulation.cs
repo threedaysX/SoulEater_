@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Accumulation : DisposableSkill
 {
@@ -9,7 +7,7 @@ public class Accumulation : DisposableSkill
     public float slowSelfValue = 20f;
     public float fieldDuration = 2f;
     public GameObject energeBall;
-    private List<GameObject> activeBalls = new List<GameObject>();
+    private int activeBallsCount;
 
     protected override void AddAffectEvent()
     {
@@ -48,22 +46,31 @@ public class Accumulation : DisposableSkill
 
     private void GenerateEnergeBall()
     {
+        if (activeBallsCount == maxEnergeBallAmount)
+        {
+            return;
+        }
         // Re-position energeBall.
-        EnergeBall ballObj = ObjectPools.Instance.GetObjectInPools<EnergeBall>(energeBall.name, GetBallPos(), true);
+        EnergeBall ballObj = ObjectPools.Instance.GetObjectInPools<EnergeBall>(energeBall.name, GetBallPos(), default, true);
+        // Reload for sourceCaster used.
+        ObjectPools.Instance.Reload(ballObj.name, ballObj.gameObject, true, sourceCaster.characterName);
         ballObj.lifeTime = 20f;
-        ballObj.ResetEnergeBallLifeTime();
-        activeBalls.Add(ballObj.gameObject);
-        // Start to aim target or front side.
+        ballObj.ResetEnergeBallLifeTime(() => ReloadEnergeBall());
+        activeBallsCount++;
     }
 
-    private void ResetAllEnergeBall()
+    private void ReloadEnergeBall()
     {
-        ObjectPools.Instance.Reload(energeBall.name, activeBalls);
+        // Unload ball that bind with sourceCaster.
+        var ball = ObjectPools.Instance.Unload(energeBall.name, sourceCaster.characterName);
+        // Reload ball to public obj pools.
+        ObjectPools.Instance.Reload(energeBall.name, ball);
+        activeBallsCount--;
     }
 
     private void RenderEnergeBallOnStart()
     {
-        ObjectPools.Instance.RenderObjectPoolsInParent(energeBall, maxEnergeBallAmount, this.transform);
+        ObjectPools.Instance.RenderObjectPoolsInParent(energeBall, maxEnergeBallAmount, default);
     }
 
     private Vector3 GetBallPos()
@@ -74,7 +81,7 @@ public class Accumulation : DisposableSkill
         Vector3 center = sourceCaster.skillController.skillCenterPoint.position;
         float xRange = center.x + xHalfBodySize;
         float yRange = center.y + yHalfBodySize;
-        float x = Random.Range(-xRange - 3, xRange + 3);
+        float x = Random.Range(xRange - 3, xRange + 3);
         float y = Random.Range(yRange + 2, yRange + 4);
         return new Vector3(x, y, 0);
     }

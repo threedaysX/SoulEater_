@@ -8,4 +8,14 @@ public class Liberation : DisposableSkill
     {
         
     }
+
+    private void GetAllProjectile()
+    {
+
+    }
+
+    private void LaunchAllProjectile()
+    {
+
+    }
 }

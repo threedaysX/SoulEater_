@@ -15,13 +15,6 @@ public class NaraCircleBurst : DisposableSkill
         });
     }
 
-    public override void OnTriggerEnter2D(Collider2D targetCol)
-    {
-        base.OnTriggerEnter2D(targetCol);
-
-        this.gameObject.SetActive(false);
-    }
-
     public override void GenerateSkill(Character character, Skill skill)
     {
         StartCoroutine(CheckExistState());
@@ -43,7 +36,7 @@ public class NaraCircleBurst : DisposableSkill
 
     private void CameraShakeWhenBurst()
     {
-        CameraShake.Instance.ShakeCamera(1f, 0.5f, 0.1f, false, 0f, true);
+        CameraControl.Shake.Instance.ShakeCamera(0.5f, 10f, 0.1f, false, 0f, true);
     }
 
     /// <summary>

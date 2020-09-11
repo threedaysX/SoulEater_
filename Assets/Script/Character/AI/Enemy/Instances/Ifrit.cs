@@ -125,12 +125,26 @@ public class Ifrit : BossModel
 
     public override void Die()
     {
-        CameraShake.Instance.ShakeCamera(1f, 4f, dieController.dieDissolveDuration);
+        CameraControl.Shake.Instance.ShakeCamera(1f, 4f, dieController.dieDissolveDuration);
         base.Die();
     }
 
     public override void OnRootStart()
     {
         // Trigger Some story.
+    }
+
+    protected override void CameraOpeningMove()
+    {
+        var vcamIfrit = CharacterVcamControl.Instance.ifrit.vcam;
+        var vcamPlayer = CharacterVcamControl.Instance.player.vcam;
+        var styleIfrit = Cinemachine.CinemachineBlendDefinition.Style.EaseIn;
+        var stylePlayer = Cinemachine.CinemachineBlendDefinition.Style.EaseOut;
+        CameraFollowSetting[] sets = new CameraFollowSetting[]
+        {
+            new CameraFollowSetting(vcamIfrit, styleIfrit, 2f, 0.5f, 0.2f, false, delegate { ImageEffectController.Instance.SetMotionBlur(1, 0.2f); }, ResetAiSwitchOn),
+            new CameraFollowSetting(vcamPlayer, stylePlayer, 0f, 0.5f, 0f, false, null, ImageEffectController.Instance.DisableMotionBlur)
+        };
+        CameraControl.Follow.Instance.AddSet(sets);
     }
 }

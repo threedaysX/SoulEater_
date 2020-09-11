@@ -858,7 +858,7 @@ public class OperationController : MonoBehaviour
     /// <param name="frame">目押的幀數</param>
     private float GetFrameTimeOffset(int frame)
     {
-        return Time.deltaTime * frame;
+        return Time.unscaledDeltaTime * frame;
     }
 
     private void OnDrawGizmos()
