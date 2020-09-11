@@ -43,7 +43,7 @@ public class Teleport : DisposableSkill
 
     private void TriggerMotionBlur()
     {
-        float blurDuration = 0.4f;
+        float blurDuration = 0.25f;
         var ec = ImageEffectController.Instance;
         ec.SetMotionBlur(1f, 0.2f);
         Counter.Instance.StartCountDown(blurDuration, false, null, delegate { ec.DisableMotionBlur(); });

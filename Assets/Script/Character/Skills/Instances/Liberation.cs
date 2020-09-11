@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class Liberation : DisposableSkill
 {
+    protected override void Start()
+    {
+        GetAllProjectile();
+    }
+
     protected override void AddAffectEvent()
     {
         
@@ -11,7 +16,7 @@ public class Liberation : DisposableSkill
 
     private void GetAllProjectile()
     {
-
+        var projectiles = ObjectPools.Instance.UnloadAll<Projectile>(sourceCaster.characterName);
     }
 
     private void LaunchAllProjectile()

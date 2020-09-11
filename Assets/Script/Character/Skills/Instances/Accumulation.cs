@@ -51,20 +51,20 @@ public class Accumulation : DisposableSkill
             return;
         }
         // Re-position energeBall.
-        EnergeBall ballObj = ObjectPools.Instance.GetObjectInPools<EnergeBall>(energeBall.name, GetBallPos(), default, true);
-        // Reload for sourceCaster used.
-        ObjectPools.Instance.Reload(ballObj.name, ballObj.gameObject, true, sourceCaster.characterName);
-        ballObj.lifeTime = 20f;
-        ballObj.ResetEnergeBallLifeTime(() => ReloadEnergeBall());
+        EnergeBall ball = ObjectPools.Instance.GetObjectInPools<EnergeBall>(energeBall.name, GetBallPos(), default, true);
+        // Reload [EnergeBall] for sourceCaster used.
+        ObjectPools.Instance.Reload(energeBall.name, ball, true, sourceCaster.characterName);
+        ball.lifeTime = 20f;
+        ball.ResetEnergeBallLifeTime(() => ReloadEnergeBall());
         activeBallsCount++;
     }
 
     private void ReloadEnergeBall()
     {
-        // Unload ball that bind with sourceCaster.
-        var ball = ObjectPools.Instance.Unload(energeBall.name, sourceCaster.characterName);
-        // Reload ball to public obj pools.
-        ObjectPools.Instance.Reload(energeBall.name, ball);
+        // Unload [EnergeBall] that bind with sourceCaster.
+        var ball = ObjectPools.Instance.Unload<EnergeBall>(energeBall.name, sourceCaster.characterName);
+        // Reload(reset) this ball to public obj pools.
+        ObjectPools.Instance.Reload(energeBall.name, ball.gameObject);
         activeBallsCount--;
     }
 
