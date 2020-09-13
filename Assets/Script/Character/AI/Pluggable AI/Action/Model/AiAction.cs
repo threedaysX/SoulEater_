@@ -76,12 +76,8 @@ public abstract class AiAction : AiHaviourBase
         }
         foreach (Judgement judje in judjements)
         {
-            if (judje == null)
-                continue;
-            // Reset
-            judje.GetCurrentAIHavior(ai);
             // 開始檢查該動作的各個觸發條件
-            judje.StartCheckActCondition();
+            judje.StartCheckActCondition(Ai);
             if (judje.CheckTrueConditionCount())
             {
                 // 將判斷後的權重設在動作權重上
@@ -98,7 +94,7 @@ public abstract class AiAction : AiHaviourBase
         DiffCount += diff;
     }
 
-    public void ResetActionSwitchOn()
+    public void ResetActionOn()
     {
         if (switchOnActionOnStart)
         {
@@ -139,4 +135,41 @@ public struct LinkedAction
     public bool ignoreJudgement;    // 無視連接動作的條件判斷
     public bool influenceWeight;    // 是否影響連接動作的權重
     public AiAction action;
+}
+
+/// <summary>
+/// AI行為判斷基礎。
+/// (每個)判斷含有單一 or 複合式條件。
+/// </summary>
+[System.Serializable]
+public struct Judgement
+{
+    public int actionWeightAfterJudge;
+    private int conditionTrueCount;
+
+    public JudgeCondition[] conditions;
+
+    public void StartCheckActCondition(AI Ai)
+    {
+        conditionTrueCount = 0;
+        foreach (JudgeCondition condition in conditions)
+        {
+            if (condition == null)
+                continue;
+            condition.GetCurrentAIHavior(Ai);
+            if (condition.CheckActConditionHaviour())
+            {
+                conditionTrueCount++;
+            }
+        }
+    }
+
+    public bool CheckTrueConditionCount()
+    {
+        if (conditionTrueCount == conditions.Length)
+        {
+            return true;
+        }
+        return false;
+    }
 }

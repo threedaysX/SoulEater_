@@ -4,6 +4,9 @@
 public class BasicMove : AiAction
 {
     public float basicMoveSpeed = 2.5f;
+
+    private Character character;
+
     public override bool StartActHaviour()
     {
         return Move();
@@ -11,14 +14,17 @@ public class BasicMove : AiAction
 
     private bool Move()
     {
-        if (!ai.move.CanDo)
+        if (character == null)
+            character = AI<Character>();
+
+        if (!character.move.CanDo)
             return false;
 
-        Vector3 chaseDirection = Vector3.Normalize(ai.ChaseTarget.position - ai.transform.position);
+        Vector3 chaseDirection = Vector3.Normalize(Ai.ChaseTarget.position - Ai.transform.position);
         chaseDirection.y = 0f;
         chaseDirection.z = 0f;
-        ai.transform.position += chaseDirection * basicMoveSpeed * ai.data.moveSpeed.Value * Time.deltaTime;
-        ai.operationController.StartMoveAnim(ai.transform.right.x);
+        Ai.transform.position += chaseDirection * basicMoveSpeed * character.data.moveSpeed.Value * Time.deltaTime;
+        character.operationController.StartMoveAnim(Ai.transform.right.x);
         return true;
     }
 }

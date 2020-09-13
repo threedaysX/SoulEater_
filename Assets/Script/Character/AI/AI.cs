@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class AI : Character
+[RequireComponent(typeof(DistanceDetect))]
+public class AI : MonoBehaviour, IAiBase, IAiActionBase
 {
     [Header("開始運作AI")]
     [SerializeField] private bool _switchOn = true;
@@ -35,6 +36,7 @@ public abstract class AI : Character
     private List<AiAction> actionToDoList = new List<AiAction>();
 
     [Header("偵測距離")]
+    public DistanceDetect detectControl;
     public float detectDistance;
     [Header("下次可行動時間")]
     private float nextActTimes = 0f;
@@ -49,33 +51,35 @@ public abstract class AI : Character
     private bool inCombatStateTrigger = false; // 是否進入戰鬥狀態
     private bool outOfCombatTrigger = false;
 
-    protected IFacement _facement;
+    public IFacement _facement;
 
     [HideInInspector] public Transform ChaseTarget { get; protected set; }
     [HideInInspector] public Transform LastChaseTarget { get; protected set; }
     [HideInInspector] public LayerMask playerLayer;
-    [HideInInspector] public DistanceDetect distanceDetect;
 
-    public virtual void Start()
+    /// <summary>
+    /// Call this when start.
+    /// </summary>
+    public virtual void OnStart()
     {
-        this.gameObject.AddComponent(typeof(DistanceDetect));
-        distanceDetect = GetComponent<DistanceDetect>();
         playerLayer = LayerMask.GetMask("Player");
         
         ReturnDefaultAction(true);
 
         foreach (AiAction action in actions)
         {
-            action.ResetActionSwitchOn();
+            action.ResetActionOn();
         }
     }
 
-    public virtual void Update()
+    /// <summary>
+    /// Call this update.
+    /// </summary>
+    public virtual void OnUpdate()
     {
         if (switchOnTrigger)
         {
-            ReturnDefaultAction();
-            switchOnTrigger = false;
+            ResetAiSwitchOn();
         }
         if (SwitchOn)
         {
@@ -305,6 +309,12 @@ public abstract class AI : Character
         ChaseTarget = target;
     }
 
+    public virtual void ResetAiSwitchOn()
+    {
+        ReturnDefaultAction();
+        switchOnTrigger = false;
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -312,3 +322,20 @@ public abstract class AI : Character
         Gizmos.DrawWireSphere(transform.position, detectDistance);
     }
 }
+
+public interface IAiActionBase
+{
+    void DoAction(AiAction action, bool influenceWeight);
+}
+
+public interface IAiBase
+{
+    void OnStart();
+    void OnUpdate();
+}
+
+public interface IFacement
+{
+    void FaceTarget(MonoBehaviour self, Transform target, bool force = false);
+}
+

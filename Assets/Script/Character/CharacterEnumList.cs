@@ -25,3 +25,11 @@ public enum ElementType
     Dark,
     Empty
 }
+
+public enum CharacterSize
+{
+    Bigger = 4,
+    Big = 3,
+    Normal = 2,
+    Small = 1
+}

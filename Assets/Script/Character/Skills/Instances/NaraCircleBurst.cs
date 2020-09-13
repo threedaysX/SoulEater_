@@ -8,21 +8,11 @@ public class NaraCircleBurst : DisposableSkill
 
     protected override void AddAffectEvent()
     {
-        hitAffect.AddListener(Ignite);
-    }
-
-    public override void OnTriggerEnter2D(Collider2D targetCol)
-    {
-        base.OnTriggerEnter2D(targetCol);
-
-        if (sourceCaster != null && !targetCol.CompareTag(sourceCaster.tag))
+        hitAffect.AddListener(delegate
         {
-            if (DamageTarget())
-            {
-                hitAffect.Invoke();
-            }
-            this.gameObject.SetActive(false);
-        }
+            Ignite();
+            DamageTarget();
+        });
     }
 
     public override void GenerateSkill(Character character, Skill skill)
@@ -46,7 +36,7 @@ public class NaraCircleBurst : DisposableSkill
 
     private void CameraShakeWhenBurst()
     {
-        CameraShake.Instance.ShakeCamera(1f, 0.5f, 0.1f, false, 0f, true);
+        CameraControl.Shake.Instance.ShakeCamera(0.5f, 10f, 0.1f, false, 0f, true);
     }
 
     /// <summary>

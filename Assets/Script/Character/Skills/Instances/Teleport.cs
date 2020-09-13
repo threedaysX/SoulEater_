@@ -8,6 +8,7 @@ public class Teleport : DisposableSkill
 
     protected override void AddAffectEvent()
     {
+        immediatelyAffect.AddListener(TriggerMotionBlur);
         immediatelyAffect.AddListener(TeleportToTargetBack);
         immediatelyAffect.AddListener(TimeSlow);
     }
@@ -38,5 +39,13 @@ public class Teleport : DisposableSkill
     private void TimeSlow()
     {
         TimeScaleController.Instance.DoSlowMotion(0.1f, 0f, timeSlowDuration);
+    }
+
+    private void TriggerMotionBlur()
+    {
+        float blurDuration = 0.25f;
+        var ec = ImageEffectController.Instance;
+        ec.SetMotionBlur(1f, 0.2f);
+        Counter.Instance.StartCountDown(blurDuration, false, null, delegate { ec.DisableMotionBlur(); });
     }
 }

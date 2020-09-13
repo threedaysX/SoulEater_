@@ -6,22 +6,26 @@ public class ShockWave : DisposableSkill
     [Header("衝擊擊退力道")]
     public float waveKnockBackForce;
 
-    public override void OnTriggerEnter2D(Collider2D targetCol)
-    {
-        base.OnTriggerEnter2D(targetCol);
-
-        if (!targetCol.CompareTag(sourceCaster.tag))
-        {
-            DamageTarget();
-            InvokeHitAffect();
-        }
-    }
-
     protected override void AddAffectEvent()
     {
-        hitAffect.AddListener(DebuffSlowDown);
-        hitAffect.AddListener(DebuffTired);
-        hitAffect.AddListener(KnockBackHitTarget);
+        hitAffect.AddListener(delegate
+        {
+            TriggerMotionBlur();
+            DebuffSlowDown();
+            DebuffTired();
+            DamageTarget();
+        });
+    }
+
+    public override void OnTriggerEnter2D(Collider2D col)
+    {
+        base.OnTriggerEnter2D(col);
+
+        if (CheckTargetCollision(col))
+        {
+            // Ignore immune use(still knock back).
+            KnockBackWinds();
+        }
     }
 
     public override void CastSkill()
@@ -47,7 +51,7 @@ public class ShockWave : DisposableSkill
         Debuff.Instance.Lame(target, 0.6f);
     }
 
-    private void KnockBackHitTarget()
+    private void KnockBackWinds()
     {
         KnockStunSystem targetKnock = target.GetComponent<KnockStunSystem>();
         float directionX = new Vector2(sourceCaster.transform.position.x - target.transform.position.x, 0).normalized.x;
@@ -59,5 +63,13 @@ public class ShockWave : DisposableSkill
         var bodyPosY = sourceCaster.transform.position.y + sourceCaster.GetComponent<SpriteRenderer>().bounds.size.y / 2 - 1f;
         castHintEffect.transform.position = new Vector2(sourceCaster.transform.position.x, bodyPosY);
         castHintEffect.Play(true);
+    }
+
+    private void TriggerMotionBlur()
+    {
+        float blurDuration = 0.2f;
+        var ec = ImageEffectController.Instance;
+        ec.SetMotionBlur(1f, 0.2f);
+        Counter.Instance.StartCountDown(blurDuration, false, null, delegate { ec.DisableMotionBlur(); });
     }
 }

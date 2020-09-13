@@ -52,10 +52,14 @@ public class SoulCharacter : Character
             ChnageLayer(soulParticle.gameObject, true, 1);
 
             pl.TriggerAttractorBurstEffect(duration);
-            CameraShake.Instance.ShakeCamera(4f, 4f, 0.2f, false, duration, true);
-            ZoomInSetting zoomInSetting = new ZoomInSetting { finalZoomSize = 5.6f, duration = duration - offset, startDelay = 0f };
-            ZoomInSetting zoomOutSetting = new ZoomInSetting { finalZoomSize = 6f, duration = 0.2f, startDelay = offset };
-            CinemachineCameraControl.Instance.ZoomInCamera(zoomInSetting, zoomOutSetting);
+            CameraControl.Shake.Instance.ShakeCamera(4f, 4f, 0.2f, false, duration, true);
+            ZoomInSetting[] zoomInSetting = new ZoomInSetting[]
+            {
+                new ZoomInSetting { finalZoomSize = 5.6f, duration = duration - offset, startDelay = 0f },
+                new ZoomInSetting { finalZoomSize = 6f, duration = 0.2f, startDelay = offset }
+            };
+
+            CameraControl.Zoom.Instance.AddSet(zoomInSetting);
         }
     }
 

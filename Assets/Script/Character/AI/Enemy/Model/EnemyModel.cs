@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 
-public abstract class EnemyModel : AI
+public abstract class EnemyModel : Character
 {
+    [Header("AI")]
+    public AI ai;
+
     [Header("階級")]
     public EnemyLevel enemyLevel;
 
@@ -9,19 +12,19 @@ public abstract class EnemyModel : AI
     public AudioClip preActSound;
     public ParticleSystem preActHint;
 
-    public override void Start()
+    public virtual void Start()
     {
-        base.Start();
+        ai.OnStart();
 
         tag = "Enemy";
         gameObject.layer = LayerMask.NameToLayer("Enemy");
     }
 
-    public override void Update()
+    public virtual void Update()
     {
         if (!AppControl.IsGamePaused())
         {
-            base.Update();
+            ai.OnUpdate();
         }
     }
     public override void LateUpdate()
@@ -30,14 +33,14 @@ public abstract class EnemyModel : AI
         ResetBarUI();
 
         // 外力因素影響會無法行動(異常狀態、使用技能等)
-        if (IsLockAction && canAction)
+        if (IsLockAction && ai.canAction)
         {
-            canAction = false;
+            ai.canAction = false;
         }
 
-        if (!IsLockAction && !canAction)
+        if (!IsLockAction && !ai.canAction)
         {
-            canAction = true;
+            ai.canAction = true;
         }
     }
 
@@ -48,6 +51,14 @@ public abstract class EnemyModel : AI
             EnemyUIControl.Instance.SetHealthUI(characterName, data.maxHealth.Value, CurrentHealth);
             isHealthDirty = false;
         }
+    }
+
+    protected virtual void ResetAiSwitchOn()
+    {
+        ai.ResetAiSwitchOn();
+        this.StopAllCoroutines();
+        this.operationController.InterruptAnimOperation();
+        this.LockOperation(LockType.All, false);
     }
 
     public override void Die()
@@ -90,8 +101,11 @@ public enum EnemyLevel
 
 public class HorizontalFacement : IFacement
 {
-    public void FaceTarget(Character self, Transform target, bool force = false)
+    private Character self;
+    public void FaceTarget(MonoBehaviour mono, Transform target, bool force = false)
     {
+        if (self == null)
+            self = mono.GetComponent<Character>();
         if ((target == null || !self.freeDirection.CanDo) && !force)
             return;
 

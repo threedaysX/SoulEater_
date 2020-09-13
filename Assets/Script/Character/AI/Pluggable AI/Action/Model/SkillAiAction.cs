@@ -5,6 +5,8 @@ public abstract class SkillAiAction : AiAction
     [Header("技能Prefab")]
     public Skill skillActionObject;
 
+    private Character character;
+
     public override bool StartActHaviour()
     {
         return TriggerSkill();
@@ -12,8 +14,10 @@ public abstract class SkillAiAction : AiAction
 
     protected virtual bool TriggerSkill()
     {
+        if (character == null)
+            character = AI<Character>();
         ApplySkillActionDelay();
-        return ai.UseSkill(skillActionObject);
+        return character.UseSkill(skillActionObject);
     }
 
     protected virtual void ApplySkillActionDelay()

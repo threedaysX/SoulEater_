@@ -7,16 +7,17 @@ public class CombatController : MonoBehaviour
     private Character character;
     public Transform lastAttackTarget;
     public Transform attackCenterPoint;
-    public ParticleSystem hitEffect;
-    public AttackHitboxList attackHitboxes;
+    [HideInInspector] public ParticleSystem hitEffect;
+    [HideInInspector] public AttackHitboxList attackHitboxes;
 
     [Header("擊退系統")]
     public float basicShakeCameraForce;
+    public float basicShakeCameraFrequency;
 
     [Header("命中檢查")]
-    public bool hasHit = false;  //AI用
-    public float hasHitInTime;  //AI用
-    public float takeHowMuchDamage;  //AI用
+    public bool hasHit = false;
+    public float hasHitInTime;
+    public float takeHowMuchDamage;
 
     [SerializeField] private float attackPointBasicRange = 1f;
 
@@ -50,7 +51,7 @@ public class CombatController : MonoBehaviour
                         float damage = DamageController.Instance.GetAttackDamage(character, enemyDetails, attackType, elementType, out bool isCritical);
                         DamageData data = new DamageData(character.gameObject, elementType, (int)damage, isCritical, damageDirectionX, character.data.weaponKnockBackForce);
                         enemyDetails.TakeDamage(data);
-                        CameraShake.Instance.ShakeCamera(basicShakeCameraForce * character.data.weaponKnockBackForce, 0.02f, 0.1f, false, 0f, true);
+                        CameraControl.Shake.Instance.ShakeCamera(basicShakeCameraForce * character.data.weaponKnockBackForce, basicShakeCameraFrequency, 0.1f, false, 0f, true);
                         character.DamageDealtSteal(damage, true);
                         TriggerHitEffect(target.transform);
                         attackSuccess = true;
@@ -111,8 +112,7 @@ public class CombatController : MonoBehaviour
 
     public void RenderHitEffect()
     {
-        var hitEffectObj = PrefabRenderer.Instance.RenderPrefab<ParticleSystem>(character.data.hitEffectPrefab, character.characterName + "_HitEffect", true);
-        hitEffect = hitEffectObj.GetComponent<ParticleSystem>();
+        hitEffect = PrefabRenderer.Instance.RenderPrefab<ParticleSystem>(character.data.hitEffectPrefab, character.characterName + "_HitEffect", true);
     }
 
     private Vector2 GetAttackPoint()

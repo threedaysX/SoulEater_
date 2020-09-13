@@ -6,6 +6,7 @@ public class BasicAttack : AiAction
     [Header("動作動畫")]
     public AnimationClip[] clips;
     private float animDelay;
+    private Character character;
 
     public override bool StartActHaviour()
     {
@@ -14,8 +15,10 @@ public class BasicAttack : AiAction
 
     private bool Attack()
     {
+        if (character == null)
+            character = AI<Character>();
         ApplyAttackAnimationDelay();
-        if (ai.StartAttack(AttackType.Attack, ai.data.attackElement))
+        if (character.StartAttack(AttackType.Attack, character.data.attackElement))
         {
             return true;
         }

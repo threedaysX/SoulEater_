@@ -19,14 +19,4 @@ public class Slow : DisposableSkill
         void remove() { speedstat.RemoveModifier(new StatModifier(0.5f, StatModType.PercentageTime, debuff)); }
         target.buffController.AddBuff(debuff, affect, remove, 4f);
     }
-
-    public override void OnTriggerEnter2D(Collider2D targetCol)
-    {
-        base.OnTriggerEnter2D(targetCol);
-
-        if (!targetCol.CompareTag(sourceCaster.tag))
-        {
-            InvokeHitAffect();
-        }
-    }
 }

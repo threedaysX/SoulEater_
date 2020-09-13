@@ -6,6 +6,7 @@ public class AppControl : Singleton<AppControl>
     public GameObject gamePauseBlocker;
     public static bool GamePaused { get; private set; }
     public static bool MenuPaused { get; private set; }
+    public static bool RunInBackground { get; private set; }
 
     private void Start()
     {
@@ -18,11 +19,12 @@ public class AppControl : Singleton<AppControl>
     public void SetAppRunInBackground(bool runInBackground)
     {
         Application.runInBackground = runInBackground;
+        RunInBackground = runInBackground;
     }
 
     public static bool IsGamePaused()
     {
-        return GamePaused || MenuPaused;
+        return (!RunInBackground && GamePaused) || MenuPaused;
     }
 
     public static void MenuPausedGame(bool paused)
@@ -35,10 +37,7 @@ public class AppControl : Singleton<AppControl>
         GamePaused = !hasFocus;
         if (on)
         {
-            if (GamePaused)
-                gamePauseBlocker.SetActive(true);
-            else
-                gamePauseBlocker.SetActive(false);
+            SetPauseTimeScale(GamePaused);
         }
     }
 
@@ -47,10 +46,13 @@ public class AppControl : Singleton<AppControl>
         GamePaused = pauseStatus;
         if (on)
         {
-            if (GamePaused)
-                gamePauseBlocker.SetActive(true);
-            else
-                gamePauseBlocker.SetActive(false);
+            SetPauseTimeScale(GamePaused);
         }
+    }
+
+    private void SetPauseTimeScale(bool pause)
+    {
+        TimeScaleController.Instance.FocusGame(!pause);
+        gamePauseBlocker.SetActive(pause);
     }
 }

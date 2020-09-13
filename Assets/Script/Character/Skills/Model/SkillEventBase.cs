@@ -37,7 +37,7 @@ public abstract class SkillEventBase : MonoBehaviour, ISkillGenerator, ISkillUse
     // 特效
     public ParticleSystem inUsingParticle;
 
-    protected virtual void Awake()
+    protected virtual void Start()
     {
         if (autoRenderCollider)
         {

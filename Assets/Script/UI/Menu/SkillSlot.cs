@@ -87,6 +87,9 @@ public class SkillSlot : ButtonSlotBase
 
     public override void ChangeSlot(ButtonSlotBase sourceSlot)
     {
+        if (sourceSlot == null)
+            return;
+
         SkillSlot sourceSkillSlot = sourceSlot.GetComponent<SkillSlot>();
         // Reset Icon Color.
         sourceSkillSlot.isIconColorResetTrigger = true;

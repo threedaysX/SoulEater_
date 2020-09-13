@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Accumulation : DisposableSkill
 {
@@ -9,7 +7,7 @@ public class Accumulation : DisposableSkill
     public float slowSelfValue = 20f;
     public float fieldDuration = 2f;
     public GameObject energeBall;
-    private List<GameObject> activeBalls = new List<GameObject>();
+    private int activeBallsCount;
 
     protected override void AddAffectEvent()
     {
@@ -17,8 +15,9 @@ public class Accumulation : DisposableSkill
         immediatelyAffect.AddListener(SlowSelf);
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
         // Render Objects with pools in parent.
         RenderEnergeBallOnStart();
     }
@@ -47,22 +46,31 @@ public class Accumulation : DisposableSkill
 
     private void GenerateEnergeBall()
     {
+        if (activeBallsCount == maxEnergeBallAmount)
+        {
+            return;
+        }
         // Re-position energeBall.
-        EnergeBall ballObj = ObjectPools.Instance.GetObjectInPools<EnergeBall>(energeBall.name, GetBallPos(), true);
-        ballObj.lifeTime = 20f;
-        ballObj.ResetEnergeBallLifeTime();
-        activeBalls.Add(ballObj.gameObject);
-        // Start to aim target or front side.
+        EnergeBall ball = ObjectPools.Instance.GetObjectInPools<EnergeBall>(energeBall.name, GetBallPos(), default, true);
+        // Reload [EnergeBall] for sourceCaster used.
+        ObjectPools.Instance.Reload(energeBall.name, ball, true, sourceCaster.characterName);
+        ball.lifeTime = 20f;
+        ball.ResetEnergeBallLifeTime(() => ReloadEnergeBall());
+        activeBallsCount++;
     }
 
-    private void ResetAllEnergeBall()
+    private void ReloadEnergeBall()
     {
-        ObjectPools.Instance.Reload(energeBall.name, activeBalls);
+        // Unload [EnergeBall] that bind with sourceCaster.
+        var ball = ObjectPools.Instance.Unload<EnergeBall>(energeBall.name, sourceCaster.characterName);
+        // Reload(reset) this ball to public obj pools.
+        ObjectPools.Instance.Reload(energeBall.name, ball.gameObject);
+        activeBallsCount--;
     }
 
     private void RenderEnergeBallOnStart()
     {
-        ObjectPools.Instance.RenderObjectPoolsInParent(energeBall, maxEnergeBallAmount, this.transform);
+        ObjectPools.Instance.RenderObjectPoolsInParent(energeBall, maxEnergeBallAmount, default);
     }
 
     private Vector3 GetBallPos()
@@ -73,7 +81,7 @@ public class Accumulation : DisposableSkill
         Vector3 center = sourceCaster.skillController.skillCenterPoint.position;
         float xRange = center.x + xHalfBodySize;
         float yRange = center.y + yHalfBodySize;
-        float x = Random.Range(-xRange - 3, xRange + 3);
+        float x = Random.Range(xRange - 3, xRange + 3);
         float y = Random.Range(yRange + 2, yRange + 4);
         return new Vector3(x, y, 0);
     }

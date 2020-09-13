@@ -34,6 +34,7 @@ public class AudioControl : Singleton<AudioControl>
 
     public void PlayMusic(AudioClip music)
     {
-        musicSoundAudio.PlayOneShot(music);
+        musicSoundAudio.clip = music;
+        musicSoundAudio.Play();
     }
 }

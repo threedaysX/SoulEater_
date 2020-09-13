@@ -56,6 +56,12 @@ public class SkillController : MonoBehaviour
         {
             character.operationController.StartUseSkillAnim(StartCastSkill(skill, totalCastTime, skillObj), StartUseSkill(skill, skillObj), totalCastTime, skill.duration);
         }
+#if UNITY_EDITOR
+        else
+        {
+            Debug.LogError("SkiilObj is null, dont forgot to add new skill in skillPools (for code 54 row use).");
+        }
+#endif
 
         this.lastSkill = skill;
         return true;

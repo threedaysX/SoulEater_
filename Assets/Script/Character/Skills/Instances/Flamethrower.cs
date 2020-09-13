@@ -9,38 +9,18 @@ public class Flamethrower : LastingSkill
     public ParticleSystem hintBeam;
     public string hintLineRenderAnimName;
 
-    public override void OnTriggerStay2D(Collider2D target)
-    {
-        base.OnTriggerStay2D(target);
-
-        #region 傷害階段
-        if (canTriggerSelf)
-        {
-            DamageTarget();
-        }
-        else
-        {
-            if (!target.CompareTag(sourceCaster.tag))
-            {
-                if (Time.time >= nextDamageTime)
-                {
-                    DamageTarget();
-                    InvokeHitAffect();
-                    nextDamageTime = Time.time + currentSkill.timesOfPerDamage;
-                }
-            }
-        }
-        #endregion
-    }
-
     protected override void AddAffectEvent()
     {
         immediatelyAffect.AddListener(LockDirectionTillEnd);
         immediatelyAffect.AddListener(KnockBackSelf);
         immediatelyAffect.AddListener(BuffFireResistance);
-        immediatelyAffect.AddListener(CameraShakeWhenTrigger);
-        hitAffect.AddListener(KnockBackEnemy);
-        hitAffect.AddListener(DebuffFireResistance);
+        hitAffect.AddListener(delegate
+        {
+            KnockBackEnemy();
+            DebuffFireResistance();
+            DamageTarget();
+            CameraShakeWhenTrigger();
+        });
     }
 
     public string buffName = "烈焰鎧甲";
@@ -116,7 +96,7 @@ public class Flamethrower : LastingSkill
 
     private void CameraShakeWhenTrigger()
     {
-        CameraShake.Instance.ShakeCamera(0.8f, 1f, 3f, false, 0f, true);
+        CameraControl.Shake.Instance.ShakeCamera(0.8f, 5f, currentSkill.timesOfPerDamage / 2, false, 0f, true);
     }
 
     private void RenderHint()

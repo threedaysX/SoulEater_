@@ -1,0 +1,92 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a2c44ff9a5d9fd4baefebf89b9e4601, type: 3}
+  m_Name: Ifrit_FireBall
+  m_EditorClassIdentifier: 
+<<<<<<< HEAD:Assets/Reference/SO/Skills/Ifrit/FireBall.asset
+  icon: {fileID: 7804807344221744696, guid: e8b178aaa6408244db2b5a54a345bb4f, type: 3}
+=======
+  icon: {fileID: -28914104903909939, guid: 49713ba899ab7c641a768131b559acc0, type: 3}
+>>>>>>> d3d7d58f2569b1f73a8be9b1f49f9f10b0b523e0:Assets/Reference/SO/Skills/Ifrit/Ifrit_FireBall.asset
+  attributes: 
+  skillType: 1
+  elementType: 1
+  skillName: "\u706B\u7403"
+  description: "\u65B0\u7248"
+  centerPositionOffset: 0
+  range:
+    BaseValue: 8
+    AdditionalValue: 0
+    FinalValue: 8
+    ForceValue: 0
+    toForceChangeValue: 0
+    modifiers: []
+  cost:
+    BaseValue: 2
+    AdditionalValue: 0
+    FinalValue: 2
+    ForceValue: 0
+    toForceChangeValue: 0
+    modifiers: []
+  costType: 1
+  damageMagnification:
+    BaseValue: 150
+    AdditionalValue: 0
+    FinalValue: 150
+    ForceValue: 0
+    toForceChangeValue: 0
+    modifiers: []
+  damageHitTimes:
+    BaseValue: 0
+    AdditionalValue: 0
+    FinalValue: 0
+    ForceValue: 0
+    toForceChangeValue: 0
+    modifiers: []
+  timesOfPerDamage: 1
+  castTime:
+    BaseValue: 0.3
+    AdditionalValue: 0
+    FinalValue: 0.3
+    ForceValue: 0
+    toForceChangeValue: 0
+    modifiers: []
+  fixedCastTime:
+    BaseValue: 0
+    AdditionalValue: 0
+    FinalValue: 0
+    ForceValue: 0
+    toForceChangeValue: 0
+    modifiers: []
+  coolDown:
+    BaseValue: 4
+    AdditionalValue: 0
+    FinalValue: 4
+    ForceValue: 0
+    toForceChangeValue: 0
+    modifiers: []
+  trueCoolDown: 0
+  coolDownTimer: 0
+  cooling: 0
+  coolDownType: 0
+  duration: 0
+<<<<<<< HEAD:Assets/Reference/SO/Skills/Ifrit/FireBall.asset
+  prefab: {fileID: 4201699930665011975, guid: 500af1f638666ae4b916f7136c1b13c9, type: 3}
+=======
+  prefab: {fileID: 8065508106092834065, guid: b5a2b2673e09d514c887bfb5dd9cb5aa, type: 3}
+>>>>>>> d3d7d58f2569b1f73a8be9b1f49f9f10b0b523e0:Assets/Reference/SO/Skills/Ifrit/Ifrit_FireBall.asset
+  immediatelyEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  hitEvent:
+    m_PersistentCalls:
+      m_Calls: []

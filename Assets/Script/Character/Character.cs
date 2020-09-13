@@ -369,7 +369,7 @@ public class Character : MonoBehaviour
     /// 一次調整所有行動 (用在擊暈等重大影響的異常or特定動作，表示在此影響結束前，不得進行其他動作)
     /// </summary>
     /// <param name="islock">若True，代表鎖定所有行動，反之則恢復正常行動</param>
-    public void LockOperation(LockType lockType, bool islock, bool ignoreTimeScale = false, float duration = 0)
+    public void LockOperation(LockType lockType, bool islock, bool ignoreTimeScale = false, float duration = -1)
     {
         if (islock)
         {

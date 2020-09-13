@@ -31,15 +31,17 @@ public class BasicOperation
         }
     }
 
-    public void UnLock(LockType lockType = LockType.@Ignore)
+    public void UnLock(LockType lockType = LockType.All)
     {
-        if (lockType == LockType.@Ignore)
-        {
-            CanDo = true;
-            return;
-        }
         if (locks == null)
             locks = new Dictionary<LockType, LockData>();
+
+        if (lockType == LockType.All)
+        {
+            CanDo = true;
+            locks.Clear();
+            return;
+        }
 
         if (locks.ContainsKey(lockType))
         {
@@ -75,7 +77,7 @@ public enum BasicOperationType
 
 public enum LockType 
 {
-    @Ignore,
+    All,
     OperationAction,
     SkillAction,
     Stun,

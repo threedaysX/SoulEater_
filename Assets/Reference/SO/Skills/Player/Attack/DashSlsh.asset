@@ -72,10 +72,10 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   trueCoolDown: 5.52
-  coolDownTimer: 2.0563295
+  coolDownTimer: 2.5971904
   cooling: 1
   coolDownType: 1
-  duration: 0.8
+  duration: 0.6
   prefab: {fileID: 4264536277670069577, guid: a42cd9ada3057dc489e69140f3653445, type: 3}
   immediatelyEvent:
     m_PersistentCalls:
