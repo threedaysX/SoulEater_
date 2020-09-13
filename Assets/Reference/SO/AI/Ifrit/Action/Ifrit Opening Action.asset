@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Ifrit Opening Action
   m_EditorClassIdentifier: 
   on: 1
+  switchOnActionOnStart: 1
   currentActionWeight: -901
   originalActionWeight: 99
   offsetActionDelay: 0

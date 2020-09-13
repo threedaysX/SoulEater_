@@ -322,3 +322,20 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
         Gizmos.DrawWireSphere(transform.position, detectDistance);
     }
 }
+
+public interface IAiActionBase
+{
+    void DoAction(AiAction action, bool influenceWeight);
+}
+
+public interface IAiBase
+{
+    void OnStart();
+    void OnUpdate();
+}
+
+public interface IFacement
+{
+    void FaceTarget(MonoBehaviour self, Transform target, bool force = false);
+}
+

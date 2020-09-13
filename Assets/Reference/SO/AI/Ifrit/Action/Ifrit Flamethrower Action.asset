@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a74d3ee2742de8419b79618835c7def, type: 3}
   m_Name: Ifrit Flamethrower Action
   m_EditorClassIdentifier: 
+  on: 1
+  switchOnActionOnStart: 1
   currentActionWeight: 8
-  canAct: 0
   originalActionWeight: 6
   offsetActionDelay: 0.4
   additionActionDelay: 2.2
@@ -22,10 +23,25 @@ MonoBehaviour:
   _diffCount: 2
   actionType: 5
   judjements:
-  - {fileID: 11400000, guid: 18a0505d2e481654dad8c844f6485a50, type: 2}
-  - {fileID: 11400000, guid: daf9b1aa5a6696f4389373f61591302e, type: 2}
-  - {fileID: 11400000, guid: ca392c34e14de2b47985842d170bff6c, type: 2}
-  linkedActionDelay: 0
-  ignoreLinkedActionJudgement: 0
-  linkedAction: {fileID: 0}
+  - actionWeightAfterJudge: 10
+    conditionTrueCount: 0
+    conditions:
+    - {fileID: 11400000, guid: 99c6da398197b5241972189fd2b7f102, type: 2}
+    - {fileID: 11400000, guid: 4c438329aa0aa4141ae12dcb7867639d, type: 2}
+  - actionWeightAfterJudge: 6
+    conditionTrueCount: 0
+    conditions:
+    - {fileID: 11400000, guid: 99c6da398197b5241972189fd2b7f102, type: 2}
+    - {fileID: 11400000, guid: 031c217add8bcc84f99a8fc60e26d39e, type: 2}
+  - actionWeightAfterJudge: 9
+    conditionTrueCount: 0
+    conditions:
+    - {fileID: 11400000, guid: 99c6da398197b5241972189fd2b7f102, type: 2}
+    - {fileID: 11400000, guid: bb18838961d3c0845b4338c9ba3ed6d4, type: 2}
+    - {fileID: 11400000, guid: f906c4232434d0f47b534b256e23323d, type: 2}
+  linkedAction:
+    delay: 0
+    ignoreJudgement: 0
+    influenceWeight: 0
+    action: {fileID: 0}
   skillActionObject: {fileID: 11400000, guid: 4a6746252b787b446a98a7062845f160, type: 2}

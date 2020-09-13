@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: efdd9154f6146e848a060cb9de2c36ec, type: 3}
   m_Name: Ifrit NaraBurst Action
   m_EditorClassIdentifier: 
+  on: 1
+  switchOnActionOnStart: 1
   currentActionWeight: 6
-  canAct: 0
   originalActionWeight: 6
   offsetActionDelay: 0.4
   additionActionDelay: 2.4
@@ -22,10 +23,20 @@ MonoBehaviour:
   _diffCount: 0
   actionType: 5
   judjements:
-  - {fileID: 11400000, guid: cfaae396b8725e849bf6306bbce15876, type: 2}
-  - {fileID: 11400000, guid: c429d0e467d6cfa4fb56ff9c404db71b, type: 2}
-  - {fileID: 11400000, guid: 3aa1b25840b3bc24e8b22c73c954d87b, type: 2}
-  linkedActionDelay: 0
-  ignoreLinkedActionJudgement: 0
-  linkedAction: {fileID: 0}
+  - actionWeightAfterJudge: 9
+    conditions:
+    - {fileID: 11400000, guid: 0dad0486a9915c747b4b26991dc4b077, type: 2}
+  - actionWeightAfterJudge: 6
+    conditions:
+    - {fileID: 11400000, guid: 7eb3b37277d37de469b837a216a8f9df, type: 2}
+    - {fileID: 11400000, guid: 2483b5169b8f89a4bb63d6af443a77bd, type: 2}
+  - actionWeightAfterJudge: 8
+    conditions:
+    - {fileID: 11400000, guid: b34cf2400dd3c534ebd6eca1d50ff413, type: 2}
+    - {fileID: 11400000, guid: 4c438329aa0aa4141ae12dcb7867639d, type: 2}
+  linkedAction:
+    delay: 0
+    ignoreJudgement: 0
+    influenceWeight: 0
+    action: {fileID: 0}
   skillActionObject: {fileID: 11400000, guid: bcc7275804eb4e4409b42ed844f35cd0, type: 2}

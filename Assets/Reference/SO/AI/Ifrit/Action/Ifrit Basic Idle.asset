@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fa6f584dc4d66449850d5b72aef1b1c, type: 3}
   m_Name: Ifrit Basic Idle
   m_EditorClassIdentifier: 
+  on: 1
+  switchOnActionOnStart: 1
   currentActionWeight: 0
-  canAct: 0
   originalActionWeight: 0
   offsetActionDelay: 0
   additionActionDelay: 0
@@ -22,8 +23,13 @@ MonoBehaviour:
   _diffCount: 0
   actionType: 0
   judjements:
-  - {fileID: 11400000, guid: cc2c8564763584148a1f7b72d27ebe55, type: 2}
-  - {fileID: 11400000, guid: 656b11acf946680419418bd855cbcdfc, type: 2}
-  linkedActionDelay: 0
-  ignoreLinkedActionJudgement: 0
-  linkedAction: {fileID: 0}
+  - actionWeightAfterJudge: 0
+    conditionTrueCount: 0
+    conditions:
+    - {fileID: 11400000, guid: 6383084489b42b041a3935a0ae88b820, type: 2}
+    - {fileID: 11400000, guid: 5d6ce5c5558f6da4ba15da4db8296d29, type: 2}
+  linkedAction:
+    delay: 0
+    ignoreJudgement: 0
+    influenceWeight: 0
+    action: {fileID: 0}
