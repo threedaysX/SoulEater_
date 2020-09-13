@@ -19,7 +19,7 @@ public class ButtonEvents : Singleton<ButtonEvents>
         // then click any key to re-select last button (except mouse click).
         if (deselectButtonTrigger && GetAnyKeyDown(false))
         {
-            selectedButton.Select();
+            selectedButton?.Select();
             deselectButtonTrigger = false;
         }
 
