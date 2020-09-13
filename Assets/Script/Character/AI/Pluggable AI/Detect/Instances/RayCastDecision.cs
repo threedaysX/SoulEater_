@@ -12,10 +12,10 @@ public class RayCastDecision : Detect
 
     private bool RayCast()
     {
-        Vector2 start = new Vector2(ai.transform.position.x - ai.detectDistance, ai.transform.position.y);
-        Vector2 end = new Vector2(ai.transform.position.x + ai.detectDistance, ai.transform.position.y);
+        Vector2 start = new Vector2(Ai.transform.position.x - Ai.detectDistance, Ai.transform.position.y);
+        Vector2 end = new Vector2(Ai.transform.position.x + Ai.detectDistance, Ai.transform.position.y);
 
-        RaycastHit2D hit = Physics2D.Linecast(start, end, ai.playerLayer);
+        RaycastHit2D hit = Physics2D.Linecast(start, end, Ai.playerLayer);
         Debug.DrawLine(start, end, Color.green);
 
         if (!hit)
@@ -24,7 +24,7 @@ public class RayCastDecision : Detect
         }
         else if (hit.collider.CompareTag("Player"))
         {
-            ai.SetChaseTarget(hit.transform);
+            Ai.SetChaseTarget(hit.transform);
             return true;
         }
         return false;

@@ -2,5 +2,5 @@
 
 public interface IFacement
 {
-    void FaceTarget(Character self, Transform target, bool force = false);
+    void FaceTarget(MonoBehaviour self, Transform target, bool force = false);
 }

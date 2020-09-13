@@ -17,9 +17,9 @@ public class CheckLastAction : JudgeCondition
     private bool LastAction()
     {
         bool isTargetAction = false;
-        if(ai.lastAction != null)
+        if(Ai.lastAction != null)
         {
-            if (ai.lastAction == lastAction) 
+            if (Ai.lastAction == lastAction) 
             {
                 isTargetAction = true;
             }

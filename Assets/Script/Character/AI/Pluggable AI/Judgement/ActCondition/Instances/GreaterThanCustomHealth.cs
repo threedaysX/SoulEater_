@@ -5,6 +5,9 @@ public class GreaterThanCustomHealth : JudgeCondition
 {
     [Range(0, 100)]
     public float healthPercentageToCheck;
+
+    private Character character;
+
     public override bool CheckActConditionHaviour()
     {
         return CheckIfHealthy();
@@ -12,8 +15,11 @@ public class GreaterThanCustomHealth : JudgeCondition
 
     private bool CheckIfHealthy()
     {
+        if (character == null)
+            character = AI<Character>();
+
         //healthPercentage
-        if ((ai.CurrentHealth / ai.data.maxHealth.Value) * 100 > healthPercentageToCheck)
+        if ((character.CurrentHealth / character.data.maxHealth.Value) * 100 > healthPercentageToCheck)
         {
             return true;
         }

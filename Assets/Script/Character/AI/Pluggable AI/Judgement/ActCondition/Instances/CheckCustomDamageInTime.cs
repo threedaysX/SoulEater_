@@ -7,6 +7,9 @@ public class CheckCustomDamageInTime : JudgeCondition
     public float custumDamage;
     [Header("幾秒內")]
     public float damageInTime;
+
+    private Character character;
+
     public override bool CheckActConditionHaviour()
     {
         return HasDowned();
@@ -14,13 +17,13 @@ public class CheckCustomDamageInTime : JudgeCondition
 
     private bool HasDowned()
     {
-        if (ai != null)
+        if (character == null)
+            character = AI<Character>();
+
+        character.combatController.hasHitInTime = damageInTime;
+        if ((character.combatController.takeHowMuchDamage / character.data.maxHealth.Value) * 100 >= custumDamage)
         {
-            ai.combatController.hasHitInTime = damageInTime;
-            if ((ai.combatController.takeHowMuchDamage / ai.data.maxHealth.Value) * 100 >= custumDamage)
-            {
-                return true;
-            }
+            return true;
         }
 
         return false;

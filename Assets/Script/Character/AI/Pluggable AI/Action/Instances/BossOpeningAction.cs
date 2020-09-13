@@ -3,6 +3,8 @@
 [CreateAssetMenu(menuName = "Character/AI/Action/Boss/OpeningAction")]
 public class BossOpeningAction : AiAction
 {
+    private Character character;
+
     public override bool StartActHaviour()
     {
         return StartBossOpeningAction();
@@ -10,7 +12,9 @@ public class BossOpeningAction : AiAction
 
     private bool StartBossOpeningAction()
     {
-        float duration = ai.GetComponent<IBossOpeningEvent>().StartOpeningAction();
+        if (character == null)
+            character = AI<Character>();
+        float duration = character.GetComponent<IBossOpeningEvent>().StartOpeningAction();
         ApplyActionDelay(duration);
         // Just do this action once.
         SetAiActionSwitchOn(false);

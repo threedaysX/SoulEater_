@@ -3,6 +3,8 @@
 [CreateAssetMenu(menuName = "Character/AI/JudgeCondition/OutOfAttackRange")]
 public class OutOfAttackRange : JudgeCondition
 {
+    private Character character;
+
     public override bool CheckActConditionHaviour()
     {
         return CheckFarDistance();
@@ -10,10 +12,12 @@ public class OutOfAttackRange : JudgeCondition
 
     private bool CheckFarDistance()
     {
-        if (ai.ChaseTarget != null)
+        if (character == null)
+            character = AI<Character>();
+        if (Ai.ChaseTarget != null)
         {
             // 若在攻擊距離外
-            if ((ai.ChaseTarget.position - ai.transform.position).sqrMagnitude >= ai.data.attackRange.Value * ai.data.attackRange.Value)
+            if ((Ai.ChaseTarget.position - Ai.transform.position).sqrMagnitude >= character.data.attackRange.Value * character.data.attackRange.Value)
             {
                 return true;
             }

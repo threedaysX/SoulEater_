@@ -78,7 +78,7 @@ public abstract class BossModel : EnemyModel, IBossOpeningEvent, IBossRootEvemt
         highlightObjs.Add(this.gameObject);
         FadeScreen.Instance.HighlightObjects(0.4f, highlightObjs.ToArray());
 
-        _facement.FaceTarget(this, ChaseTarget, true);
+        ai._facement.FaceTarget(this, ai.ChaseTarget, true);
 
         startDie = true;
     }

@@ -10,7 +10,7 @@ public class OverlapCircleDecision : Detect
 
     private bool OverlapCircle()
     {
-        Collider2D col = Physics2D.OverlapCircle(ai.transform.position, ai.detectDistance, ai.playerLayer);
+        Collider2D col = Physics2D.OverlapCircle(Ai.transform.position, Ai.detectDistance, Ai.playerLayer);
 
         if (!col)
         {
@@ -18,7 +18,7 @@ public class OverlapCircleDecision : Detect
         }
         else if (col.CompareTag("Player"))
         {
-            ai.SetChaseTarget(col.transform);
+            Ai.SetChaseTarget(col.transform);
             return true;
         }
         return false;

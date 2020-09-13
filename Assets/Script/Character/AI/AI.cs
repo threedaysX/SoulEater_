@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class AI : Character
+[RequireComponent(typeof(DistanceDetect))]
+public class AI : MonoBehaviour, IAiBase, IAiActionBase
 {
     [Header("開始運作AI")]
     [SerializeField] private bool _switchOn = true;
@@ -50,13 +51,16 @@ public abstract class AI : Character
     private bool inCombatStateTrigger = false; // 是否進入戰鬥狀態
     private bool outOfCombatTrigger = false;
 
-    protected IFacement _facement;
+    public IFacement _facement;
 
     [HideInInspector] public Transform ChaseTarget { get; protected set; }
     [HideInInspector] public Transform LastChaseTarget { get; protected set; }
     [HideInInspector] public LayerMask playerLayer;
 
-    public virtual void Start()
+    /// <summary>
+    /// Call this when start.
+    /// </summary>
+    public virtual void OnStart()
     {
         playerLayer = LayerMask.GetMask("Player");
         
@@ -68,7 +72,10 @@ public abstract class AI : Character
         }
     }
 
-    public virtual void Update()
+    /// <summary>
+    /// Call this update.
+    /// </summary>
+    public virtual void OnUpdate()
     {
         if (switchOnTrigger)
         {
@@ -302,7 +309,7 @@ public abstract class AI : Character
         ChaseTarget = target;
     }
 
-    protected virtual void ResetAiSwitchOn()
+    public virtual void ResetAiSwitchOn()
     {
         ReturnDefaultAction();
         switchOnTrigger = false;

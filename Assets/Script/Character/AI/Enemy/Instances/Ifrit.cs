@@ -37,7 +37,7 @@ public class Ifrit : BossModel
     private void ResetStats()
     {
         healthUI = EnemyUIControl.Instance.healthWhite.GetComponent<UIShake>();
-        _facement = new HorizontalFacement();
+        ai._facement = new HorizontalFacement();
         SetEnemyLevel(EnemyLevel.Boss);
         ResetFlamethrowerData();
         ForceAdjustAttackDelay();

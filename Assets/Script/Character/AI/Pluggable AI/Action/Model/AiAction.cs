@@ -79,7 +79,7 @@ public abstract class AiAction : AiHaviourBase
             if (judje == null)
                 continue;
             // Reset
-            judje.GetCurrentAIHavior(ai);
+            judje.GetCurrentAIHavior(Ai);
             // 開始檢查該動作的各個觸發條件
             judje.StartCheckActCondition();
             if (judje.CheckTrueConditionCount())

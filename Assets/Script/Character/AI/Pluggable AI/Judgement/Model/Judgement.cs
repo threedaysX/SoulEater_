@@ -21,7 +21,7 @@ public class Judgement : AiHaviourBase
         {
             if (condition == null)
                 continue;
-            condition.GetCurrentAIHavior(ai);
+            condition.GetCurrentAIHavior(Ai);
             if (condition.CheckActConditionHaviour())
             {
                 conditionTrueCount++;

@@ -5,12 +5,15 @@ public class CheckHitsInTime : JudgeCondition
 {
     [Header("在幾秒內有受傷")]
     public float customTime;
+
+    private Character character;
+
     public override bool CheckActConditionHaviour()
     {
-        if (ai == null)
-            return false;
+        if (character == null)
+            character = AI<Character>();
 
-        ai.combatController.hasHitInTime = customTime;
-        return ai.combatController.hasHit;
+        character.combatController.hasHitInTime = customTime;
+        return character.combatController.hasHit;
     }
 }
