@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a2c44ff9a5d9fd4baefebf89b9e4601, type: 3}
   m_Name: FireBall
   m_EditorClassIdentifier: 
-  icon: {fileID: -28914104903909939, guid: 49713ba899ab7c641a768131b559acc0, type: 3}
+  icon: {fileID: 7804807344221744696, guid: e8b178aaa6408244db2b5a54a345bb4f, type: 3}
+  attributes: 
   skillType: 1
   elementType: 1
   skillName: "\u706B\u7403"
-  description: "\u5411\u524D\u65B9\u6295\u5C04\u51FA\u4E00\u500B\u706B\u7403\uFF0C\u4E26\u5C0D\u64CA\u4E2D\u7684\u76EE\u6A19\u9020\u6210\u3010\u71C3\u71D2\u3011\u6548\u679C\u3002"
+  description: "\u65B0\u7248"
   centerPositionOffset: 0
   range:
     BaseValue: 8
@@ -40,6 +41,14 @@ MonoBehaviour:
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
+  damageHitTimes:
+    BaseValue: 0
+    AdditionalValue: 0
+    FinalValue: 0
+    ForceValue: 0
+    toForceChangeValue: 0
+    modifiers: []
+  timesOfPerDamage: 1
   castTime:
     BaseValue: 0.3
     AdditionalValue: 0
@@ -61,9 +70,15 @@ MonoBehaviour:
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
-  trueCoolDown: 3.68
+  trueCoolDown: 0
   coolDownTimer: 0
   cooling: 0
-  timesOfPerDamage: 1
+  coolDownType: 0
   duration: 0
-  prefab: {fileID: 8065508106092834065, guid: b5a2b2673e09d514c887bfb5dd9cb5aa, type: 3}
+  prefab: {fileID: 4201699930665011975, guid: 500af1f638666ae4b916f7136c1b13c9, type: 3}
+  immediatelyEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  hitEvent:
+    m_PersistentCalls:
+      m_Calls: []

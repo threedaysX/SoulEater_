@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4521404770085940}
   - component: {fileID: 198321560017527566}
   - component: {fileID: 199049106770456860}
+  - component: {fileID: 6568996542431282902}
   m_Layer: 0
   m_Name: Burning_Base
   m_TagString: Untagged
@@ -26,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1253142483436318}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 1.5644469, y: -4.176421, z: -0.7966013}
+  m_LocalPosition: {x: 1.5644469, y: -4.176421, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4175407219268534}
@@ -4816,6 +4817,18 @@ ParticleSystemRenderer:
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
   m_MaskInteraction: 0
+--- !u!114 &6568996542431282902
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1253142483436318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efa79df65101f054a82ad967393e6c3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1652784949999524
 GameObject:
   m_ObjectHideFlags: 0

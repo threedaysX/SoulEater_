@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3998346826772956421
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3998346826772956418}
+  - component: {fileID: 4493163736306721482}
+  m_Layer: 0
+  m_Name: Meteorite
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3998346826772956418
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3998346826772956421}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -392.67, y: -248.51143, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4493163736306721482
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3998346826772956421}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09832b36fdd031f4db2748898c86326b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoRenderCollider: 1
+  canTriggerSelf: 0
+  immediatelyAffect:
+    m_PersistentCalls:
+      m_Calls: []
+  hitAffect:
+    m_PersistentCalls:
+      m_Calls: []
+  inRenderSound: {fileID: 0}
+  inCastSound: {fileID: 0}
+  inUsingSound: {fileID: 0}
+  inUsingParticle: {fileID: 0}
+  igniteDuration: 3
+  projectile: {fileID: 7912611488451703250, guid: ba6b773708f37954884ba3cb90042c7f,
+    type: 3}
+  projectileSetting:
+    initialPosition: {fileID: 0}
+    amount: 1
+    restrictAngle: 0
+    angleOffset: 135
+    shootDelay: 0
+  projectileDirectSetting:
+    moveSpeed: 3
+    duration: 5
+    freeFlyDuration: 0
+    angleIncrement: 0
+    target: {fileID: 0}
+    elementType: 1
+    initialAngleArray: []
+    initialAngle: 0
+    sourceCaster: {fileID: 0}
