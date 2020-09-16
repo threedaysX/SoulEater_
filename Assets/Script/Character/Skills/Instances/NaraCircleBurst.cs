@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class NaraCircleBurst : DisposableSkill
 {
+    public ParticleSystem hint;
     public NaraCircleBurstData data;
     public bool isBursted;
 
@@ -19,13 +20,19 @@ public class NaraCircleBurst : DisposableSkill
     {
         StartCoroutine(CheckExistState());
         base.GenerateSkill(character, skill);
+        StartCoroutine(BurstWait());
+    }
+
+    private IEnumerator BurstWait()
+    {
+        yield return new WaitForSeconds(hint.main.startLifetime.constant);
+        UseSkill();
     }
 
     public override void UseSkill()
     {
         isBursted = true;
         CameraShakeWhenBurst();
-        StartCoroutine(SetActiveAfterSkillDone(0.3f));
         base.UseSkill();
     }
 

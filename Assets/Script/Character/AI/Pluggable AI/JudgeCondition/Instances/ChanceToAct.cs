@@ -12,7 +12,7 @@ public class ChanceToAct : JudgeCondition
 
     private bool CheckChance()
     {
-        if(Random.Range(0, 100) >= chanceToAct)
+        if (Random.Range(0, 100) <= chanceToAct)
         {
             return true;
         }

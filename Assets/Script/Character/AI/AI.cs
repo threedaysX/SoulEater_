@@ -55,14 +55,14 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
 
     [HideInInspector] public Transform ChaseTarget { get; protected set; }
     [HideInInspector] public Transform LastChaseTarget { get; protected set; }
-    [HideInInspector] public LayerMask playerLayer;
+    [HideInInspector] public LayerMask PlayerLayer { get; protected set; }
 
     /// <summary>
     /// Call this when start.
     /// </summary>
     public virtual void OnStart()
     {
-        playerLayer = LayerMask.GetMask("Player");
+        PlayerLayer = LayerMask.GetMask("Player");
         
         ReturnDefaultAction(true);
 
@@ -175,6 +175,8 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
         {
             DoAction(linkedAction.action, linkedAction.influenceWeight);
         }
+        // Reset linked action.
+        linkedAction.action = null;
     }
 
     private void DoActions()
@@ -229,21 +231,34 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
         DoAction(action, true);
     }
 
+    int count = 0;
     /// <summary>
     /// 動作執行
     /// </summary>
     /// <param name="action">要執行的動作</param>
     public void DoAction(AiAction action, bool influenceWeight)
     {
+        if (action.beforeActionEvent != null && action.beforeActionEvent.GetPersistentEventCount() > 0)
+        {
+            action.beforeActionEvent.Invoke();
+        }
+        if (action.beforeActionAddEvent != null && action.beforeActionAddEvent.GetPersistentEventCount() > 0)
+        {
+            action.beforeActionAddEvent.Invoke();
+            action.beforeActionAddEvent.RemoveAllListeners();
+        }
+
+        // Start Action
         lastActionSuccess = action.StartActHaviour();
-        lastAction = action;
-        linkedAction = action.linkedAction;
 
         if (lastActionSuccess)
         {
-            // 本次動作的行為延遲
+            lastAction = action;
+            linkedAction = action.linkedAction;
+            // Reset action delay.
             ResetNextActTimes(action);
         }
+        Debug.Log("AAAA    " + (count++) + " CC             " + nextActTimes + "   BB    " + action);
 
         if (influenceWeight)
         {

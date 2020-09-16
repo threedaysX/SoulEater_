@@ -14,27 +14,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   on: 1
   switchOnActionOnStart: 1
-  currentActionWeight: 6
+  currentActionWeight: 4
   originalActionWeight: 6
   offsetActionDelay: 0.8
-  additionActionDelay: 0.8
+  additionActionDelay: 1.2
   minusWeightAmountWhenNotSuccess: 2
   minusWeightAmountAfterAction: 1
-  _diffCount: 0
+  beforeActionEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  beforeActionAddEvent:
+    m_PersistentCalls:
+      m_Calls: []
   actionType: 4
-  judjements:
-  - actionWeightAfterJudge: 9
-    conditions:
-    - {fileID: 11400000, guid: 819e1468151e5b94f8c70c5fb00e82e9, type: 2}
-    - {fileID: 11400000, guid: 6a7e0346b0ddcc0419c7605e9cdd086b, type: 2}
-    - {fileID: 11400000, guid: bb18838961d3c0845b4338c9ba3ed6d4, type: 2}
-  - actionWeightAfterJudge: 7
-    conditions:
-    - {fileID: 11400000, guid: 819e1468151e5b94f8c70c5fb00e82e9, type: 2}
-    - {fileID: 11400000, guid: 4c438329aa0aa4141ae12dcb7867639d, type: 2}
+  judgeSets:
+  - additionalBeforeActionEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    actionWeightAfterJudge: 9
+    judgement:
+      conditions:
+      - {fileID: 11400000, guid: 819e1468151e5b94f8c70c5fb00e82e9, type: 2}
+      - {fileID: 11400000, guid: 6a7e0346b0ddcc0419c7605e9cdd086b, type: 2}
+      - {fileID: 11400000, guid: bb18838961d3c0845b4338c9ba3ed6d4, type: 2}
+  - additionalBeforeActionEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    actionWeightAfterJudge: 9
+    judgement:
+      conditions:
+      - {fileID: 11400000, guid: 819e1468151e5b94f8c70c5fb00e82e9, type: 2}
+      - {fileID: 11400000, guid: 4c438329aa0aa4141ae12dcb7867639d, type: 2}
   linkedAction:
     delay: 0
     ignoreJudgement: 0
-    influenceWeight: 0
-    action: {fileID: 0}
+    influenceWeight: 1
+    action: {fileID: 11400000, guid: a3f92054214322846b09e825468dac6a, type: 2}
   skillActionObject: {fileID: 11400000, guid: e245430a4ff153840b88d153fe9dbbd3, type: 2}

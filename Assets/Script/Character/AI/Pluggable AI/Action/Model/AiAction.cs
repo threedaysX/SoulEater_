@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 // 複製用: 
 // [CreateAssetMenu(menuName = "Character/AI/Action/繼承的新ClassName")]
@@ -16,10 +17,7 @@ public abstract class AiAction : AiHaviourBase
     /// [8~9] 擅長而且喜歡選擇的動作
     /// [10] 超想這麼做
     /// </summary>
-#if UNITY_EDITOR
-    [ReadOnly]
-#endif
-    public float currentActionWeight;
+    [HideInInspector] public float currentActionWeight;
 
     /// <summary>
     /// 這個行動已經被降低過了N點權重
@@ -42,22 +40,20 @@ public abstract class AiAction : AiHaviourBase
 
     [Header("行為後延遲")]
     public float offsetActionDelay; // 校正行為延遲(可調整)
-#if UNITY_EDITOR
-    [ReadOnly]
-#endif
-    public float additionActionDelay;   // 行為本身延遲(至行為結束的時長)
+    [HideInInspector] public float additionActionDelay;   // 行為本身延遲(至行為結束的時長)
 
     [Header("權重減值")]
     public float minusWeightAmountWhenNotSuccess = 2;
     public float minusWeightAmountAfterAction = 1;
-#if UNITY_EDITOR
-    [ReadOnly]
-#endif
-    [SerializeField] private float _diffCount;
+    private float _diffCount;
+
+    [Header("額外觸發事件")]
+    public UnityEvent beforeActionEvent;
+    [HideInInspector] public UnityEvent beforeActionAddEvent;   // 每次動作結束後將會清空
 
     [Header("行為")]
     public AiActionType actionType;
-    public Judgement[] judjements;
+    public JudgeSet[] judgeSets;
 
     [Header("接續行為")]
     public LinkedAction linkedAction;
@@ -70,19 +66,20 @@ public abstract class AiAction : AiHaviourBase
             ResetWeight();
         }
         // 沒有任何條件，直接觸發
-        if (judjements.Length == 0)
+        if (judgeSets.Length == 0)
         {
             return true;
         }
-        foreach (Judgement judje in judjements)
+        foreach (var set in judgeSets)
         {
             // 開始檢查該動作的各個觸發條件
-            judje.StartCheckActCondition(Ai);
-            if (judje.CheckTrueConditionCount())
+            if (set.judgement.StartCheckActCondition(Ai))
             {
                 // 將判斷後的權重設在動作權重上
-                if (judje.actionWeightAfterJudge != 0)
-                    currentActionWeight = judje.actionWeightAfterJudge - DiffCount;
+                if (set.actionWeightAfterJudge != 0)
+                    currentActionWeight = set.actionWeightAfterJudge - DiffCount;
+                // 設置Judge專屬的條件附加事件
+                beforeActionAddEvent = set.additionalBeforeActionEvent;
                 return true;
             }
         }
@@ -142,14 +139,22 @@ public struct LinkedAction
 /// (每個)判斷含有單一 or 複合式條件。
 /// </summary>
 [System.Serializable]
+public struct JudgeSet
+{
+    // Trigger if this judge success and this action be choose and done.
+    public UnityEvent additionalBeforeActionEvent;
+    public int actionWeightAfterJudge;
+    public Judgement judgement;
+}
+
+[System.Serializable]
 public struct Judgement
 {
-    public int actionWeightAfterJudge;
     private int conditionTrueCount;
 
     public JudgeCondition[] conditions;
 
-    public void StartCheckActCondition(AI Ai)
+    public bool StartCheckActCondition(AI Ai)
     {
         conditionTrueCount = 0;
         foreach (JudgeCondition condition in conditions)
@@ -161,10 +166,15 @@ public struct Judgement
             {
                 conditionTrueCount++;
             }
+            else
+            {
+                return false;
+            }
         }
+        return CheckTrueConditionCount();
     }
 
-    public bool CheckTrueConditionCount()
+    private bool CheckTrueConditionCount()
     {
         if (conditionTrueCount == conditions.Length)
         {

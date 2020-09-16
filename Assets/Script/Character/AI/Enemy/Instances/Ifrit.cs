@@ -1,4 +1,5 @@
 ﻿using StatsModifierModel;
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -24,7 +25,7 @@ public class Ifrit : BossModel
     public override void Start()
     {
         base.Start();
-        ResetStats();
+        ResetStats();        
     }
 
     public override void LateUpdate()
@@ -114,13 +115,13 @@ public class Ifrit : BossModel
         return isDamaged;
     }
 
-    public override bool StartAttack(AttackType attackType = AttackType.Attack, ElementType elementType = ElementType.None)
+    public override bool StartAttack(AttackType attackType = AttackType.Attack, ElementType elementType = ElementType.None, bool forceActToEnd = false)
     {
         if (attack.CanDo)
         {
             DoPreActHint();
         }
-        return base.StartAttack(attackType, elementType);
+        return base.StartAttack(attackType, elementType, forceActToEnd);
     }
 
     public override void Die()

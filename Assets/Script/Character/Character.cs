@@ -318,11 +318,11 @@ public class Character : MonoBehaviour
     #endregion
 
     #region Skill
-    public virtual bool UseSkill(Skill skill, bool ignoreCoolDown = false, bool ignoreCanDo = false)
+    public virtual bool UseSkill(Skill skill, bool ignoreCoolDown = false, bool ignoreCanDo = false, bool forceActToEnd = false)
     {
         if (skill == null || (!useSkill.CanDo && !ignoreCanDo))
             return false;
-        return skillController.Trigger(skill, ignoreCoolDown);
+        return skillController.Trigger(skill, ignoreCoolDown, forceActToEnd);
     }
 
     public virtual void LearnSkill(Skill skill)
@@ -344,7 +344,7 @@ public class Character : MonoBehaviour
     #endregion
     
     #region Attack
-    public virtual bool StartAttack(AttackType attackType = AttackType.Attack, ElementType elementType = ElementType.None)
+    public virtual bool StartAttack(AttackType attackType = AttackType.Attack, ElementType elementType = ElementType.None, bool forceActToEnd = false)
     {
         bool attackSuccess = false;
         if (attack.CanDo)
@@ -352,7 +352,8 @@ public class Character : MonoBehaviour
             attackSuccess = operationController.StartAttackAnim(delegate 
             { 
                 return combatController.Attack(attackType, elementType); 
-            });
+            }
+            , forceActToEnd);
         }
 
         if (attackSuccess)

@@ -48931,7 +48931,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 8bdece50f9c3baa458819444dc7522e9, type: 2}
   - {fileID: 11400000, guid: b6d7c32251fc66747a400fb2dea9e1e1, type: 2}
   - {fileID: 11400000, guid: bcc7275804eb4e4409b42ed844f35cd0, type: 2}
-  - {fileID: 11400000, guid: ee1b0a00b98a5034f8ff9a7003fb59d8, type: 2}
   - {fileID: 11400000, guid: 0affe81029eaff645adb52b132e369da, type: 2}
   popupDamageTextCenter: {fileID: 3230858650286876299}
   popupMessageCenter: {fileID: 6058350488546017007}
@@ -48956,7 +48955,7 @@ MonoBehaviour:
   knockOutRootParticle: {fileID: 3603134693017965491}
   knockOutRootSound: {fileID: 8300000, guid: 93066a458874c18429774e3c80a2196c, type: 3}
   healthUI: {fileID: 0}
-  forceAttackDelay: 0.7
+  forceAttackDelay: 0.9
   mainThemeBgm: {fileID: 8300000, guid: 806bc66c9db25334a8513595647a5fb9, type: 3}
   typeChangingSound: {fileID: 8300000, guid: 54a1b4f765a54eb4796793eea869def4, type: 3}
   typeChangedBurstSound: {fileID: 8300000, guid: 6370de40894ab8b4a9eb9a4223a08325,
@@ -48985,7 +48984,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 0a3dcd3ea6d30f5439504cb952d37e6f, type: 2}
   - {fileID: 11400000, guid: a41c4a5fa90d10b458970379ddac6633, type: 2}
   - {fileID: 11400000, guid: d67d0f814085d6e4882cd907092ffb17, type: 2}
-  - {fileID: 11400000, guid: 4c1ef8ea4f48d7a4d9acb509b3a064f9, type: 2}
   - {fileID: 11400000, guid: 1455573aa9f91964cb39d3e6c1983fec, type: 2}
   - {fileID: 11400000, guid: f66650c44d366124ba51ae036dfc2544, type: 2}
   - {fileID: 11400000, guid: 62ed477627d6dee49adb86610a882723, type: 2}
@@ -49001,9 +48999,6 @@ MonoBehaviour:
   maxWeightOffset: 2
   actionWeightRegen: 1
   actionWeightRegenCount: 5
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 0
 --- !u!50 &8172391987346870627
 Rigidbody2D:
   serializedVersion: 4

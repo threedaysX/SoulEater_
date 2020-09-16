@@ -9752,6 +9752,7 @@ MonoBehaviour:
   inCastSound: {fileID: 0}
   inUsingSound: {fileID: 8300000, guid: 71312ed2847e95c4495a15e3c940d582, type: 3}
   inUsingParticle: {fileID: 8199205752894420978}
+  hint: {fileID: 7412168353397892206}
   data:
     transform: {fileID: 0}
     delay: 0
