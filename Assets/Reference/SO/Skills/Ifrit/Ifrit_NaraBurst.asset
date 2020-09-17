@@ -18,11 +18,11 @@ MonoBehaviour:
   elementType: 1
   skillName: "\u7D05\u84EE\u7206\u88C2"
   description: 
-  centerPositionOffset: 2
+  centerPositionOffset: 0
   range:
-    BaseValue: 16
+    BaseValue: 32
     AdditionalValue: 0
-    FinalValue: 16
+    FinalValue: 32
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
@@ -57,9 +57,9 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   fixedCastTime:
-    BaseValue: 2.4
+    BaseValue: 3
     AdditionalValue: 0
-    FinalValue: 2.4
+    FinalValue: 3
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
@@ -71,7 +71,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   trueCoolDown: 9.2
-  coolDownTimer: 3.8505595
+  coolDownTimer: 3.5632124
   cooling: 1
   coolDownType: 0
   duration: 0

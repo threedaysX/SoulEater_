@@ -1,5 +1,66 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &281147942
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 281147943}
+  - component: {fileID: 281147944}
+  - component: {fileID: 4637199436501815696}
+  m_Layer: 0
+  m_Name: DetectArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &281147943
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 281147942}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -20.72, y: -0.52, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 5156698267486100067}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &281147944
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 281147942}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 5
+--- !u!114 &4637199436501815696
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 281147942}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a74040cf3be628145b2fa43a65dc0c8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  detectArea: {fileID: 281147944}
 --- !u!1 &5156698267486100070
 GameObject:
   m_ObjectHideFlags: 0
@@ -29,6 +90,7 @@ Transform:
   m_LocalPosition: {x: -0.60795057, y: -4.279667, z: -9.316406}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 281147943}
   - {fileID: 5156698267672921401}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -112,9 +174,10 @@ MonoBehaviour:
     type: 2}
   igniteDuration: 4
   burstRadius: 3.2
-  burstLimitCount: 12
+  burstLimitCount: 25
   renderSound: {fileID: 0}
   burstHint: {fileID: 5156698267672921402}
+  detectArea: {fileID: 4637199436501815696}
 --- !u!1001 &2255807442673195918
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -165,7 +228,7 @@ PrefabInstance:
     - target: {fileID: 6403688941944544951, guid: e378f2ea128a365478d1075357902036,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6403688941944544951, guid: e378f2ea128a365478d1075357902036,
         type: 3}
@@ -181,6 +244,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412168353397892206, guid: e378f2ea128a365478d1075357902036,
+        type: 3}
+      propertyPath: lengthInSec
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412168353397892206, guid: e378f2ea128a365478d1075357902036,
+        type: 3}
+      propertyPath: simulationSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412168353397892206, guid: e378f2ea128a365478d1075357902036,
+        type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7412168353397892206, guid: e378f2ea128a365478d1075357902036,
+        type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e378f2ea128a365478d1075357902036, type: 3}

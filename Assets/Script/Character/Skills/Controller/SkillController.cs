@@ -14,7 +14,7 @@ public class SkillController : MonoBehaviour
         ResetAllSkillCoolDown();
     }
 
-    public bool Trigger(Skill skill, bool ignoreCoolDown)
+    public bool Trigger(Skill skill, bool ignoreCoolDown, bool forceActToEnd)
     {
         // 技能為空
         if (skill.prefab == null)
@@ -48,13 +48,18 @@ public class SkillController : MonoBehaviour
         }
 
         // 詠唱，固定詠唱時間+ 結束後施放技能，持續N秒。
-        float totalCastTime = GetCastTime(skill);
+        float totalCastTime = GetCastTime(character, skill);
         Vector3 skillCenterPos = skillCenterPoint.position != null ? skillCenterPoint.position : character.transform.position;
         Vector3 skillPos = skillCenterPos + character.transform.right * skill.centerPositionOffset;
         GameObject skillObj = SkillPools.Instance.SpawnSkillFromPool(character, skill, skillPos, character.transform.rotation);
         if (skillObj != null)
         {
-            character.operationController.StartUseSkillAnim(StartCastSkill(skill, totalCastTime, skillObj), StartUseSkill(skill, skillObj), totalCastTime, skill.duration);
+            character.operationController.StartUseSkillAnim(
+                StartCastSkill(skill, totalCastTime, skillObj)
+                , StartUseSkill(skill, skillObj)
+                , totalCastTime
+                , skill.duration
+                , forceActToEnd);
         }
 #if UNITY_EDITOR
         else
@@ -90,7 +95,7 @@ public class SkillController : MonoBehaviour
         return delegate { skilluse.UseSkill(); };
     }
 
-    protected float GetCastTime(Skill skill)
+    public static float GetCastTime(Character character, Skill skill)
     {
         return skill.fixedCastTime.Value + skill.castTime.Value * (1 - character.data.reduceCastTime.Value / 100);
     }

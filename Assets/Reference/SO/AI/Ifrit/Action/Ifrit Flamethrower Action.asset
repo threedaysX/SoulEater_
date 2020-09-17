@@ -14,31 +14,36 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   on: 1
   switchOnActionOnStart: 1
-  currentActionWeight: 8
+  currentActionWeight: 4
   originalActionWeight: 6
   offsetActionDelay: 0.4
-  additionActionDelay: 2.2
+  additionActionDelay: 2.1000001
   minusWeightAmountWhenNotSuccess: 2
   minusWeightAmountAfterAction: 2
-  _diffCount: 2
+  beforeActionEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  beforeActionAddEvent:
+    m_PersistentCalls:
+      m_Calls: []
   actionType: 5
-  judjements:
-  - actionWeightAfterJudge: 10
-    conditionTrueCount: 0
-    conditions:
-    - {fileID: 11400000, guid: 99c6da398197b5241972189fd2b7f102, type: 2}
-    - {fileID: 11400000, guid: 4c438329aa0aa4141ae12dcb7867639d, type: 2}
-  - actionWeightAfterJudge: 6
-    conditionTrueCount: 0
-    conditions:
-    - {fileID: 11400000, guid: 99c6da398197b5241972189fd2b7f102, type: 2}
-    - {fileID: 11400000, guid: 031c217add8bcc84f99a8fc60e26d39e, type: 2}
-  - actionWeightAfterJudge: 9
-    conditionTrueCount: 0
-    conditions:
-    - {fileID: 11400000, guid: 99c6da398197b5241972189fd2b7f102, type: 2}
-    - {fileID: 11400000, guid: bb18838961d3c0845b4338c9ba3ed6d4, type: 2}
-    - {fileID: 11400000, guid: f906c4232434d0f47b534b256e23323d, type: 2}
+  judgeSets:
+  - additionalActBeforeEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    actionWeightAfterJudge: 6
+    judgement:
+      conditions:
+      - {fileID: 11400000, guid: 99c6da398197b5241972189fd2b7f102, type: 2}
+      - {fileID: 11400000, guid: 031c217add8bcc84f99a8fc60e26d39e, type: 2}
+  - additionalActBeforeEvent:
+      m_PersistentCalls:
+        m_Calls: []
+    actionWeightAfterJudge: 9
+    judgement:
+      conditions:
+      - {fileID: 11400000, guid: 99c6da398197b5241972189fd2b7f102, type: 2}
+      - {fileID: 11400000, guid: f906c4232434d0f47b534b256e23323d, type: 2}
   linkedAction:
     delay: 0
     ignoreJudgement: 0

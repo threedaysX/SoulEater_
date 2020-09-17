@@ -63,8 +63,8 @@ MonoBehaviour:
     modifiers: []
   knockBackDamage:
     BaseValue: 823
-    AdditionalValue: 0
-    FinalValue: 823
+    AdditionalValue: 10000
+    FinalValue: 10823
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []

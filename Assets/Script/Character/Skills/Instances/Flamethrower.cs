@@ -110,6 +110,10 @@ public class Flamethrower : LastingSkill
         hintBackground.SetActive(active);
         hintBeam.gameObject.SetActive(active);
         if (active)
+        {
+            var main = hintBeam.main;
+            main.startLifetime = SkillController.GetCastTime(sourceCaster, currentSkill) * 2;
             hintBeam.Play(true);
+        }
     }
 }

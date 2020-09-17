@@ -15,7 +15,7 @@ public class RayCastDecision : Detect
         Vector2 start = new Vector2(Ai.transform.position.x - Ai.detectDistance, Ai.transform.position.y);
         Vector2 end = new Vector2(Ai.transform.position.x + Ai.detectDistance, Ai.transform.position.y);
 
-        RaycastHit2D hit = Physics2D.Linecast(start, end, Ai.playerLayer);
+        RaycastHit2D hit = Physics2D.Linecast(start, end, Ai.PlayerLayer);
         Debug.DrawLine(start, end, Color.green);
 
         if (!hit)

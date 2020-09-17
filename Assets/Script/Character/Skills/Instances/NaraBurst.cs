@@ -10,7 +10,7 @@ public class NaraBurst : DisposableSkill
     public int burstLimitCount; // 爆炸的數量
     public AudioClip renderSound;
     public GameObject burstHint;
-    private List<NaraCircleBurstData> bursts; // 記錄每個爆炸的資訊
+    public SkillDetectArea detectArea;
 
     protected override void AddAffectEvent()
     {
@@ -21,7 +21,6 @@ public class NaraBurst : DisposableSkill
     {
         base.GenerateSkill(character, skill);
 
-        bursts = new List<NaraCircleBurstData>();
         burstHint.SetActive(false);
         burstHint.transform.localScale = new Vector3(burstHint.transform.localScale.x * burstRadius, burstHint.transform.localScale.y * burstRadius, 0);  // 調整爆炸半徑
         ObjectPools.Instance.RenderObjectPoolsInParent(burstHint, burstLimitCount);
@@ -31,58 +30,57 @@ public class NaraBurst : DisposableSkill
     {
         base.CastSkill();
 
+        // Render.
         float rangeDelay = currentSkill.fixedCastTime.Value / burstLimitCount;
-        float upperRangeDelay = rangeDelay * 0.6f;
+        float upperRangeDelay = rangeDelay * 1f;
         float lowerRangeDelay = rangeDelay * 0.4f;
         float currentDelay = 0;
         for (int i = 0; i < burstLimitCount; i++)
         {
             currentDelay += Random.Range(lowerRangeDelay, upperRangeDelay);
-            StartCoroutine(RenderBurstHint(GetRandomPos(), currentDelay));
+            StartCoroutine(RenderBurstHint(currentDelay));
         }
     }
 
-    public override void UseSkill()
-    {
-        base.UseSkill();
-
-        float currentCount = 1;
-        foreach (var burst in bursts)
-        {
-            currentCount++;
-            StartCoroutine(StartBurst(burst.transform, burst.delay, currentCount, burstLimitCount));
-        }
-    }
-
-    private IEnumerator RenderBurstHint(Vector3 position, float burstDelayBetweenFirst)
+    private IEnumerator RenderBurstHint(float burstDelayBetweenFirst)
     {
         yield return new WaitForSeconds(burstDelayBetweenFirst);
 
-        NaraCircleBurst burst = ObjectPools.Instance.GetObjectInPools(burstHint.name, position).GetComponent<NaraCircleBurst>();
+        NaraCircleBurst burst = ObjectPools.Instance.GetObjectInPools(burstHint.name, GetBurstPos())
+            .GetComponent<NaraCircleBurst>();
         burst.data.transform = burst.transform;
         burst.data.delay = burstDelayBetweenFirst;
         burst.data.igniteDuration = igniteDuration;
         burst.GenerateSkill(sourceCaster, naraCircleBurstData);
-        bursts.Add(burst.data);
     }
 
-    private IEnumerator StartBurst(Transform burst, float delay, float currentCount, float finalCount)
+    private Vector3 GetBurstPos()
     {
-        yield return new WaitForSeconds(delay);
-        burst.GetComponent<NaraCircleBurst>().UseSkill();
-        if (currentCount == finalCount)
+        List<Character> targets = detectArea.Detect(sourceCaster, new SkillDetectArea.CircleDetect(currentSkill.range.Value), false);
+        float offsetX = 2f;
+        float offsetFrontX = Random.Range(5.5f, 8.2f);
+        float offsetY = 1f;
+
+        // Random Choose one target.
+        int randomIndex = Random.Range(0, targets.Count - 1);
+
+        var targetTrans = targets[randomIndex].transform;
+        float targetX = targetTrans.position.x;
+        float targetY = targetTrans.position.y;
+        float x;
+        float y = Random.Range(targetY - offsetY, targetY + offsetY);
+        // Means that target is [right side] of caster.
+        if (targetTrans.position.x - sourceCaster.transform.position.x > 0)
         {
-            StartCoroutine(SetActiveAfterSkillDone(0.3f));
+            x = Random.Range(targetX - offsetX, targetX + offsetFrontX);
         }
-    }
+        // Means that target is [left side] of caster.
+        else
+        {
+            x = Random.Range(targetX - offsetFrontX, targetX + offsetX);
+        }
 
-    private Vector3 GetRandomPos()
-    {
-        // 將在這塊方形的範圍內生成爆炸(點)
-        float x = Random.Range(this.transform.position.x - this.transform.right.x * currentSkill.range.Value * 0.4f, this.transform.position.x + this.transform.right.x * currentSkill.range.Value * 0.6f);
-        // 技能範圍窄化
-        float y = Random.Range(this.transform.position.y, this.transform.position.y + currentSkill.range.Value * 0.15f);
-
+        
         return new Vector3(x, y, 0);
     }
 }

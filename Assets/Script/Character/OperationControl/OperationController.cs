@@ -604,10 +604,10 @@ public class OperationController : MonoBehaviour
         setDelay(attackDelayDuration);
 
         // 若是最後一段的攻擊動作，就無法預存下一個攻擊動作。
-        if (!CheckIsFinalAttack())
-            setOperationState(OperationStateType.Trigger);
-        else
+        if (CheckIsFinalAttack())
             setOperationState(OperationStateType.Interrupt);
+        else
+            setOperationState(OperationStateType.Trigger);
         yield return new WaitForSeconds(GetFrameTimeOffset(1));   // 等待一幀，使動畫開始撥放，否則會取到上一個動畫的狀態。
 
         // 攻速過快，動畫時間縮短
@@ -736,8 +736,7 @@ public class OperationController : MonoBehaviour
     /// </summary>
     private void AddOperation(Operation operation, bool forceActToEnd = false)
     {
-        // 敵人的部分，動作會強制執行完(避免AI其他動作中斷)
-        if (forceActToEnd || this.gameObject.CompareTag("Enemy"))
+        if (forceActToEnd)
         {
             operation.ForceActToEnd();
         }
