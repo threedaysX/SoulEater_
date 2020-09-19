@@ -12,7 +12,7 @@ public class NaraCircleBurst : DisposableSkill
         hitAffect.AddListener(delegate
         {
             Ignite();
-            DamageTarget();
+            DamageTarget(target);
         });
     }
 

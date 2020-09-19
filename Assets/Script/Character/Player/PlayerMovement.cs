@@ -25,7 +25,9 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         player = GetComponent<Player>();
-        rb = GetComponent<Rigidbody2D>();
+        rb = player.rb;
+        player._jump = new PlayerJump(player, rb, basicJumpForce);
+        player._evade = new PlayerEvade(player, rb, basicEvadeSpeed);
         startSkyWalk = false;
     }
 
@@ -62,12 +64,12 @@ public class PlayerMovement : MonoBehaviour
     {
         if (player.move.CanDo)
         {
-            player.operationController.StartMoveAnim(x);
+            player.StartMoveAnim(x);
             rb.velocity = new Vector2(moveDir.x * player.data.moveSpeed.Value * basicMoveSpeed, rb.velocity.y);
         }
         else
         {
-            if (player.operationController.isEvading || player.operationController.isSkillCasting || player.operationController.isSkillUsing)
+            if (player.opc.isEvading || player.opc.isSkillCasting || player.opc.isSkillUsing)
                 return;
 
             // 若不能移動，則會隨慣性移動至停止
@@ -86,21 +88,15 @@ public class PlayerMovement : MonoBehaviour
     {
         if (Input.GetKeyDown(HotKeyController.GetHotKey(HotKeyType.JumpKey)) 
             && player.jump.CanDo 
-            && player.operationController.isGrounding)   // 或有多段跳躍
+            && player.opc.isGrounding)   // 或有多段跳躍
         {
-            player.operationController.StartJumpAnim(delegate { JumpAction(); });
+            player.StartJumpAnim();
         }
-    }
-
-    private void JumpAction()
-    {
-        rb.velocity = new Vector2(rb.velocity.x, 0);
-        rb.velocity += Vector2.up * player.data.jumpForce.Value * basicJumpForce;
     }
 
     private void BetterJump()
     {
-        if (player.operationController.isPreAttacking || player.operationController.isAttacking)
+        if (player.opc.isPreAttacking || player.opc.isAttacking)
         {
             SkyWalk();
             return;
@@ -118,7 +114,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void SkyWalk()
     {
-        if (!startSkyWalk && !player.operationController.isGrounding)
+        if (!startSkyWalk && !player.opc.isGrounding)
         {
             startSkyWalk = true;
             nextSkyWalkFallenTimes = Time.time + skyWalkLimitDuration;
@@ -135,7 +131,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void ResetSkyWalk()
     {
-        if (startSkyWalk && player.operationController.isGrounding)
+        if (startSkyWalk && player.opc.isGrounding)
         {
             startSkyWalk = false;
         }
@@ -146,17 +142,54 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetKeyDown(HotKeyController.GetHotKey(HotKeyType.EvadeKey))
             && player.evade.CanDo)
         {
-            player.operationController.StartEvadeAnim(delegate { EvadeAction(); });
+            // Start Evade
+            player.StartEvadeAnim();
+            // Stamina Exhaust(fillAmount to 0).
+            player.staminaBarUI.fillAmount = 0;
+            // Stamina Regen(fillAmount to 1).
+            float originCoolDown = player.data.evadeCoolDown.Value;
+            Counter.Instance.StartCountDown(originCoolDown, false, (x) => player.staminaBarUI.fillAmount = (originCoolDown - x) / originCoolDown);
         }
     }
 
-    private void EvadeAction()
+    public class PlayerJump : IJumpControl
     {
-        rb.velocity = transform.right * new Vector2(basicEvadeSpeed * player.data.moveSpeed.Value, rb.velocity.y);
-        // Stamina Exhaust(fillAmount to 0).
-        player.staminaBarUI.fillAmount = 0;
-        // Stamina Regen(fillAmount to 1).
-        float originCoolDown = player.data.evadeCoolDown.Value;
-        Counter.Instance.StartCountDown(originCoolDown, false, (x) => player.staminaBarUI.fillAmount = (originCoolDown - x) / originCoolDown);
+        private Rigidbody2D rb;
+        private Character player;
+        private float basicJumpForce;
+
+        public PlayerJump(Character player, Rigidbody2D rb, float basicJumpForce)
+        {
+            this.player = player;
+            this.rb = rb;
+            this.basicJumpForce = basicJumpForce;
+        }
+
+        public void Jump()
+        {
+            rb.velocity = new Vector2(rb.velocity.x, 0);
+            rb.velocity += Vector2.up * player.data.jumpForce.Value * basicJumpForce;
+        }
+    }
+
+    public class PlayerEvade : IEvadeControl
+    {
+        private Rigidbody2D rb;
+        private Character player;
+        private Transform transform;
+        private float basicEvadeSpeed;
+
+        public PlayerEvade(Character player, Rigidbody2D rb, float basicEvadeSpeed)
+        {
+            this.player = player;
+            this.rb = rb;
+            this.basicEvadeSpeed = basicEvadeSpeed;
+            this.transform = player.transform;
+        }
+
+        public void Evade()
+        {
+            rb.velocity = transform.right * new Vector2(basicEvadeSpeed * player.data.moveSpeed.Value, rb.velocity.y);           
+        }
     }
 }

@@ -7,7 +7,6 @@ public class DashSlash : DisposableSkill
     public ParticleSystem drawnSwordEffect; // 拔劍特效
     public ParticleSystem slashHitEffect;   // 斬擊特效
     public AudioClip slashHitSound; // 斬擊音效
-    private bool isHit;
 
     public override void CastSkill()
     {
@@ -23,20 +22,19 @@ public class DashSlash : DisposableSkill
     {
         immediatelyAffect.AddListener(GetInDarkScreenAndZoomIn);
         immediatelyAffect.AddListener(MoveFoward);
-        immediatelyAffect.AddListener(delegate { StartCoroutine(HitDetect()); });
+        immediatelyAffect.AddListener(delegate { StartCoroutine(CheckSkillEnd()); });
         hitAffect.AddListener(delegate 
         {
-            isHit = true;
             BindEnemyAction(target, 1.8f);
-            DamageTarget(1f);
+            DamageTarget(target, 1f);
         });
     }
 
-    protected override bool Damage(float damageDirectionX = 0)
+    protected override bool Damage(Character target, float damageDirectionX = 0)
     {
         TriggerHitEffect(target);
         CameraShakeWhenHit();
-        return base.Damage(transform.right.x);
+        return base.Damage(target, transform.right.x);
     }
 
     private void TriggerHitEffect(Character target)
@@ -89,7 +87,7 @@ public class DashSlash : DisposableSkill
         while (t < 1)
         {
             // 讓技能跟隨玩家，並偵測是否命中
-            this.transform.position = sourceCaster.transform.position + sourceCaster.transform.right * 0.8f;
+            this.transform.position = sourceCaster.transform.position + sourceCaster.transform.right * 0.5f;
             t += Time.deltaTime / timeToMove;
             transform.position = Vector3.Lerp(originPos, destination, t);
             yield return null;
@@ -98,14 +96,10 @@ public class DashSlash : DisposableSkill
         chargeTrailEffect.Play(true);
     }
 
-    private IEnumerator HitDetect()
+    private IEnumerator CheckSkillEnd()
     {
         yield return new WaitForSeconds(currentSkill.castTime.Value + 0.1f);
         StartCoroutine(SetActiveAfterSkillDone(1.9f));
-        if (!isHit)
-        {
-            SetSkillCollisionEnable(false);
-        }
     }
 
     private void CameraShakeWhenHit()

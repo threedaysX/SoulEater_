@@ -6,8 +6,8 @@ public class DoubleStrike : DisposableSkill
     {
         hitAffect.AddListener(delegate
         {
-            DamageTarget();
-            DamageTarget();
+            DamageTarget(target);
+            DamageTarget(target);
         });
     }
 }

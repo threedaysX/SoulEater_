@@ -1,5 +1,4 @@
 ﻿using StatsModifierModel;
-using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -11,11 +10,10 @@ public class Ifrit : BossModel
     public UIShake healthUI;
 
     [Header("攻擊速度(延遲)")]
-    [Range(0f, 1f)]
+    [Range(0f, 2f)]
     public float forceAttackDelay;
 
     [Header("型態改變")]
-    public AudioClip mainThemeBgm;
     public AudioClip typeChangingSound;
     public AudioClip typeChangedBurstSound;
     public ParticleSystem typeChangingEffect;
@@ -25,7 +23,7 @@ public class Ifrit : BossModel
     public override void Start()
     {
         base.Start();
-        ResetStats();        
+        ResetStats();
     }
 
     public override void LateUpdate()
@@ -42,7 +40,6 @@ public class Ifrit : BossModel
         SetEnemyLevel(EnemyLevel.Boss);
         ResetFlamethrowerData();
         ForceAdjustAttackDelay();
-        AudioControl.Instance.PlayMusic(mainThemeBgm);
     }
 
     protected void ForceAdjustAttackDelay()
@@ -135,7 +132,12 @@ public class Ifrit : BossModel
         // Trigger Some story.
     }
 
-    protected override void CameraOpeningMove()
+    public override void MusicOpeningPlay()
+    {
+        AudioControl.TimeLine.Instance.PlayMusic(Music.Ifrit, 0);
+    }
+
+    public override void CameraOpeningMove()
     {
         var vcamIfrit = CharacterVcamControl.Instance.ifrit.vcam;
         var vcamPlayer = CharacterVcamControl.Instance.player.vcam;

@@ -67,8 +67,21 @@ public class Skill : ScriptableObject
     /// </summary>
     public float duration = 1f;
 
+    [Header("Prefab")]
     public GameObject prefab;
 
+    [Header("技能動作")]
+    /// <summary>
+    /// 詠唱動作(為空則使用預設動作)
+    /// </summary>
+    public AnimationClip castSkillClip;
+
+    /// <summary>
+    /// 使用技能動作(為空則使用預設動作)
+    /// </summary>
+    public AnimationClip useSkillClip;
+
+    [Header("事件")]
     /// <summary>
     /// 詠唱時技能額外的觸發效果
     /// </summary>

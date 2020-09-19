@@ -18,9 +18,9 @@ MonoBehaviour:
   elementType: 3
   skillName: "\u9707\u76EA\u731B\u64CA"
   description: 
-  centerPositionOffset: 1
+  centerPositionOffset: 2
   range:
-    BaseValue: 0
+    BaseValue: 3
     AdditionalValue: 0
     FinalValue: 0
     ForceValue: 0
@@ -37,7 +37,7 @@ MonoBehaviour:
   damageMagnification:
     BaseValue: 200
     AdditionalValue: 0
-    FinalValue: 0
+    FinalValue: 200
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
@@ -50,32 +50,34 @@ MonoBehaviour:
     modifiers: []
   timesOfPerDamage: 1
   castTime:
-    BaseValue: 0
+    BaseValue: 1.5
     AdditionalValue: 0
-    FinalValue: 0
+    FinalValue: 1.5
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   fixedCastTime:
-    BaseValue: 0
+    BaseValue: 0.5
     AdditionalValue: 0
-    FinalValue: 0
+    FinalValue: 0.5
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   coolDown:
     BaseValue: 4
     AdditionalValue: 0
-    FinalValue: 0
+    FinalValue: 4
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
-  trueCoolDown: 0
+  trueCoolDown: 3.68
   coolDownTimer: 0
   cooling: 0
   coolDownType: 1
-  duration: 0
+  duration: 0.5
   prefab: {fileID: 4318978541089580187, guid: d6dd984aa5baa284f849b4e8dde2e7b4, type: 3}
+  castSkillClip: {fileID: 7400000, guid: 670e634f9d9884e489ba7620038d7b11, type: 2}
+  useSkillClip: {fileID: 7400000, guid: 824e0f5df29572645aac1566c43f6ad3, type: 2}
   immediatelyEvent:
     m_PersistentCalls:
       m_Calls: []

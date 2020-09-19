@@ -18,7 +18,7 @@ public class Flamethrower : LastingSkill
         {
             KnockBackEnemy();
             DebuffFireResistance();
-            DamageTarget();
+            DamageTarget(target);
             CameraShakeWhenTrigger();
         });
     }

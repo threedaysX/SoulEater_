@@ -77,7 +77,7 @@ public class Test : Singleton<Test>
     }
     private bool TriggerIsEvading()
     {
-        var dsc = sourceCaster.operationController;
+        var dsc = sourceCaster.opc;
         if (dsc.isEvading)
             return true;
         return false;

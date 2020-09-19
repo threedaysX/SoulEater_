@@ -162,16 +162,16 @@ public abstract class SkillEventBase : MonoBehaviour, ISkillGenerator, ISkillUse
         affectEvent.Invoke();
     }
 
-    public bool DamageTarget(float firstHitDelay = 0, float damageDirectionX = 0)
+    public bool DamageTarget(Character target, float firstHitDelay = 0, float damageDirectionX = 0)
     {
         if (currentSkill.damageHitTimes.Value > 1)
         {
-            StartCoroutine(DamageTargetTimes(firstHitDelay, damageDirectionX));
+            StartCoroutine(DamageTargetTimes(target, firstHitDelay, damageDirectionX));
             return true;
         }
         else
         {
-            return Damage(damageDirectionX);
+            return Damage(target, damageDirectionX);
         }
     }
 
@@ -181,20 +181,18 @@ public abstract class SkillEventBase : MonoBehaviour, ISkillGenerator, ISkillUse
     /// <param name="firstHitDelay">造成第一次傷害前的延遲(預設為0，命中立即造成傷害)</param>
     /// <param name="damageDirectionX">傷害來源方向</param>
     /// <returns></returns>
-    protected virtual IEnumerator DamageTargetTimes(float firstHitDelay = 0, float damageDirectionX = 0)
-    {
-        // 避免觸發二次傷害，內心也會受傷
-        SetSkillCollisionEnable(false);
+    protected virtual IEnumerator DamageTargetTimes(Character target, float firstHitDelay = 0, float damageDirectionX = 0)
+    {        
         yield return new WaitForSeconds(firstHitDelay);
 
         for (int i = 0; i < currentSkill.damageHitTimes.Value; i++)
         {
-            Damage(damageDirectionX);
+            Damage(target, damageDirectionX);
             yield return new WaitForSeconds(currentSkill.timesOfPerDamage);
         }
     }
 
-    protected virtual bool Damage(float damageDirectionX = 0)
+    protected virtual bool Damage(Character target, float damageDirectionX = 0)
     {
         float damage = GetSkillDamage(out bool isCritical);
         sourceCaster.DamageDealtSteal(damage, false);

@@ -84,7 +84,7 @@ public class CombatController : MonoBehaviour
     {
         if (attackHitboxes != null)
         {
-            int attackOrder = character.operationController.AttackAnimNumber;
+            int attackOrder = character.AttackAnimNumber;
             attackHitboxes.gameObject.SetActive(true);
             Collider2D[] hits = attackHitboxes.GetAttackHits(attackOrder);
             attackHitboxes.gameObject.SetActive(false);

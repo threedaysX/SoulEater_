@@ -24,7 +24,7 @@ public class BasicMove : AiAction
         chaseDirection.y = 0f;
         chaseDirection.z = 0f;
         Ai.transform.position += chaseDirection * basicMoveSpeed * character.data.moveSpeed.Value * Time.deltaTime;
-        character.operationController.StartMoveAnim(Ai.transform.right.x);
+        character.StartMoveAnim(Ai.transform.right.x);
         return true;
     }
 }

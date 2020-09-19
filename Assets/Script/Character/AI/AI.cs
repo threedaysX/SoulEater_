@@ -231,23 +231,12 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
         DoAction(action, true);
     }
 
-    int count = 0;
     /// <summary>
     /// 動作執行
     /// </summary>
     /// <param name="action">要執行的動作</param>
     public void DoAction(AiAction action, bool influenceWeight)
     {
-        if (action.beforeActionEvent != null && action.beforeActionEvent.GetPersistentEventCount() > 0)
-        {
-            action.beforeActionEvent.Invoke();
-        }
-        if (action.beforeActionAddEvent != null && action.beforeActionAddEvent.GetPersistentEventCount() > 0)
-        {
-            action.beforeActionAddEvent.Invoke();
-            action.beforeActionAddEvent.RemoveAllListeners();
-        }
-
         // Start Action
         lastActionSuccess = action.StartActHaviour();
 
@@ -258,8 +247,7 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
             // Reset action delay.
             ResetNextActTimes(action);
         }
-        Debug.Log("AAAA    " + (count++) + " CC             " + nextActTimes + "   BB    " + action);
-
+        
         if (influenceWeight)
         {
             float amount;
@@ -285,7 +273,7 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
         // 只有移動不需要等待延遲(且移動不算是實際的行動數)
         if (lastAction.actionType == AiActionType.Move)
             return;
-        float delay = currentAction.offsetActionDelay + currentAction.additionActionDelay;
+        float delay = currentAction.offsetActionDelay + currentAction.AdditionActionDelay;
         if (currentAction.linkedAction.action != null)
         {
             delay += currentAction.linkedAction.delay;

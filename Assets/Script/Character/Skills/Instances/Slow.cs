@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using StatsModifierModel;
+﻿using StatsModifierModel;
 
 public class Slow : DisposableSkill
 {

@@ -35,9 +35,9 @@ MonoBehaviour:
     modifiers: []
   costType: 1
   damageMagnification:
-    BaseValue: 120
+    BaseValue: 100
     AdditionalValue: 0
-    FinalValue: 60
+    FinalValue: 120
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
@@ -52,7 +52,7 @@ MonoBehaviour:
   castTime:
     BaseValue: 1.2
     AdditionalValue: 0
-    FinalValue: 1.2
+    FinalValue: 0.6
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
@@ -71,8 +71,8 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   trueCoolDown: 7.36
-  coolDownTimer: 0
-  cooling: 0
+  coolDownTimer: 3.2537947
+  cooling: 1
   coolDownType: 1
   duration: 0.4
   prefab: {fileID: 7390867264986258557, guid: 9a443091373ab4543a1f19b81e549b9d, type: 3}

@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 508672195}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.93, z: 0}
+  m_LocalPosition: {x: 0, y: -1.3900001, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8172391987346870625}
@@ -48924,6 +48924,13 @@ MonoBehaviour:
   lastAttackMeTarget: {fileID: 0}
   isKnockStun: 0
   isImmune: 0
+  cycleAttackCount: 2
+  attackComboCount: 0
+  attackDelayDuration: 1
+  preAttackAnimDuration: 1
+  attackAnimDuration: 1
+  nextAttackResetTime: 0
+  evadeCoolDownDuration: 0
   data: {fileID: 11400000, guid: 644103d6d181adc47a6f0e3cc5d4c184, type: 2}
   skillFields:
   - {fileID: 11400000, guid: 4a6746252b787b446a98a7062845f160, type: 2}
@@ -48938,7 +48945,7 @@ MonoBehaviour:
   criticalDamagedColor: {r: 1, g: 0.583975, b: 0.36320752, a: 1}
   operationSoundController: {fileID: 0}
   weaponController: {fileID: 0}
-  operationController: {fileID: 0}
+  opc: {fileID: 0}
   skillController: {fileID: 0}
   buffController: {fileID: 0}
   combatController: {fileID: 0}
@@ -48946,7 +48953,9 @@ MonoBehaviour:
   dieController: {fileID: 0}
   iconController: {fileID: 0}
   cumulativeDataController: {fileID: 0}
+  rb: {fileID: 0}
   anim: {fileID: 0}
+  animController: {fileID: 0}
   ai: {fileID: 6631025401626773104}
   enemyLevel: 0
   preActSound: {fileID: 8300000, guid: 51725dde0a95f4049aae736ac906bae3, type: 3}
@@ -48954,8 +48963,9 @@ MonoBehaviour:
   openingEffect: {fileID: 1952234610434948100}
   knockOutRootParticle: {fileID: 3603134693017965491}
   knockOutRootSound: {fileID: 8300000, guid: 93066a458874c18429774e3c80a2196c, type: 3}
+  bossMusic: {fileID: 11400000, guid: 66f872795c315474f82ca00d12d511a2, type: 2}
   healthUI: {fileID: 0}
-  forceAttackDelay: 0.9
+  forceAttackDelay: 1
   mainThemeBgm: {fileID: 8300000, guid: 806bc66c9db25334a8513595647a5fb9, type: 3}
   typeChangingSound: {fileID: 8300000, guid: 54a1b4f765a54eb4796793eea869def4, type: 3}
   typeChangedBurstSound: {fileID: 8300000, guid: 6370de40894ab8b4a9eb9a4223a08325,
@@ -49091,12 +49101,6 @@ MonoBehaviour:
   groundTouch: 0
   collisionRadius: 1
   bottomOffset: {x: -0.3, y: -2.4}
-  cycleAttackCount: 2
-  attackComboCount: 0
-  attackResetDuration: 1
-  attackDelayDuration: 1
-  attackCycleDuration: 1
-  evadeCoolDownDuration: 0
 --- !u!114 &2082458771
 MonoBehaviour:
   m_ObjectHideFlags: 0

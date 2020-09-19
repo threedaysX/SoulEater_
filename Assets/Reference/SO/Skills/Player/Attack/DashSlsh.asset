@@ -53,14 +53,14 @@ MonoBehaviour:
   castTime:
     BaseValue: 0.4
     AdditionalValue: 0
-    FinalValue: 0.4
+    FinalValue: 0
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   fixedCastTime:
     BaseValue: 0
     AdditionalValue: 0
-    FinalValue: 0
+    FinalValue: 1
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
@@ -72,11 +72,13 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   trueCoolDown: 5.52
-  coolDownTimer: 2.5971904
+  coolDownTimer: 2.621989
   cooling: 1
   coolDownType: 1
   duration: 0.6
   prefab: {fileID: 4264536277670069577, guid: a42cd9ada3057dc489e69140f3653445, type: 3}
+  castSkillClip: {fileID: 0}
+  useSkillClip: {fileID: 0}
   immediatelyEvent:
     m_PersistentCalls:
       m_Calls: []

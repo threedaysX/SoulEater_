@@ -38,7 +38,7 @@ public class BackStep : DisposableSkill
     private void InterruptAction()
     {
         sourceCaster.LockOperation(LockType.OperationAction, false);
-        sourceCaster.operationController.InterruptAnimOperation();
+        sourceCaster.opc.InterruptAnimOperation();
     }
 
     private void GetIntoImmune()

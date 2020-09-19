@@ -1,4 +1,5 @@
 ﻿using StatsModel;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -94,6 +95,37 @@ public class Character : MonoBehaviour
     [HideInInspector] public GameObject lastAttackMeTarget;   // 上一個攻擊我的目標是?
     [HideInInspector] public bool isKnockStun = false;   // 判斷是否被擊暈
     [SerializeField] private bool isImmune = false;  // 用來判斷角色是否無敵(不會被命中)
+
+    [Header("攻擊細節")]
+    [HideInInspector] public int cycleAttackCount = 2;    // 每一輪攻擊次數的循環 (完成一連串攻擊動作的總需求次數)
+    [HideInInspector] public int attackComboCount = 0;    // 當前累積的攻擊次數
+    [HideInInspector] public float attackDelayDuration = 1f;        // 每一段攻擊後的延遲(每一輪有N段)
+    [HideInInspector] public float preAttackAnimDuration = 1f;      // 實際前搖攻擊動畫時間
+    [HideInInspector] public float attackAnimDuration = 1f;         // 實際攻擊動畫時間
+    [HideInInspector] public float nextAttackResetTime;
+    private float attackResetDuration = 1f;         // 在前一攻擊完畢後N秒內，可以接續攻擊，若沒有接續攻擊，則會重置連段次數
+    private float attackFinishedTime;               // 每個攻擊動畫撥放完預期的時間
+    private float maxAttackAnimDuration = 1f;       // 最大攻擊動畫時間  
+    private int _attackAnimNumber = 0;
+    /// <summary>
+    /// 第N次攻擊所播放的動畫
+    /// </summary>
+    public int AttackAnimNumber
+    {
+        get
+        {
+            return _attackAnimNumber;
+        }
+        set
+        {
+            _attackAnimNumber = value;
+            if (_attackAnimNumber > cycleAttackCount)
+                _attackAnimNumber = 1;
+        }
+    }
+
+    [Header("閃避細節")]
+    [HideInInspector] public float evadeCoolDownDuration;
     #endregion
 
     #region 角色資料
@@ -115,7 +147,7 @@ public class Character : MonoBehaviour
     #region 控制器
     [HideInInspector] public OperationSoundController operationSoundController; // 操作聲音控制
     [HideInInspector] public WeaponController weaponController; // 武器控制
-    [HideInInspector] public OperationController operationController;    // 操作控制
+    [HideInInspector] public OperationController opc;    // 操作控制
     [HideInInspector] public SkillController skillController;   // 技能控制
     [HideInInspector] public BuffController buffController; // 狀態控制
     [HideInInspector] public CombatController combatController; // 戰鬥控制
@@ -123,14 +155,26 @@ public class Character : MonoBehaviour
     [HideInInspector] public DieController dieController; // 死亡控制
     [HideInInspector] public IconController iconController; // 提示圖示控制
     [HideInInspector] public CumulativeDataController cumulativeDataController; // 傷害儲存控制
+    [HideInInspector] public Rigidbody2D rb;
+    #region Anim
     [HideInInspector] public Animator anim;
+    public AnimatorOverrideController animController;
+    private AnimationClip defaultCastSkillClip;
+    private AnimationClip defaultUseSkillClip;
+    #endregion
+    #endregion
+
+
+    #region Interface
+    public IJumpControl _jump;
+    public IEvadeControl _evade;
     #endregion
 
     private void Awake()
     {
         operationSoundController = GetComponent<OperationSoundController>();
         weaponController = GetComponent<WeaponController>();
-        operationController = GetComponent<OperationController>();
+        opc = GetComponent<OperationController>();
         skillController = GetComponent<SkillController>();
         buffController = GetComponent<BuffController>();
         combatController = GetComponent<CombatController>();
@@ -138,8 +182,13 @@ public class Character : MonoBehaviour
         dieController = GetComponent<DieController>();
         iconController = GetComponent<IconController>();
         cumulativeDataController = GetComponent<CumulativeDataController>();
+        rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
-
+        animController = new AnimatorOverrideController(anim.runtimeAnimatorController);
+        anim.runtimeAnimatorController = animController;
+        cycleAttackCount = data.cycleAttackCount;
+        nextAttackResetTime = 0;
+        attackComboCount = 0;
         ReBorn();
     }
 
@@ -349,7 +398,7 @@ public class Character : MonoBehaviour
         bool attackSuccess = false;
         if (attack.CanDo)
         {
-            attackSuccess = operationController.StartAttackAnim(delegate 
+            attackSuccess = StartAttackAnim(delegate 
             { 
                 return combatController.Attack(attackType, elementType); 
             }
@@ -396,6 +445,291 @@ public class Character : MonoBehaviour
     {
         
     }
+
+    #region StartAnim
+    public void StartMoveAnim(float horizontalMove)
+    {
+        if (anim == null)
+            return;
+        anim.SetFloat(AnimParameterKeyWord.moveSpeed, Mathf.Abs(horizontalMove));
+    }
+
+    public void StartJumpAnim(bool forceActToEnd = false)
+    {
+        string operationName = "StartJumpAnim";
+        // 檢查動作列狀態
+        if (opc.CheckOperation(operationName))
+        {
+            Operation jump = new Operation(operationName);
+            jump.SetAction(StartTrueJump(jump.SetOperationState, _jump.Jump));
+            jump.SetDelay(0);
+            jump.SetEndEvent(SetOperationEndEvent);
+            opc.AddOperation(jump, forceActToEnd);
+        }
+    }
+
+    public void StartEvadeAnim(bool forceActToEnd = false)
+    {
+        string operationName = "StartEvadeAnim";
+        // 檢查動作列狀態
+        if (opc.CheckOperation(operationName))
+        {
+            Operation evade = new Operation(operationName);
+            evade.SetAction(StartTrueEvade(evade.SetOperationState, evade.SetDelay, _evade.Evade));
+            evade.SetEndEvent(SetOperationEndEvent);
+            opc.AddOperation(evade, forceActToEnd);
+        }
+    }
+
+    /// <param name="skillUseDurtaion">技能施放持續的時間(與使用技能的動作動畫時間不同)</param>
+    public void StartUseSkillAnim(Action skillCastMethod, Action skillUseMethod, float castTime, float skillUseDurtaion, bool forceActToEnd = false, AnimationClip castSkillClip = default, AnimationClip useSkillClip = default)
+    {
+        if (skillUseMethod == null)
+            return;
+
+        string operationName = "StartUseSkillAnim";
+        // 檢查動作列狀態
+        if (opc.CheckOperation(operationName))
+        {
+            Operation skillUse = new Operation(operationName);
+            skillUse.SetAction(StartTrueSkillUse(skillCastMethod, skillUseMethod, castTime, skillUseDurtaion, castSkillClip, useSkillClip));
+            skillUse.SetEndEvent(
+                delegate {
+                    SetOperationEndEvent();
+                    // 重設詠唱技能動作
+                    if (defaultCastSkillClip != null)
+                        animController[defaultCastSkillClip.name] = defaultCastSkillClip;
+                    // 重設使用技能動作
+                    if (defaultUseSkillClip != null)
+                        animController[defaultUseSkillClip.name] = defaultUseSkillClip;
+                });
+            opc.AddOperation(skillUse, forceActToEnd);
+        }
+    }
+
+    public bool StartAttackAnim(Func<bool> attackMethod, bool forceActToEnd = false)
+    {
+        bool attackSuccess = false;
+        string operationName = "StartAttackAnim";
+        // 檢查動作列狀態
+        if (opc.CheckOperation(operationName))
+        {
+            Operation attack = new Operation(operationName);
+            attack.SetAction(StartTrueAttack(attack.SetOperationState, attack.SetDelay, attackMethod));
+            attack.SetEndEvent(SetOperationEndEvent);
+            opc.AddOperation(attack, forceActToEnd);
+            attackSuccess = true;
+        }
+
+        return attackSuccess;
+    }
+
+    private void SetOperationEndEvent()
+    {
+        // 重置角色動作
+        LockOperation(LockType.OperationAction, false);
+        // 重置角色動畫
+        opc.InterruptAnimOperation();
+    }
+    #endregion
+
+    #region IEnumerator Anim Instances
+    private IEnumerator StartTrueJump(Action<OperationStateType> setOperationState, Action jumpMethod)
+    {
+        opc.isJumping = true;
+
+        setOperationState(OperationStateType.Link);
+        jumpMethod.Invoke();
+
+        while (true)
+        {
+            if (opc.fallJump && opc.isGrounding)
+            {
+                opc.startJump = false;
+                opc.fallJump = false;
+                opc.endJump = true;
+                float frameDelay = GetFrameTimeOffset(3);
+                yield return new WaitForSeconds(frameDelay);
+                yield return new WaitForSeconds(AnimationBase.Instance.GetCurrentAnimationLength(anim) - frameDelay);
+                opc.endJump = false;
+                break;
+            }
+            if (rb.velocity.y > 0 && !opc.startJump)
+            {
+                opc.startJump = true;
+                opc.fallJump = false;
+            }
+            if (rb.velocity.y <= 0 && !opc.fallJump)
+            {
+                opc.startJump = false;
+                opc.fallJump = true;
+            }
+            yield return null;
+        }
+
+        opc.isJumping = false;
+    }
+
+    private IEnumerator StartTrueEvade(Action<OperationStateType> setOperationState, Action<float> setDelay, Action evadeMethod)
+    {
+        opc.isEvading = true;
+        GetIntoImmune(0.4f);
+
+        // 重置閃避時間
+        ResetEvadeCoolDownDuration();
+        setDelay(evadeCoolDownDuration);
+
+        // 鎖定攻擊、移動、方向
+        attack.Lock(LockType.OperationAction);
+        move.Lock(LockType.OperationAction);
+        freeDirection.Lock(LockType.OperationAction);
+
+        setOperationState(OperationStateType.Interrupt);
+        yield return new WaitForSeconds(GetFrameTimeOffset(1));   // 等待一幀，使動畫開始撥放，否則會取到上一個動畫的狀態。
+
+        evadeMethod.Invoke();
+
+        float evadeAnimDuration = AnimationBase.Instance.GetCurrentAnimationLength(anim);
+        yield return new WaitForSeconds(evadeAnimDuration * 0.7f);    // 等待動畫播放至準備收尾
+
+        attack.UnLock(LockType.OperationAction); // 收尾動作的時候才可以開始攻擊
+
+        yield return new WaitForSeconds(evadeAnimDuration * 0.3f);    // 等待動畫播放結束
+        opc.isEvading = false;
+    }
+
+    private IEnumerator StartTrueAttack(Action<OperationStateType> setOperationState, Action<float> setDelay, Func<bool> attackMethod)
+    {
+        /// 攻擊前搖
+        opc.isPreAttacking = true;
+
+        // 鎖定移動
+        move.Lock(LockType.OperationAction);
+
+        // 重置每段攻擊時間間隔
+        AttackAnimNumber++;
+        ResetAttackDelayDuration();
+        setDelay(attackDelayDuration);
+
+        // 若是最後一段的攻擊動作，就無法預存下一個攻擊動作。
+        if (CheckIsFinalAttack())
+            setOperationState(OperationStateType.Interrupt);
+        else
+            setOperationState(OperationStateType.Trigger);
+        yield return new WaitForSeconds(GetFrameTimeOffset(1));   // 等待一幀，使動畫開始撥放，否則會取到上一個動畫的狀態。
+
+        // 攻速過快，動畫時間縮短
+        preAttackAnimDuration = AnimationBase.Instance.GetCurrentAnimationLength(anim);
+        if (maxAttackAnimDuration < preAttackAnimDuration)
+            preAttackAnimDuration = maxAttackAnimDuration;
+        yield return new WaitForSeconds(preAttackAnimDuration);    // 等待動畫播放結束
+
+        /// 攻擊中
+        opc.isPreAttacking = false;
+        opc.isAttacking = true;
+
+        // 鎖定跳躍與閃避、方向
+        jump.Lock(LockType.OperationAction);
+        evade.Lock(LockType.OperationAction);
+        freeDirection.Lock(LockType.OperationAction);
+
+        if (!CheckIsFinalAttack())
+        {
+            setOperationState(OperationStateType.Continuous);
+        }
+        else
+        {
+            setOperationState(OperationStateType.None);
+        }
+        yield return new WaitForSeconds(GetFrameTimeOffset(2));
+
+        // 累積攻擊次數+1
+        attackComboCount++;
+
+        // 攻擊觸發
+        operationSoundController.PlaySound(operationSoundController.attackSound);
+        if (attackMethod.Invoke())
+        {
+            operationSoundController.PlaySound(operationSoundController.hitSound);
+        }
+
+        // 攻速過快，動畫時間縮短
+        attackAnimDuration = AnimationBase.Instance.GetCurrentAnimationLength(anim);
+        if (maxAttackAnimDuration < attackAnimDuration)
+            attackAnimDuration = maxAttackAnimDuration;
+
+        // 儲存下次攻擊重置時間
+        attackFinishedTime = Time.time + attackAnimDuration;
+        nextAttackResetTime = attackFinishedTime + attackResetDuration;
+
+        float comboDuration = GetFrameTimeOffset(8);
+        yield return new WaitForSeconds(attackAnimDuration - comboDuration);
+
+        // 攻擊收尾，可連段
+        setOperationState(OperationStateType.Link);
+
+        yield return new WaitForSeconds(comboDuration);
+
+        opc.isAttacking = false;
+    }
+
+    private IEnumerator StartTrueSkillUse(Action skillCastMethod, Action skillUseMethod, float castTime, float skillUseDurtaion, AnimationClip castSkillClip = default, AnimationClip useSkillClip = default)
+    {
+        // 鎖定行動
+        LockOperation(LockType.OperationAction, true);
+
+        if (skillCastMethod != null)
+        {
+            opc.isSkillCasting = true;
+            skillCastMethod.Invoke();
+            yield return new WaitForSeconds(GetFrameTimeOffset(1));
+
+            // 設定詠唱技能動作
+            string castSkillName = anim.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+            // Reset
+            if (defaultCastSkillClip == null)
+                defaultCastSkillClip = animController[castSkillName];
+            animController[castSkillName] = castSkillClip;
+
+            // 計時(詠唱中)
+            float timer = 0;
+            while (timer < castTime)
+            {
+                timer += GetFrameTimeOffset(1);
+                // Render Casting GUI
+                yield return null;
+            }
+
+            opc.isSkillCasting = false;
+        }
+
+        // 詠唱結束，施放技能
+        skillUseMethod.Invoke();
+
+        opc.isSkillUsing = true;
+        yield return new WaitForSeconds(GetFrameTimeOffset(2));
+
+        // 設定使用技能動作
+        string useSkillName = anim.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+        // Reset
+        if (defaultUseSkillClip == null)
+            defaultUseSkillClip = animController[useSkillName];
+        animController[useSkillName] = useSkillClip;
+
+        if (skillUseDurtaion > 0)
+        {
+            // 計時(持續施放中)
+            float timer = 0;
+            while (timer < skillUseDurtaion)
+            {
+                timer += GetFrameTimeOffset(1);
+                // Render Casting GUI
+                yield return null;
+            }
+        }
+        opc.isSkillUsing = false;
+    }
+    #endregion
     #endregion
 
     #region Immune
@@ -625,8 +959,70 @@ public class Character : MonoBehaviour
         return resultResistance;
     }
     #endregion
+
+    #region Others
+    /// <summary>
+    /// 攻擊重置的時間間隔，會根據攻擊後延遲調整
+    /// </summary>
+    private void ResetAttackDelayDuration()
+    {
+        float delay = data.attackDelay.Value;
+
+        // 攻擊後延遲(連段中的攻擊延遲較短，為1/5)
+        if (AttackAnimNumber == cycleAttackCount)
+        {
+            attackDelayDuration = delay;
+        }
+        else
+        {
+            attackDelayDuration = delay / 5;
+        }
+
+        // 最大攻擊動畫時間受到攻擊後延遲影響
+        maxAttackAnimDuration = delay;
+        // 攻擊動畫時間下限
+        if (maxAttackAnimDuration < 0.02f)
+        {
+            maxAttackAnimDuration = 0.02f;
+        }
+
+        // 重置攻擊恢復時間(重置連段中攻擊)
+        // 若攻擊動畫時間過長，則加長此時間(attackResetDuration)
+        if (maxAttackAnimDuration >= attackResetDuration)
+        {
+            attackResetDuration = maxAttackAnimDuration;
+        }
+        else if (attackResetDuration != 1f)
+        {
+            attackResetDuration = 1;
+        }
+    }
+
+    private bool CheckIsFinalAttack()
+    {
+        return AttackAnimNumber == cycleAttackCount;
+    }
+
+    /// <summary>
+    /// 閃避重置的時間間隔
+    /// </summary>
+    private void ResetEvadeCoolDownDuration()
+    {
+        evadeCoolDownDuration = data.evadeCoolDown.Value;
+    }
+
+    /// <summary>
+    /// 目押的時間間隔 (從該動作【動畫撥放結束前】到【動畫播放完】的時間差)
+    /// </summary>
+    /// <param name="frame">目押的幀數</param>
+    private float GetFrameTimeOffset(int frame)
+    {
+        return Time.unscaledDeltaTime * frame;
+    }
+    #endregion
 }
 
+#region struct
 /// <param name="damageSource">傷害來源</param>
 /// <param name="damage">單次傷害</param>
 /// <param name="isCritical">是否爆擊</param>
@@ -684,4 +1080,15 @@ public struct DamageData
         this.duration = duration;
         this.damageImmediate = damageImmediate;
     }
+}
+#endregion
+
+public interface IJumpControl
+{
+    void Jump();
+}
+
+public interface IEvadeControl
+{
+    void Evade();
 }

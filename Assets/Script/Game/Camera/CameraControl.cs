@@ -236,12 +236,20 @@ public class CameraControl : MonoBehaviour
         // Cinemachine Shake (Noise => Basic Multi Channel Perlin => Use 6D Shake or custom shake with new profile.)
         private CinemachineBasicMultiChannelPerlin virtualCameraNoise;
 
+        /// <summary>
+        /// Shake camera from small to strong power
+        /// </summary>
+        public void ShakeCameraLinear(float shakeAmplitude, float shakeFrequency, float duration, bool ignoreTimeScale = false, float startDelay = 0f)
+        {
+            StartCoroutine(ShakeCameraLinearCoroutine(shakeAmplitude, shakeFrequency, duration, ignoreTimeScale, startDelay));
+        }
+
         public void ShakeCamera(float shakeAmplitude, float shakeFrequency, float duration, bool ignoreTimeScale = false, float startDelay = 0f, bool overrideShake = true)
         {
             StartCoroutine(ShakeCameraCoroutine(shakeAmplitude, shakeFrequency, duration, ignoreTimeScale, startDelay, overrideShake));
         }
 
-        public IEnumerator ShakeCameraCoroutine(float shakeAmplitude, float shakeFrequency, float duration, bool ignoreTimeScale = false, float startDelay = 0f, bool overrideShake = false)
+        public IEnumerator ShakeCameraCoroutine(float shakeAmplitude, float shakeFrequency, float duration, bool ignoreTimeScale, float startDelay, bool overrideShake)
         {
             if (ignoreTimeScale)
             {
@@ -274,9 +282,72 @@ public class CameraControl : MonoBehaviour
                 {
                     timeleft -= Time.deltaTime;
                 }
+                
                 yield return null;
             }
+            ResetShake();
+        }
+
+        public IEnumerator ShakeCameraLinearCoroutine(float shakeAmplitude, float shakeFrequency, float duration, bool ignoreTimeScale, float startDelay)
+        {
+            if (ignoreTimeScale)
+            {
+                yield return new WaitForSecondsRealtime(startDelay);
+            }
+            else
+            {
+                yield return new WaitForSeconds(startDelay);
+            }
+
+            // Get current Vcam's noise setting. (Check 6D Shake is added)
+            virtualCameraNoise = GetCurrentActiveCamera().GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
+            // If null or in shaking, return.
+            if (virtualCameraNoise == null)
+                yield break;
+
+            ResetShake();
+            shaking = true;
+            float ampStep = shakeAmplitude - virtualCameraNoise.m_AmplitudeGain;
+            float freqStep = shakeFrequency - virtualCameraNoise.m_FrequencyGain;
+            float timeleft = duration;
+            while (timeleft > 0)
+            {
+                float trueDeltaTime = GetDeltaTime(ignoreTimeScale);
+                // Set Cinemachine Camera Noise parameters
+                if (timeleft > trueDeltaTime)
+                {
+                    virtualCameraNoise.m_AmplitudeGain += (ampStep * trueDeltaTime / duration);
+                    virtualCameraNoise.m_FrequencyGain += (freqStep * trueDeltaTime / duration);
+
+                }
+                else
+                {
+                    virtualCameraNoise.m_AmplitudeGain += (ampStep * timeleft / duration);
+                    virtualCameraNoise.m_FrequencyGain += (freqStep * timeleft / duration);
+                }
+                timeleft -= trueDeltaTime;
+                yield return null;
+            }
+            ResetShake();
+        }
+
+        private void ResetShake()
+        {
             virtualCameraNoise.m_AmplitudeGain = 0;
+            virtualCameraNoise.m_FrequencyGain = 0;
+            shaking = false;
+        }
+
+        private float GetDeltaTime(bool isUnScaled)
+        {
+            if (isUnScaled)
+            {
+                return Time.unscaledDeltaTime;
+            }
+            else
+            {
+                return Time.deltaTime;
+            }
         }
     }
     #endregion

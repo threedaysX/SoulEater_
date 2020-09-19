@@ -13,7 +13,7 @@ public class ShockWave : DisposableSkill
             TriggerMotionBlur();
             DebuffSlowDown();
             DebuffTired();
-            DamageTarget();
+            DamageTarget(target);
         });
     }
 

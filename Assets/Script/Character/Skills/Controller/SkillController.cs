@@ -54,12 +54,14 @@ public class SkillController : MonoBehaviour
         GameObject skillObj = SkillPools.Instance.SpawnSkillFromPool(character, skill, skillPos, character.transform.rotation);
         if (skillObj != null)
         {
-            character.operationController.StartUseSkillAnim(
+            character.StartUseSkillAnim(
                 StartCastSkill(skill, totalCastTime, skillObj)
                 , StartUseSkill(skill, skillObj)
                 , totalCastTime
                 , skill.duration
-                , forceActToEnd);
+                , forceActToEnd
+                , skill.castSkillClip
+                , skill.useSkillClip);
         }
 #if UNITY_EDITOR
         else

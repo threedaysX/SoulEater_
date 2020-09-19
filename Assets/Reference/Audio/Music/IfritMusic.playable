@@ -175,12 +175,12 @@ AnimationClip:
       - serializedVersion: 3
         time: 9.55
         value: 1
-        inSlope: -0.00075972953
-        outSlope: -0.00075972953
+        inSlope: -0.00018430977
+        outSlope: -0.00018430977
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.12829505
+        outWeight: 0.11685715
       - serializedVersion: 3
         time: 64.51667
         value: 1
@@ -251,12 +251,12 @@ AnimationClip:
       - serializedVersion: 3
         time: 9.55
         value: 1
-        inSlope: -0.00075972953
-        outSlope: -0.00075972953
+        inSlope: -0.00018430977
+        outSlope: -0.00018430977
         tangentMode: 0
         weightedMode: 0
         inWeight: 0.33333334
-        outWeight: 0.12829505
+        outWeight: 0.11685715
       - serializedVersion: 3
         time: 64.51667
         value: 1
@@ -296,7 +296,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfda56da833e2384a9677cd3c976a436, type: 3}
-  m_Name: MusicAudioTimeline
+  m_Name: IfritMusic
   m_EditorClassIdentifier: 
   m_Version: 0
   m_Tracks:
@@ -344,7 +344,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b22792c3b570444eb18cb78c2af3a74, type: 3}
-  m_Name: Audio Track (1)
+  m_Name: FirstStage
   m_EditorClassIdentifier: 
   m_Version: 3
   m_AnimClip: {fileID: 0}
@@ -391,7 +391,7 @@ MonoBehaviour:
   m_Markers:
     m_Objects: []
   m_TrackProperties:
-    volume: 0.9983868
+    volume: 0.9997729
     stereoPan: 0
     spatialBlend: 0
 --- !u!114 &3044919706282633187
@@ -456,7 +456,7 @@ MonoBehaviour:
   m_Loop: 0
   m_bufferingTime: 0.1
   m_ClipProperties:
-    volume: 0.06
+    volume: 1
 --- !u!114 &6173967653967157976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -473,7 +473,7 @@ MonoBehaviour:
   m_Loop: 1
   m_bufferingTime: 0.1
   m_ClipProperties:
-    volume: 0.06
+    volume: 1
 --- !u!114 &6336428430225251363
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -484,7 +484,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b22792c3b570444eb18cb78c2af3a74, type: 3}
-  m_Name: Audio Track
+  m_Name: Opening
   m_EditorClassIdentifier: 
   m_Version: 3
   m_AnimClip: {fileID: 0}
@@ -567,7 +567,7 @@ MonoBehaviour:
   m_Markers:
     m_Objects: []
   m_TrackProperties:
-    volume: 0.0008686516
+    volume: 0.00029197903
     stereoPan: 0
     spatialBlend: 0
 --- !u!114 &8490459854443713766

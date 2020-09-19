@@ -107,11 +107,11 @@ public class Debuff : Singleton<Debuff>
     }
 
     /// <summary>
-    /// 破甲Lv1: 對命中的目標造成-10%基礎防禦，持續4秒。			
-    /// 破甲Lv2: 對命中的目標造成-25%基礎防禦，持續4秒。			
-    /// 破甲Lv3: 對命中的目標造成-40%基礎防禦，持續4秒。			
-    /// 破甲Lv4: 對命中的目標造成-60%基礎防禦，持續4秒。			
-    /// 破甲Lv5: 對命中的目標造成-90%基礎防禦，持續4秒。			
+    /// 破甲Lv1: 對命中的目標造成-10%基礎防禦，持續N秒。			
+    /// 破甲Lv2: -25%			
+    /// 破甲Lv3: -40%		
+    /// 破甲Lv4: -60%			
+    /// 破甲Lv5: -90%			
     /// </summary>
     public void ArmorBreakWithLevel(Character target, int level, float duration)
     {

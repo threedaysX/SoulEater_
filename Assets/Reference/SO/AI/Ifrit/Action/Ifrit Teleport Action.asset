@@ -17,46 +17,27 @@ MonoBehaviour:
   currentActionWeight: 8
   originalActionWeight: 5
   offsetActionDelay: 0
-  additionActionDelay: 0
   minusWeightAmountWhenNotSuccess: 1
   minusWeightAmountAfterAction: 2
-  beforeActionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  beforeActionAddEvent:
-    m_PersistentCalls:
-      m_Calls: []
   actionType: 7
   judgeSets:
-  - additionalActBeforeEvent:
-      m_PersistentCalls:
-        m_Calls: []
-    actionWeightAfterJudge: 8
+  - actionWeightAfterJudge: 8
     judgement:
       conditions:
       - {fileID: 11400000, guid: 97ac49680b3fb2341a3fe94cd83284a6, type: 2}
       - {fileID: 11400000, guid: 0dad0486a9915c747b4b26991dc4b077, type: 2}
       - {fileID: 11400000, guid: 2483b5169b8f89a4bb63d6af443a77bd, type: 2}
-  - additionalActBeforeEvent:
-      m_PersistentCalls:
-        m_Calls: []
-    actionWeightAfterJudge: 7
+  - actionWeightAfterJudge: 7
     judgement:
       conditions:
       - {fileID: 11400000, guid: a29e6d212c4ad1040a4ca9346fd7bbba, type: 2}
       - {fileID: 11400000, guid: add1730fb3edb9c4ead5e32daf5b505e, type: 2}
-  - additionalActBeforeEvent:
-      m_PersistentCalls:
-        m_Calls: []
-    actionWeightAfterJudge: 10
+  - actionWeightAfterJudge: 10
     judgement:
       conditions:
       - {fileID: 11400000, guid: 97ac49680b3fb2341a3fe94cd83284a6, type: 2}
       - {fileID: 11400000, guid: 2483b5169b8f89a4bb63d6af443a77bd, type: 2}
-  - additionalActBeforeEvent:
-      m_PersistentCalls:
-        m_Calls: []
-    actionWeightAfterJudge: 7
+  - actionWeightAfterJudge: 7
     judgement:
       conditions:
       - {fileID: 11400000, guid: 819e1468151e5b94f8c70c5fb00e82e9, type: 2}

@@ -26,7 +26,7 @@ public class DieController : MonoBehaviour
         character.StopAllCoroutines();
         character.GetIntoImmune(true);
         character.LockOperation(LockType.Die, true);
-        character.operationController.InterruptAnimOperation();
+        character.opc.InterruptAnimOperation();
         character.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         character.CurrentHealth = 0;
         character.operationSoundController.PlaySound(dieSound);

@@ -57,7 +57,7 @@ public abstract class EnemyModel : Character
     {
         ai.ResetAiSwitchOn();
         this.StopAllCoroutines();
-        this.operationController.InterruptAnimOperation();
+        this.opc.InterruptAnimOperation();
         this.LockOperation(LockType.All, false);
     }
 
@@ -104,9 +104,11 @@ public class HorizontalFacement : IFacement
     private Character self;
     public void FaceTarget(MonoBehaviour mono, Transform target, bool force = false)
     {
+        if (target == null)
+            return;
         if (self == null)
             self = mono.GetComponent<Character>();
-        if ((target == null || !self.freeDirection.CanDo) && !force)
+        if (!self.freeDirection.CanDo && !force)
             return;
 
         float faceDirX = self.transform.position.x - target.transform.position.x;

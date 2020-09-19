@@ -57,8 +57,8 @@ public class NaraBurst : DisposableSkill
     private Vector3 GetBurstPos()
     {
         List<Character> targets = detectArea.Detect(sourceCaster, new SkillDetectArea.CircleDetect(currentSkill.range.Value), false);
-        float offsetX = 2f;
-        float offsetFrontX = Random.Range(5.5f, 8.2f);
+        float offsetX = 5f;
+        float offsetFrontX = Random.Range(6f, 8.2f);
         float offsetY = 1f;
 
         // Random Choose one target.

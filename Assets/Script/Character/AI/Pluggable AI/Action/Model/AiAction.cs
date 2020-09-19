@@ -40,16 +40,12 @@ public abstract class AiAction : AiHaviourBase
 
     [Header("行為後延遲")]
     public float offsetActionDelay; // 校正行為延遲(可調整)
-    [HideInInspector] public float additionActionDelay;   // 行為本身延遲(至行為結束的時長)
+    public float AdditionActionDelay { get; private set; }   // 行為本身延遲(至行為結束的時長)
 
     [Header("權重減值")]
     public float minusWeightAmountWhenNotSuccess = 2;
     public float minusWeightAmountAfterAction = 1;
     private float _diffCount;
-
-    [Header("額外觸發事件")]
-    public UnityEvent beforeActionEvent;
-    [HideInInspector] public UnityEvent beforeActionAddEvent;   // 每次動作結束後將會清空
 
     [Header("行為")]
     public AiActionType actionType;
@@ -78,8 +74,6 @@ public abstract class AiAction : AiHaviourBase
                 // 將判斷後的權重設在動作權重上
                 if (set.actionWeightAfterJudge != 0)
                     currentActionWeight = set.actionWeightAfterJudge - DiffCount;
-                // 設置Judge專屬的條件附加事件
-                beforeActionAddEvent = set.additionalBeforeActionEvent;
                 return true;
             }
         }
@@ -112,7 +106,7 @@ public abstract class AiAction : AiHaviourBase
     }
     public void ApplyActionDelay(float value)
     {
-        additionActionDelay = value;
+        AdditionActionDelay = value;
     }
     public void SetAiActionSwitchOn(bool on)
     {
@@ -141,8 +135,6 @@ public struct LinkedAction
 [System.Serializable]
 public struct JudgeSet
 {
-    // Trigger if this judge success and this action be choose and done.
-    public UnityEvent additionalBeforeActionEvent;
     public int actionWeightAfterJudge;
     public Judgement judgement;
 }

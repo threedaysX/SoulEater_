@@ -62,7 +62,7 @@ public class FireBall : DisposableSkill
 
         if(targetCol.gameObject.GetComponent<Character>() != null && targetCol.gameObject.GetComponent<Character>() != sourceCaster)
         {
-            DamageTarget();
+            DamageTarget(target);
             SetActiveAfterSkillDone(false);
         }
         else if(targetCol.CompareTag("EnvironmentCollider"))  //not hit

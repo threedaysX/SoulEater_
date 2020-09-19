@@ -14,6 +14,7 @@ public abstract class BossModel : EnemyModel, IBossOpeningEvent, IBossRootEvemt
     public virtual float StartOpeningAction()
     {
         CameraOpeningMove();
+        MusicOpeningPlay();
         CameraControl.Shake.Instance.ShakeCamera(1f, 10f, 1.5f, false, 0.2f);
         float duration = openingEffect.main.startLifetime.constant + 1f;
         openingEffect.Play(true);
@@ -21,7 +22,8 @@ public abstract class BossModel : EnemyModel, IBossOpeningEvent, IBossRootEvemt
         return duration;
     }
 
-    protected abstract void CameraOpeningMove();
+    public abstract void CameraOpeningMove();
+    public abstract void MusicOpeningPlay();
 
     /// <summary>
     /// Trigger some story or event.
@@ -67,7 +69,7 @@ public abstract class BossModel : EnemyModel, IBossOpeningEvent, IBossRootEvemt
         StopAllCoroutines();
         GetIntoImmune(duration);
         LockOperation(LockType.Die, true);
-        operationController.InterruptAnimOperation();
+        opc.InterruptAnimOperation();
         GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         StartCoroutine(FadeScreen.Instance.FadeIn(duration));
         TimeScaleController.Instance.DoSlowMotion(0.05f, 0f, duration);
