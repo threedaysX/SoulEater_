@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FireBall : DisposableSkill
 {
@@ -8,10 +6,6 @@ public class FireBall : DisposableSkill
     public GameObject projectile;
     public ProjectileSetting projectileSetting = new ProjectileSetting { };
     public ProjectileDirectSetting projectileDirectSetting = new ProjectileDirectSetting { };
-
-    private void Start()
-    {
-    }
 
     public override void GenerateSkill(Character character, Skill skill)
     {
@@ -23,7 +17,7 @@ public class FireBall : DisposableSkill
         ProjectileDataInitializer dataInitializer = new ProjectileDataInitializer(projectileSetting);
         projectileDirectSetting.initialAngleArray = dataInitializer.GetInitialAngle();
         projectileDirectSetting.sourceCaster = sourceCaster;
-        ProjectileSpawner.Instance.InstantiateProjectile(projectile, projectileSetting, projectileDirectSetting);
+        ProjectileSpawner.Instance.InstantiateProjectile(projectile, new ProjectileState.StraightWithDirection(), projectileSetting, projectileDirectSetting);
     }
 
     protected override void AddAffectEvent()

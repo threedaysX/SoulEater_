@@ -17,13 +17,8 @@ public struct ProjectileSetting
 [System.Serializable]
 public struct ProjectileDirectSetting
 {
-    public ProjectileStateType stateType;
     public float moveSpeed;
     public int lifeTime;
-    [Header("ParabolaWithDirection")]
-    public float angleIncrement;
-    [Header("ParabolaWithTarget")]
-    public float parabolaHeight;
     public Transform target;
     public ElementType elementType;
     [HideInInspector] public float[] initialAngleArray;
@@ -49,15 +44,15 @@ public class ProjectileSpawner : Singleton<ProjectileSpawner>
             ObjectPools.Instance.RenderObjectPoolsInParent(p.projectile, p.poolSize);
     }
 
-    public void InstantiateProjectile(GameObject projectilePrefab,  ProjectileSetting projectileSetting, ProjectileDirectSetting projectileDirectSetting)
+    public void InstantiateProjectile(GameObject projectilePrefab, IProjectileState state, ProjectileSetting projectileSetting, ProjectileDirectSetting projectileDirectSetting)
     {
         if (projectileTypes == null)
             return;
 
-        StartCoroutine(DelayProjectileSpawn(projectilePrefab, projectileSetting, projectileDirectSetting));
+        StartCoroutine(DelayProjectileSpawn(projectilePrefab, state, projectileSetting, projectileDirectSetting));
     }
 
-    private IEnumerator DelayProjectileSpawn(GameObject projectilePrefab, ProjectileSetting projectileSetting, ProjectileDirectSetting projectileDirectSetting)
+    private IEnumerator DelayProjectileSpawn(GameObject projectilePrefab, IProjectileState state, ProjectileSetting projectileSetting, ProjectileDirectSetting projectileDirectSetting)
     {
         int angleChunk = projectileSetting.restrictAngle / projectileSetting.amount;    //在限制角度中平分角度
         int angle = projectileSetting.angleOffset;
@@ -66,7 +61,7 @@ public class ProjectileSpawner : Singleton<ProjectileSpawner>
         {
             Transform p = ObjectPools.Instance.GetObjectInPools(projectilePrefab.name, projectileSetting.initialPosition.position).transform;
             projectileDirectSetting.initialAngle = projectileDirectSetting.initialAngleArray[i];
-            p.GetComponent<Projectile>().Setup(projectileDirectSetting.stateType, projectileDirectSetting);
+            p.GetComponent<Projectile>().Setup(state, projectileDirectSetting);
 
             if (p.GetComponent<ParticleSystem>() != null)
                 p.GetComponent<ParticleSystem>().Play();

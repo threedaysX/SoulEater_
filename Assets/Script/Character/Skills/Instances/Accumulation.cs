@@ -54,7 +54,7 @@ public class Accumulation : DisposableSkill
         EnergeBall ball = ObjectPools.Instance.GetObjectInPools<EnergeBall>(energeBall.name, GetBallPos(), default, true);
         // Reload [EnergeBall] for sourceCaster used.
         ObjectPools.Instance.Reload(energeBall.name, ball, true, sourceCaster.characterName);
-        ball.lifeTime = 20f;
+        ball.ballLifeTime = 20f;
         ball.ResetEnergeBallLifeTime(() => ReloadEnergeBall());
         activeBallsCount++;
     }

@@ -13,20 +13,15 @@ public class Projectile : MonoBehaviour
     public Transform target = null;   //外部給
     #endregion
 
-    private float angleIncrement;
-    private float parabolaHeight;
-
-
-    public ProjectileStateType type;
     private IProjectileState _state;
 
-    private void Start()
+    protected virtual void Start()
     {
         ResetProjectileInTime(gameObject, false, lifeTime);
         transform.eulerAngles = new Vector3(0, 0, initialAngle);
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         _state.Pattern();
     }
@@ -51,7 +46,7 @@ public class Projectile : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    public void Setup(ProjectileStateType type, ProjectileDirectSetting projectileDirectSetting)
+    public void Setup(IProjectileState state, ProjectileDirectSetting projectileDirectSetting)
     {
         // 通用的setup
         if (projectileDirectSetting.sourceCaster != null)
@@ -64,42 +59,9 @@ public class Projectile : MonoBehaviour
         this.initialAngle = projectileDirectSetting.initialAngle;  //rad
         this.target = projectileDirectSetting.target;
 
-        //不通用的setup
-        this.angleIncrement = projectileDirectSetting.angleIncrement;
-        this.parabolaHeight = projectileDirectSetting.parabolaHeight;
-
-        // Init type first(Set type again). 
-        SetStateType(type);
-        
+        _state = state;
         // 該State專屬的Setup
-        _state.Setup();
-    }
-
-    private void SetStateType(ProjectileStateType type)
-    {
-        switch (type)
-        {
-            case ProjectileStateType.StraightWithTarget:
-                if(target != null)
-                {
-                    _state = new StraightWithTarget(this);
-                    break;
-                }
-                goto case ProjectileStateType.StraightWithDirection;
-            case ProjectileStateType.StraightWithDirection:
-                _state = new StraightWithDirection(this);
-                break;
-            case ProjectileStateType.ParabolaWithTarget:
-                if (target != null)
-                {
-                    _state = new ParabolaWithTarget(this, parabolaHeight);
-                    break;
-                }
-                goto case ProjectileStateType.ParabolaWithDirection;
-            case ProjectileStateType.ParabolaWithDirection:
-                _state = new ParabolaWithDirection(this, angleIncrement);
-                break;
-        }
+        _state.Setup(this);
     }
 
     private void ResetProjectileInTime(GameObject obj, bool isActive, float time)
@@ -122,100 +84,110 @@ public enum ProjectileStateType
     StraightWithDirection,
     ParabolaWithTarget,
     ParabolaWithDirection,
-    // others..........
+    // Others..........
 }
 
 public interface IProjectileState
 {
-    void Setup();
+    void Setup(Projectile projectile);
     void Pattern();
 }
 
-public class StraightWithTarget : IProjectileState
+public class ProjectileState
 {
     private Projectile projectile;
 
-    public StraightWithTarget(Projectile projectile)
+    public class Default : ProjectileState, IProjectileState
     {
-        // Init some settings.
-        this.projectile = projectile;
-    }
-    public void Setup()
-    {
-        // Calculate or just setup basic and common setting in [Projectile] class.
-        // If no needs to use, can just empty.
-    }
+        public void Setup(Projectile projectile)
+        {
+            // Calculate or just setup basic and common setting in [Projectile] class.
+            // If no needs to use, can just empty.
+            this.projectile = projectile;
+        }
 
-    public void Pattern()
-    {
-        Vector2.MoveTowards(projectile.transform.position, projectile.target.transform.position, projectile.moveSpeed);
-    }
-}
-
-public class StraightWithDirection : IProjectileState
-{
-    private Projectile projectile;
-    private Vector2 direction;
-
-    public StraightWithDirection(Projectile projectile)
-    {
-        this.projectile = projectile;
+        public void Pattern()
+        {
+            
+        }
     }
 
-    public void Setup()
+    public class StraightWithTarget : ProjectileState, IProjectileState
     {
-        direction = new Vector2(Mathf.Cos(projectile.initialAngle), Mathf.Sin(projectile.initialAngle));
+        public void Setup(Projectile projectile)
+        {
+            // Calculate or just setup basic and common setting in [Projectile] class.
+            // If no needs to use, can just empty.
+            this.projectile = projectile;
+        }
+
+        public void Pattern()
+        {
+            Vector2.MoveTowards(projectile.transform.position, projectile.target.transform.position, projectile.moveSpeed);
+        }
     }
 
-    public void Pattern()
+    public class StraightWithDirection : ProjectileState, IProjectileState
     {
-        projectile.transform.position += (Vector3)direction * projectile.moveSpeed * Time.deltaTime;
-    }
-}
+        private Vector2 direction;
 
-public class ParabolaWithTarget : IProjectileState
-{
-    private Projectile projectile;
-    private Vector3 destination;
-    private float parabolaHeight;
-    public ParabolaWithTarget(Projectile projectile, float parabolaHeight)
-    {
-        this.projectile = projectile;
-        this.parabolaHeight = parabolaHeight;
-    }
+        public void Setup(Projectile projectile)
+        {
+            this.projectile = projectile;
+            direction = new Vector2(Mathf.Cos(projectile.initialAngle), Mathf.Sin(projectile.initialAngle));
+        }
 
-    public void Setup()
-    {
-        destination = projectile.target.position;
+        public void Pattern()
+        {
+            projectile.transform.position += (Vector3)direction * projectile.moveSpeed * Time.deltaTime;
+        }
     }
 
-    public void Pattern()
+    public class ParabolaWithTarget : ProjectileState, IProjectileState
     {
-        ParabolaController.Parabola(projectile.transform.position, destination, parabolaHeight, projectile.lifeTime);
+        private Vector3 destination;
+        private float parabolaHeight;
+
+        public ParabolaWithTarget(Projectile projectile, float parabolaHeight)
+        {
+            this.projectile = projectile;
+            this.parabolaHeight = parabolaHeight;
+        }
+
+        public void Setup(Projectile projectile)
+        {
+            this.projectile = projectile;
+            destination = projectile.target.position;
+        }
+
+        public void Pattern()
+        {
+            ParabolaController.Parabola(projectile.transform.position, destination, parabolaHeight, projectile.lifeTime);
+        }
     }
-}
 
-public class ParabolaWithDirection : IProjectileState
-{
-    private Projectile projectile;
-    private float angleIncrement;
-    private float initialAngle;
-
-    public ParabolaWithDirection(Projectile projectile, float angleIncrement)
+    public class ParabolaWithDirection : ProjectileState, IProjectileState
     {
-        this.projectile = projectile;
-        this.angleIncrement = angleIncrement;
-        this.initialAngle = projectile.initialAngle;
-    }
+        private float angleIncrement;
+        private float initialAngle;
 
-    public void Setup()
-    {
-    }
+        public ParabolaWithDirection(Projectile projectile, float angleIncrement)
+        {
+            this.projectile = projectile;
+            this.angleIncrement = angleIncrement;
+            this.initialAngle = projectile.initialAngle;
+        }
 
-    public void Pattern()
-    {
-        initialAngle += angleIncrement * Mathf.Deg2Rad * Time.deltaTime;
-        Vector3 direction = new Vector2(Mathf.Cos(initialAngle), Mathf.Sin(initialAngle)).normalized;
-        projectile.transform.position += direction * projectile.moveSpeed * Time.deltaTime;
+        public void Setup(Projectile projectile)
+        {
+            this.projectile = projectile;
+        }
+
+        public void Pattern()
+        {
+            initialAngle += angleIncrement * Mathf.Deg2Rad * Time.deltaTime;
+            Vector3 direction = new Vector2(Mathf.Cos(initialAngle), Mathf.Sin(initialAngle)).normalized;
+            projectile.transform.position += direction * projectile.moveSpeed * Time.deltaTime;
+        }
     }
 }

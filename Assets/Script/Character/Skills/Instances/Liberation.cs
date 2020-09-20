@@ -21,17 +21,15 @@ public class Liberation : DisposableSkill
     {
         foreach (Projectile proj in projectiles)
         { 
-            float angle = 90 + Random.Range(45f, 75f) * transform.right.x;
             ProjectileDirectSetting setting = new ProjectileDirectSetting
             {
                 sourceCaster = sourceCaster,
-                angleIncrement = 0,
                 moveSpeed = 10f,
                 lifeTime = 5,
                 elementType = ElementType.None,
                 initialAngle = 180,
             };
-            proj.Setup(ProjectileStateType.StraightWithDirection, setting);
+            proj.Setup(new ProjectileState.StraightWithDirection(), setting);
         }
     }
 }

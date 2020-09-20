@@ -13,7 +13,7 @@ public class FireBallOldVersion : DisposableSkill
     private Vector3 fireBallDestination;
     private bool canShootProjectile = false;
 
-    private void Start()
+    protected override void Start()
     {
         ProjectileDataInitializer dataInitializer = new ProjectileDataInitializer(projectileSetting);
         projectileDirectSetting.initialAngleArray = dataInitializer.GetInitialAngle();
@@ -60,7 +60,7 @@ public class FireBallOldVersion : DisposableSkill
 
         if(targetCol.gameObject.GetComponent<Character>() != null && targetCol.gameObject.GetComponent<Character>() != sourceCaster)
         {
-            DamageTarget();
+            DamageTarget(target);
             SetActiveAfterSkillDone(false);
         }
         else if(targetCol.CompareTag("EnvironmentCollider"))  //not hit
@@ -73,7 +73,7 @@ public class FireBallOldVersion : DisposableSkill
     {
         yield return new WaitForSeconds(1f);
         StartCoroutine(SetActiveAfterSkillDone(0.5f));
-        ProjectileSpawner.Instance.InstantiateProjectile(projectile, projectileSetting, projectileDirectSetting);
+        ProjectileSpawner.Instance.InstantiateProjectile(projectile, new ProjectileState.StraightWithDirection(), projectileSetting, projectileDirectSetting);
         yield break;
     }
     protected override void AddAffectEvent()
