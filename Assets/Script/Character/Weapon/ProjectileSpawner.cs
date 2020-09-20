@@ -17,10 +17,13 @@ public struct ProjectileSetting
 [System.Serializable]
 public struct ProjectileDirectSetting
 {
+    public ProjectileStateType stateType;
     public float moveSpeed;
-    public int duration;
-    public float freeFlyDuration;
+    public int lifeTime;
+    [Header("ParabolaWithDirection")]
     public float angleIncrement;
+    [Header("ParabolaWithTarget")]
+    public float parabolaHeight;
     public Transform target;
     public ElementType elementType;
     [HideInInspector] public float[] initialAngleArray;
@@ -63,7 +66,7 @@ public class ProjectileSpawner : Singleton<ProjectileSpawner>
         {
             Transform p = ObjectPools.Instance.GetObjectInPools(projectilePrefab.name, projectileSetting.initialPosition.position).transform;
             projectileDirectSetting.initialAngle = projectileDirectSetting.initialAngleArray[i];
-            p.GetComponent<Projectile>().ProjectileSetup(projectileDirectSetting);
+            p.GetComponent<Projectile>().Setup(projectileDirectSetting.stateType, projectileDirectSetting);
 
             if (p.GetComponent<ParticleSystem>() != null)
                 p.GetComponent<ParticleSystem>().Play();

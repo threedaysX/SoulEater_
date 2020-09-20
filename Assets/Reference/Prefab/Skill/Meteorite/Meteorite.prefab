@@ -59,6 +59,7 @@ MonoBehaviour:
   projectile: {fileID: 7912611488451703250, guid: ba6b773708f37954884ba3cb90042c7f,
     type: 3}
   projectileSetting:
+    stateType: 1
     initialPosition: {fileID: 0}
     amount: 1
     restrictAngle: 0
@@ -66,7 +67,7 @@ MonoBehaviour:
     shootDelay: 0
   projectileDirectSetting:
     moveSpeed: 3
-    duration: 5
+    lifeTime: 3
     freeFlyDuration: 0
     angleIncrement: 0
     target: {fileID: 0}
