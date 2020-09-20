@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 [System.Serializable]
 public struct ProjectileSetting
@@ -9,15 +11,19 @@ public struct ProjectileSetting
     public int restrictAngle;
     [Range(0, 360)]
     public int angleOffset;     //從rotation的0度開始加
+    public float shootDelay;     //每顆projectile射出ㄉ間格時間
 }
 
 [System.Serializable]
 public struct ProjectileDirectSetting
 {
+    public ProjectileStateType stateType;
     public float moveSpeed;
-    public int duration;
-    public float freeFlyDuration;
+    public int lifeTime;
+    [Header("ParabolaWithDirection")]
     public float angleIncrement;
+    [Header("ParabolaWithTarget")]
+    public float parabolaHeight;
     public Transform target;
     public ElementType elementType;
     [HideInInspector] public float[] initialAngleArray;
@@ -25,28 +31,49 @@ public struct ProjectileDirectSetting
     [HideInInspector] public Character sourceCaster;
 }
 
-public class ProjectileSpawner : Singleton<ProjectileSpawner>
+[System.Serializable]
+public class ProjectileType
 {
+    public string name;
     public GameObject projectile;
     public int poolSize;
+}
+
+public class ProjectileSpawner : Singleton<ProjectileSpawner>
+{
+    public List<ProjectileType> projectileTypes = new List<ProjectileType>();
 
     private void Start()
     {
-        ObjectPools.Instance.RenderObjectPoolsInParent(projectile, poolSize);
+        foreach(ProjectileType p in projectileTypes)
+            ObjectPools.Instance.RenderObjectPoolsInParent(p.projectile, p.poolSize);
     }
 
     public void InstantiateProjectile(GameObject projectilePrefab,  ProjectileSetting projectileSetting, ProjectileDirectSetting projectileDirectSetting)
+    {
+        if (projectileTypes == null)
+            return;
+
+        StartCoroutine(DelayProjectileSpawn(projectilePrefab, projectileSetting, projectileDirectSetting));
+    }
+
+    private IEnumerator DelayProjectileSpawn(GameObject projectilePrefab, ProjectileSetting projectileSetting, ProjectileDirectSetting projectileDirectSetting)
     {
         int angleChunk = projectileSetting.restrictAngle / projectileSetting.amount;    //在限制角度中平分角度
         int angle = projectileSetting.angleOffset;
 
         for (int i = 0; i < projectileSetting.amount; i++)
         {
-            Transform p = ObjectPools.Instance.GetObjectInPools(projectilePrefab.name, projectileSetting.initialPosition.position).transform;  //object pool
+            Transform p = ObjectPools.Instance.GetObjectInPools(projectilePrefab.name, projectileSetting.initialPosition.position).transform;
             projectileDirectSetting.initialAngle = projectileDirectSetting.initialAngleArray[i];
-            p.GetComponent<Projectile>().ProjectileSetup(projectileDirectSetting);
-            
+            p.GetComponent<Projectile>().Setup(projectileDirectSetting.stateType, projectileDirectSetting);
+
+            if (p.GetComponent<ParticleSystem>() != null)
+                p.GetComponent<ParticleSystem>().Play();
+
             angle += angleChunk;
+            yield return new WaitForSeconds(projectileSetting.shootDelay);
         }
+        yield break;
     }
 }

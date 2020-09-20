@@ -86,6 +86,7 @@ public enum LockType
     Afraid,
     Lame, // 無法移動
     TypeChange,  // 型態改變(變身or變化...)
+    InDialogue,
     Die
 }
 
