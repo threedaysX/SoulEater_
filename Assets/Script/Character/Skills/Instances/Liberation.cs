@@ -27,12 +27,11 @@ public class Liberation : DisposableSkill
                 sourceCaster = sourceCaster,
                 angleIncrement = 0,
                 moveSpeed = 10f,
-                duration = 5,
-                freeFlyDuration = 0f,
+                lifeTime = 5,
                 elementType = ElementType.None,
                 initialAngle = 180,
             };
-            proj.ProjectileSetup(setting);
+            proj.Setup(ProjectileStateType.StraightWithDirection, setting);
         }
     }
 }

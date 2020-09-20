@@ -12,10 +12,10 @@ public class DialogueTrigger : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.O))
-            DialogueManager.Instance.StartDialogueChunk(dialogueChunk);
-        else if(Input.GetMouseButtonDown(0))
-            DialogueManager.Instance.ShowNextDialogueText();
+        //if (Input.GetKeyDown(KeyCode.O))
+        //    DialogueManager.Instance.StartDialogueChunk(dialogueChunk);
+        //else if(Input.GetMouseButtonDown(0))
+        //    DialogueManager.Instance.ShowNextDialogueText();
 
     }
 }
