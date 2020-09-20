@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="AudioFile" id="{26bc2e60-3472-41ef-809c-d36f7294db79}">
+		<property name="assetPath">
+			<value>Ifrit.mp3</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>96.809795918367342</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{3bcfbf33-f7bc-4263-a8b2-444f8181e7db}</destination>
+		</relationship>
+	</object>
+</objects>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.00.00">
+	<object class="ParameterPreset" id="{0870040d-d5e2-42a9-bd7f-34386e9a696c}">
+		<property name="name">
+			<value>StageSwitch</value>
+		</property>
+		<relationship name="folder">
+			<destination>{8004e005-be5d-4039-929c-d34bfa9889f7}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{c67ea38b-3d0e-4751-8dce-0d8bf4d38d61}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{c67ea38b-3d0e-4751-8dce-0d8bf4d38d61}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+	</object>
+</objects>
