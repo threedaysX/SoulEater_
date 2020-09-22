@@ -29,7 +29,7 @@ public class DieController : MonoBehaviour
         character.opc.InterruptAnimOperation();
         character.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         character.CurrentHealth = 0;
-        character.operationSoundController.PlaySound(dieSound);
+        character.opsc.PlaySound(dieSound);
         TriggerDieParticle();
         DieDissolve(dieDissolveDuration);
         StartCoroutine(DieCoroutine(dieDuration));

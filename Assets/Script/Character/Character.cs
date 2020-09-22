@@ -145,8 +145,8 @@ public class Character : MonoBehaviour
     #endregion
 
     #region 控制器
-    [HideInInspector] public OperationSoundController operationSoundController; // 操作聲音控制
     [HideInInspector] public WeaponController weaponController; // 武器控制
+    [HideInInspector] public OperationSoundController opsc; // 操作聲音控制
     [HideInInspector] public OperationController opc;    // 操作控制
     [HideInInspector] public SkillController skillController;   // 技能控制
     [HideInInspector] public BuffController buffController; // 狀態控制
@@ -172,7 +172,7 @@ public class Character : MonoBehaviour
 
     private void Awake()
     {
-        operationSoundController = GetComponent<OperationSoundController>();
+        opsc = GetComponent<OperationSoundController>();
         weaponController = GetComponent<WeaponController>();
         opc = GetComponent<OperationController>();
         skillController = GetComponent<SkillController>();
@@ -647,10 +647,10 @@ public class Character : MonoBehaviour
         attackComboCount++;
 
         // 攻擊觸發
-        operationSoundController.PlaySound(operationSoundController.attackSound);
+        opsc.PlaySound(opsc.attackSound);
         if (attackMethod.Invoke())
         {
-            operationSoundController.PlaySound(operationSoundController.hitSound);
+            opsc.PlaySound(opsc.hitSound);
         }
 
         // 攻速過快，動畫時間縮短

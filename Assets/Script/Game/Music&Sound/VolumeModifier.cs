@@ -20,7 +20,7 @@ public class VolumeModifier : MonoBehaviour
 
     private void Awake()
     {
-        ResetSliderVolume();
+        ResetVolume();
     }
 
     private void Start()
@@ -52,7 +52,7 @@ public class VolumeModifier : MonoBehaviour
         AdjustFinalBackgroundSoundVolume();
         AdjustFinalEffectSoundVolume();
         SetSoundDataToMemory(SoundStringData.masterSoundSlider, masterOriginVolume);
-        SetSoundDataToMemory(SoundStringData.masterSound, musicSoundAudio.volume);
+        SetSoundDataToMemory(SoundStringData.masterSound, masterSoundAudio.volume);
     }
 
     public void SetBackgroundVolumeBySlider(Slider slider)
@@ -74,14 +74,15 @@ public class VolumeModifier : MonoBehaviour
             return;
         effectSoundAudio.volume = effectSoundOriginVolume * masterOriginVolume;
         SetSoundDataToMemory(SoundStringData.effectSoundSlider, effectSoundOriginVolume);
-        SetSoundDataToMemory(SoundStringData.effectSound, musicSoundAudio.volume);
+        SetSoundDataToMemory(SoundStringData.effectSound, effectSoundAudio.volume);
     }
 
     public void AdjustFinalBackgroundSoundVolume()
     {
-        if (effectSoundOriginVolume == 0)
+        if (musicOriginVolume == 0)
             return;
         musicSoundAudio.volume = musicOriginVolume * masterOriginVolume;
+        AudioControl.FMOD.Instance.AdjustBgmVolume(musicSoundAudio.volume);
         SetSoundDataToMemory(SoundStringData.musicSoundSlider, musicOriginVolume);
         SetSoundDataToMemory(SoundStringData.musicSound, musicSoundAudio.volume);
     }
@@ -91,13 +92,9 @@ public class VolumeModifier : MonoBehaviour
         PlayerPrefs.SetFloat(key, soundVolume);
     }
 
-    private void ResetSliderVolume()
+    private void ResetVolume()
     {
-        if (PlayerPrefs.HasKey(SoundStringData.masterSoundSlider))
-        {
-            masterOriginVolume = PlayerPrefs.GetFloat(SoundStringData.masterSoundSlider);
-            masterSoundSlider.value = masterOriginVolume;
-        }
+        #region Reset Slider Value.
         if (PlayerPrefs.HasKey(SoundStringData.musicSoundSlider))
         {
             musicOriginVolume = PlayerPrefs.GetFloat(SoundStringData.musicSoundSlider);
@@ -108,5 +105,27 @@ public class VolumeModifier : MonoBehaviour
             effectSoundOriginVolume = PlayerPrefs.GetFloat(SoundStringData.effectSoundSlider);
             effectSoundSlider.value = effectSoundOriginVolume;
         }
+        if (PlayerPrefs.HasKey(SoundStringData.masterSoundSlider))
+        {
+            masterOriginVolume = PlayerPrefs.GetFloat(SoundStringData.masterSoundSlider);
+            masterSoundSlider.value = masterOriginVolume;
+        }
+        #endregion
+
+        #region Reset Volume.
+        if (PlayerPrefs.HasKey(SoundStringData.masterSound))
+        {
+            masterSoundAudio.volume = PlayerPrefs.GetFloat(SoundStringData.masterSound);
+        }
+        if (PlayerPrefs.HasKey(SoundStringData.musicSound))
+        {
+            musicSoundAudio.volume = PlayerPrefs.GetFloat(SoundStringData.musicSound);
+            AudioControl.FMOD.Instance.AdjustBgmVolume(musicSoundAudio.volume);
+        }
+        if (PlayerPrefs.HasKey(SoundStringData.effectSound))
+        {
+            effectSoundAudio.volume = PlayerPrefs.GetFloat(SoundStringData.effectSound);
+        }
+        #endregion
     }
 }
