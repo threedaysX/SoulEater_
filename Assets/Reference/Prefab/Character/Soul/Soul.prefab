@@ -78,7 +78,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 1
   prewarm: 0
-  playOnAwake: 0
+  playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -4826,7 +4826,7 @@ ParticleSystemRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -9098379
   m_SortingLayer: 12
-  m_SortingOrder: 10
+  m_SortingOrder: 11
   m_RenderMode: 5
   m_SortMode: 0
   m_MinParticleSize: 0
@@ -14764,8 +14764,8 @@ MonoBehaviour:
   popupMessageCenter: {fileID: 6143958453868291542}
   normalDamagedColor: {r: 1, g: 1, b: 1, a: 1}
   criticalDamagedColor: {r: 1, g: 0, b: 0, a: 1}
-  operationSoundController: {fileID: 0}
   weaponController: {fileID: 0}
+  opsc: {fileID: 0}
   opc: {fileID: 0}
   skillController: {fileID: 0}
   buffController: {fileID: 0}
@@ -14778,7 +14778,8 @@ MonoBehaviour:
   anim: {fileID: 0}
   animController: {fileID: 0}
   burstParticle: {fileID: 1405821121871157194}
-  soulParticle: {fileID: 8257254016354476944}
+  soulBurstParticle: {fileID: 8257254016354476944}
+  surroundWindParticle: {fileID: 6913954396535287544}
   soulDieDuration: 8
 --- !u!95 &2564445226951307984
 Animator:

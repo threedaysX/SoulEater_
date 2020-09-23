@@ -5,7 +5,8 @@ public class SoulCharacter : Character
 {
     [Header("Die Setting")]
     public ParticleSystem burstParticle;
-    public ParticleSystem soulParticle;
+    public ParticleSystem soulBurstParticle;
+    public ParticleSystem surroundWindParticle;
     public float soulDieDuration;
 
     public override void Die()
@@ -34,22 +35,19 @@ public class SoulCharacter : Character
 
     public void BurstSoul()
     {
-        //// Old Attractor. Before 2020.08.21.
-        //ParticleAttractor at = soulParticle.GetComponent<ParticleAttractor>();
-        //at.SetTargetMaster(lastAttackMeTarget.transform);
-
-        soulParticle.Play();
+        soulBurstParticle.Play();
+        surroundWindParticle.Stop();
 
         // Player 吸取靈魂
         if (lastAttackMeTarget.GetComponent<Player>() != null)
         {
             #region Setting
             Player pl = lastAttackMeTarget.GetComponent<Player>();
-            float duration = soulParticle.main.startLifetime.constant;
+            float duration = soulBurstParticle.main.startLifetime.constant;
             float offset = 0.5f;
             #endregion
 
-            ChnageLayer(soulParticle.gameObject, true, 1);
+            ChnageLayer(soulBurstParticle.gameObject, true, 1);
 
             pl.TriggerAttractorBurstEffect(duration);
             CameraControl.Shake.Instance.ShakeCamera(4f, 4f, 0.2f, false, duration, true);

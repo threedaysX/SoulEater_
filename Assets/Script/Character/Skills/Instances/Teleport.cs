@@ -31,7 +31,7 @@ public class Teleport : DisposableSkill
         if (Vector3.Distance(lastAttackTarget.transform.position, sourceCaster.transform.position) > currentSkill.range.Value)
             return;
 
-        float x = (lastAttackTarget.transform.position + lastAttackTarget.transform.right * -1.2f).x;
+        float x = (lastAttackTarget.transform.position + lastAttackTarget.transform.right * -5f).x;
         sourceCaster.transform.position = new Vector3(x, sourceCaster.transform.position.y); 
         soundControl.PlaySound(teleportSound);
     }
