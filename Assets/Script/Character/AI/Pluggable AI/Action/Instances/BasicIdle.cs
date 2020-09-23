@@ -11,7 +11,7 @@ public class BasicIdle : AiAction
             character = AI<Character>();
 
         // 重置移動動畫
-        character.StartMoveAnim(0);
+        character?.StartMoveAnim(0);
         return true;
     }
 }

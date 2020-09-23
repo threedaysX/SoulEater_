@@ -34145,7 +34145,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 1
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -53702,7 +53702,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -58696,7 +58696,7 @@ MonoBehaviour:
   knockOutRootParticle: {fileID: 3603134693017965491}
   knockOutRootSound: {fileID: 8300000, guid: 93066a458874c18429774e3c80a2196c, type: 3}
   healthUI: {fileID: 0}
-  forceAttackDelay: 1
+  forceAttackDelay: 0.9
   typeChangingSound: {fileID: 8300000, guid: 54a1b4f765a54eb4796793eea869def4, type: 3}
   typeChangedBurstSound: {fileID: 8300000, guid: 6370de40894ab8b4a9eb9a4223a08325,
     type: 3}

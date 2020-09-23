@@ -11,12 +11,6 @@ public class AudioControl : Singleton<AudioControl>
     public AudioSource musicSoundAudio;
     public AudioSource effectSoundAudio;
 
-    public PlayableDirector director;
-    public AudioTrack[] musicTracks;
-
-    [Header("BGM")]
-    public PlayableAsset ifritMusic;
-
     public void PlaySound(AudioClip sound)
     {
         effectSoundAudio.PlayOneShot(sound);
@@ -24,31 +18,8 @@ public class AudioControl : Singleton<AudioControl>
 
     public class TimeLine : Singleton<TimeLine>
     {
-        private AudioControl control;
-        private PlayableDirector director;
-        private TimelineAsset asset;
-
-        private void Awake()
-        {
-            control = AudioControl.Instance;
-            director = AudioControl.Instance.director;
-        }
-
-        public void PlayMusic(Music music, int trackIndex)
-        {
-            switch (music)
-            {
-                case Music.Ifrit:
-                    director.playableAsset = control.ifritMusic;
-                    break;
-                case Music.None:
-                default:
-                    director.playableAsset = null;
-                    break;
-            }
-            asset = (TimelineAsset)director.playableAsset;
-            director.Play();
-        }
+        public PlayableDirector director;
+        public TimelineAsset asset;
 
         public void MuteTrack(int trackIndex, bool mute)
         {
@@ -66,12 +37,12 @@ public class AudioControl : Singleton<AudioControl>
         }
     }
 
-    public class FMOD : Singleton<FMOD>
+    public class Fmod : Singleton<Fmod>
     {
         #region Basic Settings.
         private static Bus Master;
         private static Bus Bgm;
-        private Dictionary<string, EventInstance> audioEvents = new Dictionary<string, EventInstance>();
+        private static Dictionary<string, EventInstance> audioEvents = new Dictionary<string, EventInstance>();
         #endregion
 
         private const string eventPrefix = "event:/";
@@ -115,8 +86,38 @@ public class AudioControl : Singleton<AudioControl>
         public void Release(Music music)
         {
             string eventName = GetMusicPath(music);
+            if (!audioEvents.ContainsKey(eventName))
+                return;
+
+            audioEvents[eventName].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
             audioEvents[eventName].release();
             audioEvents.Remove(eventName);
+        }
+
+        public void ReleaseAll()
+        {
+            foreach (var audio in audioEvents)
+            {
+                audio.Value.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+                audio.Value.release();
+            }
+            audioEvents.Clear();
+        }
+
+        public void Stop(Music music)
+        {
+            string eventName = GetMusicPath(music);
+
+            if (audioEvents.ContainsKey(eventName))
+                audioEvents[eventName].stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+        }
+
+        public void StopAll()
+        {
+            foreach (var audio in audioEvents)
+            {
+                audio.Value.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
+            }
         }
 
         public string GetMusicPath(Music music)

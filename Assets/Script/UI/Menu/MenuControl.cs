@@ -71,7 +71,7 @@ public class MenuControl : Singleton<MenuControl>
     public void CloseMainMenu()
     {
         AppControl.MenuPausedGame(false);
-        AudioControl.FMOD.Instance.AdjustMasterVolume(1f);
+        AudioControl.Fmod.Instance.AdjustMasterVolume(1f);
         // Reset timeScale when close menu.
         TimeScaleController.Instance.FocusGame(true);
 
@@ -85,7 +85,7 @@ public class MenuControl : Singleton<MenuControl>
     public void OpenMainMenu()
     {
         AppControl.MenuPausedGame(true);
-        AudioControl.FMOD.Instance.AdjustMasterVolume(0.2f);
+        AudioControl.Fmod.Instance.AdjustMasterVolume(0.2f);
         TimeScaleController.Instance.FocusGame(false);
 
         menu.SetActive(true);

@@ -49,7 +49,7 @@ MonoBehaviour:
     modifiers: []
   critical:
     BaseValue: 20
-    AdditionalValue: 60
+    AdditionalValue: 0
     FinalValue: 80
     ForceValue: 0
     toForceChangeValue: 0
@@ -63,7 +63,7 @@ MonoBehaviour:
     modifiers: []
   knockBackDamage:
     BaseValue: 823
-    AdditionalValue: 10000
+    AdditionalValue: 0
     FinalValue: 10823
     ForceValue: 0
     toForceChangeValue: 0

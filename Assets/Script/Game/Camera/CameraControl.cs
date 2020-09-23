@@ -28,6 +28,13 @@ public class CameraControl : MonoBehaviour
         return null;
     }
 
+    public static void OnDisableCall()
+    {
+        Zoom.Instance.OnDisableCall();
+        Follow.Instance.OnDisableCall();
+        Shake.Instance.OnDisableCall();
+    }
+
     #region Zoom Camera
     public class Zoom : Singleton<Zoom> 
     {
@@ -62,11 +69,16 @@ public class CameraControl : MonoBehaviour
                 // When finished, Clear zoomInSettings and reset state.
                 if (currentIndex > zoomInSettings.Count - 1)
                 {
-                    resetTrigger = true;
-                    currentIndex = 0;
-                    zoomInSettings.Clear();
+                    ResetSettings();
                 }
             }
+        }
+
+        private void ResetSettings()
+        {
+            resetTrigger = true;
+            currentIndex = 0;
+            zoomInSettings.Clear();
         }
 
         private IEnumerator ZoomInCamera(float finalZoomSize, float duration)
@@ -108,6 +120,11 @@ public class CameraControl : MonoBehaviour
         {
             this.zoomInSettings.AddRange(zoomInSettings);
         }
+
+        public void OnDisableCall()
+        {
+            StopAllCoroutines();
+        }
         #endregion
     }
     #endregion
@@ -139,14 +156,22 @@ public class CameraControl : MonoBehaviour
                 // When finished, clear settings and reset index.
                 if (currentIndex > settings.Count - 1)
                 {
-                    settings.Clear();
-                    currentIndex = 0;
+                    ResetSettings();
                 }
             }
         }
 
+        private void ResetSettings()
+        {
+            settings.Clear();
+            currentIndex = 0;
+        }
+
         private IEnumerator FollowTarget(CameraFollowSetting setting)
         {
+            if (clearShot == null)
+                yield break;
+
             // Set up.
             clearShot.m_ActivateAfter = setting.startDelay;
             clearShot.m_DefaultBlend.m_Time = setting.moveToTargetDuration;
@@ -224,6 +249,12 @@ public class CameraControl : MonoBehaviour
         {
             this.settings.AddRange(settings);
         }
+
+        public void OnDisableCall()
+        {
+            ResetSettings();
+            StopAllCoroutines();
+        }
         #endregion
     }
     #endregion
@@ -236,6 +267,7 @@ public class CameraControl : MonoBehaviour
         // Cinemachine Shake (Noise => Basic Multi Channel Perlin => Use 6D Shake or custom shake with new profile.)
         private CinemachineBasicMultiChannelPerlin virtualCameraNoise;
 
+        #region public.
         /// <summary>
         /// Shake camera from small to strong power
         /// </summary>
@@ -331,10 +363,20 @@ public class CameraControl : MonoBehaviour
             ResetShake();
         }
 
+        public void OnDisableCall()
+        {
+            ResetShake();
+            StopAllCoroutines();
+        }
+        #endregion
+
         private void ResetShake()
         {
-            virtualCameraNoise.m_AmplitudeGain = 0;
-            virtualCameraNoise.m_FrequencyGain = 0;
+            if (virtualCameraNoise != null)
+            {
+                virtualCameraNoise.m_AmplitudeGain = 0;
+                virtualCameraNoise.m_FrequencyGain = 0;
+            }
             shaking = false;
         }
 

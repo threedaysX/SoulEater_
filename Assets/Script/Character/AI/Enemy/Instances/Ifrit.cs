@@ -142,10 +142,13 @@ public class Ifrit : BossModel
             case stageDie:
                 _stage = new Stage_Die();
                 break;
+            default:
+                break;
         }
         _stage.StartStageChangeAction();
     }
 
+    #region Stage Class 
     public class Stage_Opening : IBossStageChangeEvent
     {
         public void StartStageChangeAction()
@@ -155,8 +158,8 @@ public class Ifrit : BossModel
 
         private void AudioSwitch()
         {
-            var audio = AudioControl.FMOD.Instance;
-            audio.Startup(Music.Ifrit);
+            var audio = AudioControl.Fmod.Instance;
+            audio.Startup(Music.Ifrit, true);
         }
     }
 
@@ -169,8 +172,10 @@ public class Ifrit : BossModel
 
         private void AudioSwitch()
         {
-            var audio = AudioControl.FMOD.Instance;
+            var audio = AudioControl.Fmod.Instance;
             audio.Setup(Music.Ifrit, stage1, 1);
+            audio.Setup(Music.Ifrit, stage2, 0);
+            audio.Setup(Music.Ifrit, stageDie, 0);
         }
     }
 
@@ -192,8 +197,10 @@ public class Ifrit : BossModel
 
         private void AudioSwitch()
         {
-            var audio = AudioControl.FMOD.Instance;
+            var audio = AudioControl.Fmod.Instance;
+            audio.Setup(Music.Ifrit, stage1, 0);
             audio.Setup(Music.Ifrit, stage2, 1);
+            audio.Setup(Music.Ifrit, stageDie, 0);
         }
 
         private IEnumerator TypeChange()
@@ -234,8 +241,11 @@ public class Ifrit : BossModel
 
         private void AudioSwitch()
         {
-            var audio = AudioControl.FMOD.Instance;
+            var audio = AudioControl.Fmod.Instance;
+            audio.Setup(Music.Ifrit, stage1, 0);
+            audio.Setup(Music.Ifrit, stage2, 0);
             audio.Setup(Music.Ifrit, stageDie, 1);
         }
     }
+    #endregion
 }

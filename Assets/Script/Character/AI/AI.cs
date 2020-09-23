@@ -1,28 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(DistanceDetect))]
 public class AI : MonoBehaviour, IAiBase, IAiActionBase
 {
     [Header("開始運作AI")]
-    [SerializeField] private bool _switchOn = true;
     public bool canDetect = true;
     public bool canAction = true;
-    public bool SwitchOn
-    {
-        get
-        {
-            return _switchOn;
-        }
-        protected set
-        {
-            _switchOn = value;
-            if (_switchOn)
-                switchOnTrigger = true;
-        }
-    }
-    protected bool switchOnTrigger;
+    public bool switchOn = true;
 
+    #region On Update Settings
     [Header("偵測動作")]
     [SerializeField] protected Detect[] detects;
     [Header("行為模式")]
@@ -35,27 +23,41 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
     private bool lastActionSuccess;
     private List<AiAction> actionToDoList = new List<AiAction>();
 
+    private bool inCombatStateTrigger = false; // 是否進入戰鬥狀態
+    private bool outOfCombatTrigger = false;
+
     [Header("偵測距離")]
     public DistanceDetect detectControl;
     public float detectDistance;
     [Header("下次可行動時間")]
     private float nextActTimes = 0f;
+    #endregion
 
+    #region Weight Settings
     [Header("最大權重容許區間")]
     public float maxWeightOffset = 2;    // 將符合【最大權重】與【最大權重-Offset】挑出並執行。
     [Header("動作權重恢復")]
     public float actionWeightRegen = 1;       // 每次恢復量
     public int actionWeightRegenCount = 10;  // 每做N個動作，就恢復權重一次
     private int cumulativeActionCount = 0;
+    #endregion
 
-    private bool inCombatStateTrigger = false; // 是否進入戰鬥狀態
-    private bool outOfCombatTrigger = false;
+    #region Target Settings
+    public Transform ChaseTarget { get; protected set; }
+    public Transform LastChaseTarget { get; protected set; }
+    public LayerMask PlayerLayer { get; protected set; }
+    #endregion
 
+    #region Interface
     public IFacement _facement;
+    #endregion
 
-    [HideInInspector] public Transform ChaseTarget { get; protected set; }
-    [HideInInspector] public Transform LastChaseTarget { get; protected set; }
-    [HideInInspector] public LayerMask PlayerLayer { get; protected set; }
+    #region EventHanlder
+    public delegate void OnDisableHandler();
+    public delegate void OnEnableHandler();
+    public OnDisableHandler OnDisableCall { get; set; }
+    public OnEnableHandler OnEnableCall { get; set; }
+    #endregion
 
     /// <summary>
     /// Call this when start.
@@ -63,8 +65,7 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
     public virtual void OnStart()
     {
         PlayerLayer = LayerMask.GetMask("Player");
-        
-        ReturnDefaultAction(true);
+        ResetAiSwitchOn();
 
         foreach (AiAction action in actions)
         {
@@ -77,11 +78,7 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
     /// </summary>
     public virtual void OnUpdate()
     {
-        if (switchOnTrigger)
-        {
-            ResetAiSwitchOn();
-        }
-        if (SwitchOn)
+        if (switchOn)
         {
             DoDetects();
             Combat();
@@ -227,7 +224,7 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
         }
 
         // 執行任一動作
-        action = actions[Random.Range(0, actions.Count - 1)];
+        action = actions[UnityEngine.Random.Range(0, actions.Count - 1)];
         DoAction(action, true);
     }
 
@@ -314,8 +311,9 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
 
     public virtual void ResetAiSwitchOn()
     {
-        ReturnDefaultAction();
-        switchOnTrigger = false;
+        this.StopAllCoroutines();
+        this.ReturnDefaultAction();
+        switchOn = true;
     }
 
     private void OnDrawGizmosSelected()
@@ -323,6 +321,16 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
         Gizmos.color = Color.red;
         // Use the same vars you use to draw your Overlap SPhere to draw your Wire Sphere.
         Gizmos.DrawWireSphere(transform.position, detectDistance);
+    }
+
+    public void OnDisable()
+    {
+        OnDisableCall?.Invoke();
+    }
+
+    public void OnEnable()
+    {
+        OnEnableCall?.Invoke();
     }
 }
 

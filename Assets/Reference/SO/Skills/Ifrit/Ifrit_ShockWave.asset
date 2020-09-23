@@ -64,7 +64,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   coolDown:
-    BaseValue: 6
+    BaseValue: 3
     AdditionalValue: 0
     FinalValue: 6
     ForceValue: 0

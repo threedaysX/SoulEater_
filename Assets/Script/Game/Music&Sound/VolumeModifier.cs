@@ -82,7 +82,7 @@ public class VolumeModifier : MonoBehaviour
         if (musicOriginVolume == 0)
             return;
         musicSoundAudio.volume = musicOriginVolume * masterOriginVolume;
-        AudioControl.FMOD.Instance.AdjustBgmVolume(musicSoundAudio.volume);
+        AudioControl.Fmod.Instance.AdjustBgmVolume(musicSoundAudio.volume);
         SetSoundDataToMemory(SoundStringData.musicSoundSlider, musicOriginVolume);
         SetSoundDataToMemory(SoundStringData.musicSound, musicSoundAudio.volume);
     }
@@ -120,7 +120,7 @@ public class VolumeModifier : MonoBehaviour
         if (PlayerPrefs.HasKey(SoundStringData.musicSound))
         {
             musicSoundAudio.volume = PlayerPrefs.GetFloat(SoundStringData.musicSound);
-            AudioControl.FMOD.Instance.AdjustBgmVolume(musicSoundAudio.volume);
+            AudioControl.Fmod.Instance.AdjustBgmVolume(musicSoundAudio.volume);
         }
         if (PlayerPrefs.HasKey(SoundStringData.effectSound))
         {

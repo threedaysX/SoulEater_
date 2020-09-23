@@ -43,7 +43,6 @@ public class DieController : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
 
-        //Destroy(this.gameObject);
         this.gameObject.SetActive(false);
     }
 
