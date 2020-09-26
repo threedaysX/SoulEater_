@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: FMOD/Build/Desktop/Master.strings.bank
   SubDir: 
-  lastModified: 637362383742781366
+  lastModified: 637362810914601842
   LoadResult: 0
   FileSizes:
   - Name: Desktop
@@ -77,7 +77,7 @@ MonoBehaviour:
   lastModified: 637362383742771354
   LoadResult: 0
   FileSizes: []
-  Exists: 1
+  Exists: 0
 --- !u!114 &-2310180328843052595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,7 +94,7 @@ MonoBehaviour:
   Min: 0
   Max: 1
   Default: 0
-  Exists: 1
+  Exists: 0
 --- !u!114 &-1886453987108597416
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -110,15 +110,32 @@ MonoBehaviour:
   Path: event:/Music_Boss/Fire/Ifrit
   guid: b2a11f355c944a4d9badced6f38dc2cf
   Banks:
-  - {fileID: -3357743131549944668}
+  - {fileID: 6669740839790800949}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: -2310180328843052595}
+  - {fileID: -649414170816081950}
   MinDistance: 0
   MaxDistance: 0
   Length: 95146
+--- !u!114 &-649414170816081950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Ifrit/StageSwitch
+  m_EditorClassIdentifier: 
+  Name: StageSwitch
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &-132741872756400691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,15 +186,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EditorBanks:
   - {fileID: -8679191943795514020}
-  - {fileID: -3357743131549944668}
+  - {fileID: 6669740839790800949}
   EditorEvents:
   - {fileID: -1886453987108597416}
   EditorParameters: []
   MasterBanks:
-  - {fileID: -3357743131549944668}
+  - {fileID: 6669740839790800949}
   StringsBanks:
   - {fileID: -8679191943795514020}
-  stringsBankWriteTime: 637362383742781366
+  stringsBankWriteTime: 637362810914601842
   cacheVersion: 3
 --- !u!114 &866094531634882927
 MonoBehaviour:
@@ -196,3 +213,21 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &6669740839790800949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637362810914591860
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
