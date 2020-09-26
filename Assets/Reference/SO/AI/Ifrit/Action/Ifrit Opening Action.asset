@@ -17,12 +17,10 @@ MonoBehaviour:
   currentActionWeight: -901
   originalActionWeight: 99
   offsetActionDelay: 0
-  additionActionDelay: 6
   minusWeightAmountWhenNotSuccess: 1000
   minusWeightAmountAfterAction: 1000
-  _diffCount: 1909
   actionType: 1
-  judjements: []
+  judgeSets: []
   linkedAction:
     delay: 0
     ignoreJudgement: 1

@@ -23,7 +23,8 @@ public class Projectile : MonoBehaviour
 
     protected virtual void Update()
     {
-        _state.Pattern();
+        if (_state != null)
+            _state.Pattern();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

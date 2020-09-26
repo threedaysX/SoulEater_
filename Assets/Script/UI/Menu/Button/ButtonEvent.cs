@@ -55,7 +55,7 @@ public class ButtonEvent : MonoBehaviour, ISelectHandler, IDeselectHandler, IPoi
     public void OnDeselect(BaseEventData e)
     {
         onDeselectEvent.Invoke();
-        ButtonEvents.Instance.DeselectButton();
+        ButtonEvents.Instance?.DeselectButton();
     }
 
     /// <summary>

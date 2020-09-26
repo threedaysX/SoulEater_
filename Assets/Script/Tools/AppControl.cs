@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class AppControl : Singleton<AppControl>
 {
@@ -32,6 +33,22 @@ public class AppControl : Singleton<AppControl>
         MenuPaused = paused;
     }
 
+    public void QuitGameImmediately()
+    {
+        Application.Quit();
+    }
+
+    public void QuitGame(float duration)
+    {
+        StartCoroutine(DelayQuitGame(duration));
+    }
+
+    private IEnumerator DelayQuitGame(float duration)
+    {
+        yield return new WaitForSeconds(duration);
+        Application.Quit();
+    }
+
     private void OnApplicationFocus(bool hasFocus)
     {
         GamePaused = !hasFocus;
@@ -52,7 +69,6 @@ public class AppControl : Singleton<AppControl>
 
     private void SetPauseTimeScale(bool pause)
     {
-        TimeScaleController.Instance.FocusGame(!pause);
         gamePauseBlocker.SetActive(pause);
     }
 }

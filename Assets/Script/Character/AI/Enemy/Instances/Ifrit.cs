@@ -1,4 +1,5 @@
 ﻿using StatsModifierModel;
+using System.Collections;
 using UnityEngine;
 
 /// <summary>
@@ -18,7 +19,11 @@ public class Ifrit : BossModel
     public AudioClip typeChangedBurstSound;
     public ParticleSystem typeChangingEffect;
     public float typeChangeDuration;
-    private bool flamethrowerTypeChanged;
+    private bool typeChanged;
+    private const string stageOpening = "Stage_Opening";
+    private const string stage1 = "Stage_1";
+    private const string stage2 = "Stage_2";
+    private const string stageDie = "Stage_Die";
 
     public override void Start()
     {
@@ -29,8 +34,6 @@ public class Ifrit : BossModel
     public override void LateUpdate()
     {
         base.LateUpdate();
-        FlamethrowerTypeChange();
-        NaraBurstTypeChange();
     }
 
     private void ResetStats()
@@ -38,7 +41,6 @@ public class Ifrit : BossModel
         healthUI = EnemyUIControl.Instance.healthWhite.GetComponent<UIShake>();
         ai._facement = new HorizontalFacement();
         SetEnemyLevel(EnemyLevel.Boss);
-        ResetFlamethrowerData();
         ForceAdjustAttackDelay();
     }
 
@@ -46,49 +48,6 @@ public class Ifrit : BossModel
     {
         data.attackDelay.ForceToChangeValue(forceAttackDelay);
     }
-
-    protected void NaraBurstTypeChange()
-    {
-        // 當血量小於30%，讓Burst爆裂更快速
-    }
-
-    private void ResetFlamethrowerData()
-    {
-        flamethrowerTypeChanged = false;
-    }
-
-    protected void FlamethrowerTypeChange()
-    {
-        // 當血量小於50%，讓噴射詠唱更短
-        if (!flamethrowerTypeChanged && CurrentHealth > 0 && CurrentHealth <= data.maxHealth.Value * 0.5)
-        {
-            GetSkillByName(SkillNameDictionary.flamethrower).castTime.AddModifier(new StatModifier(-50, StatModType.PercentageTime));
-            flamethrowerTypeChanged = true;
-        }
-    }
-
-    ///// <summary>
-    ///// Use AiAction to Call.
-    ///// </summary>
-    ///// <returns></returns>
-    //public void ChangeType()
-    //{
-    //    StartCoroutine(TypeChange());
-    //}
-    //private IEnumerator TypeChange()
-    //{
-    //    this.CanAction = false;
-    //    GetIntoImmune(typeChangeDuration);
-    //    CameraShake.Instance.ShakeCamera(1f, 10f, typeChangeDuration, true);
-    //    typeChangingEffect.Play();
-    //    operationSoundController.PlaySound(typeChangingSound);
-
-    //    yield return new WaitForSeconds(typeChangeDuration);
-
-    //    operationSoundController.PlaySound(typeChangedBurstSound);
-    //    UseSkill(GetSkillByName(SkillNameDictionary.shockWave), true, true);
-    //    this.CanAction = true;
-    //}
 
     public override bool TakeDamage(DamageData damageData)
     {
@@ -109,6 +68,7 @@ public class Ifrit : BossModel
                 healthUI.Shake(0.06f);
             }
         }
+        CheckSwitchToStage2();
         return isDamaged;
     }
 
@@ -130,14 +90,29 @@ public class Ifrit : BossModel
     public override void OnRootStart()
     {
         // Trigger Some story.
+        SetupStage(stageDie);
     }
 
     public override void MusicOpeningPlay()
     {
-        AudioControl.TimeLine.Instance.PlayMusic(Music.Ifrit, 0);
+        SetupStage(stageOpening);
+        Counter.Instance.StartCountDown(
+            openingEffect.main.startLifetime.constant
+            , false
+            , null
+            , delegate { SetupStage(stage1); });
     }
 
-    public override void CameraOpeningMove()
+    public void CheckSwitchToStage2()
+    {
+        if (!typeChanged && CurrentHealth <= data.maxHealth.Value * 0.2f)
+        {
+            typeChanged = true;
+            SetupStage(stage2);
+        }
+    }
+
+    public override void CameraLockOn(float lockDuration)
     {
         var vcamIfrit = CharacterVcamControl.Instance.ifrit.vcam;
         var vcamPlayer = CharacterVcamControl.Instance.player.vcam;
@@ -145,9 +120,132 @@ public class Ifrit : BossModel
         var stylePlayer = Cinemachine.CinemachineBlendDefinition.Style.EaseOut;
         CameraFollowSetting[] sets = new CameraFollowSetting[]
         {
-            new CameraFollowSetting(vcamIfrit, styleIfrit, 2f, 0.5f, 0.2f, false, delegate { ImageEffectController.Instance.SetMotionBlur(1, 0.2f); }, ResetAiSwitchOn),
+            new CameraFollowSetting(vcamIfrit, styleIfrit, lockDuration, 0.5f, 0.2f, false, delegate { ImageEffectController.Instance.SetMotionBlur(1, 0.2f); }, ResetAiSwitchOn),
             new CameraFollowSetting(vcamPlayer, stylePlayer, 0f, 0.5f, 0f, false, null, ImageEffectController.Instance.DisableMotionBlur)
         };
         CameraControl.Follow.Instance.AddSet(sets);
     }
+
+    public override void SetupStage(string stageName)
+    {
+        switch (stageName)
+        {
+            case stageOpening:
+                _stage = new Stage_Opening();
+                break;
+            case stage1:
+                _stage = new Stage_1();
+                break;
+            case stage2:
+                _stage = new Stage_2(this);
+                break;
+            case stageDie:
+                _stage = new Stage_Die();
+                break;
+            default:
+                break;
+        }
+        _stage.StartStageChangeAction();
+    }
+
+    #region Stage Class 
+    public class Stage_Opening : IBossStageChangeEvent
+    {
+        public void StartStageChangeAction()
+        {
+            AudioSwitch();
+        }
+
+        private void AudioSwitch()
+        {
+            var audio = AudioControl.Fmod.Instance;
+            audio.Startup(Music.Ifrit, true);
+        }
+    }
+
+    public class Stage_1 : IBossStageChangeEvent
+    {
+        public void StartStageChangeAction()
+        {
+            AudioSwitch();
+        }
+
+        private void AudioSwitch()
+        {
+            var audio = AudioControl.Fmod.Instance;
+            audio.Setup(Music.Ifrit, stage1, 1);
+            audio.Setup(Music.Ifrit, stage2, 0);
+            audio.Setup(Music.Ifrit, stageDie, 0);
+        }
+    }
+
+    public class Stage_2 : IBossStageChangeEvent
+    {
+        private Ifrit ifrit;
+
+        public Stage_2(Ifrit ifrit)
+        {
+            this.ifrit = ifrit;
+        }
+
+        public void StartStageChangeAction()
+        {
+            AudioSwitch();
+            ifrit.StartCoroutine(TypeChange());
+            FlamethrowerTypeChange();
+        }
+
+        private void AudioSwitch()
+        {
+            var audio = AudioControl.Fmod.Instance;
+            audio.Setup(Music.Ifrit, stage1, 0);
+            audio.Setup(Music.Ifrit, stage2, 1);
+            audio.Setup(Music.Ifrit, stageDie, 0);
+        }
+
+        private IEnumerator TypeChange()
+        {
+            ifrit.LockOperation(LockType.TypeChange, true);
+            ifrit.GetIntoImmune(ifrit.typeChangeDuration);
+            CameraControl.Shake.Instance.ShakeCamera(0.2f, 12f, 2f, true);
+            ifrit.typeChangingEffect.Play(true);
+            ifrit.opsc.PlaySound(ifrit.typeChangingSound);
+
+            yield return new WaitForSeconds(ifrit.typeChangeDuration);
+
+            ifrit.opsc.PlaySound(ifrit.typeChangedBurstSound);
+            ifrit.LockOperation(LockType.TypeChange, false);
+            ifrit.UseSkill(ifrit.GetSkillByName(SkillNameDictionary.shockWave), true, true);
+        }
+
+        private void FlamethrowerTypeChange()
+        {
+            // 讓噴射詠唱更短
+            ifrit.GetSkillByName(SkillNameDictionary.flamethrower)
+                .castTime
+                .AddModifier(new StatModifier(-50, StatModType.PercentageTime));
+        }
+
+        private void NaraBurstTypeChange()
+        {
+            // 讓Burst爆裂更快速
+        }
+    }
+
+    public class Stage_Die : IBossStageChangeEvent
+    {
+        public void StartStageChangeAction()
+        {
+            AudioSwitch();
+        }
+
+        private void AudioSwitch()
+        {
+            var audio = AudioControl.Fmod.Instance;
+            audio.Setup(Music.Ifrit, stage1, 0);
+            audio.Setup(Music.Ifrit, stage2, 0);
+            audio.Setup(Music.Ifrit, stageDie, 1);
+        }
+    }
+    #endregion
 }

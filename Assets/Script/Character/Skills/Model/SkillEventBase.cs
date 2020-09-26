@@ -59,7 +59,7 @@ public abstract class SkillEventBase : MonoBehaviour, ISkillGenerator, ISkillUse
         currentSkill = skill;
 
         anim = GetComponent<Animator>();
-        soundControl = sourceCaster.operationSoundController;
+        soundControl = sourceCaster.opsc;
 
         // Active
         this.gameObject.SetActive(true);

@@ -18829,6 +18829,7 @@ GameObject:
   - component: {fileID: 825287289}
   - component: {fileID: 825287288}
   - component: {fileID: 825287287}
+  - component: {fileID: 825287291}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -18919,6 +18920,20 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &825287291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 825287286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bc5d223d1a41b747a9b14e7de873115, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  events:
+  - {fileID: 1932320601}
 --- !u!1 &825929537
 GameObject:
   m_ObjectHideFlags: 0
@@ -49292,6 +49307,7 @@ GameObject:
   - component: {fileID: 1855817525}
   - component: {fileID: 1855817524}
   - component: {fileID: 1855817527}
+  - component: {fileID: 1855817528}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -49395,6 +49411,19 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!114 &1855817528
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855817523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 86c6556701af9e04380698b89f691b6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ListenerNumber: -1
 --- !u!1 &1861131556
 GameObject:
   m_ObjectHideFlags: 0
@@ -57514,6 +57543,7 @@ GameObject:
   - component: {fileID: 2072052096}
   - component: {fileID: 2072052098}
   - component: {fileID: 2072052099}
+  - component: {fileID: 2072052100}
   m_Layer: 0
   m_Name: GameControl
   m_TagString: Untagged
@@ -57573,6 +57603,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40703462cf5463449bc92ab6e90ee58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2072052100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2072052095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8426b4ce5f40a1488624159f40f3215, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onSceneChangedCall:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &2072699540
 GameObject:
   m_ObjectHideFlags: 0

@@ -76,33 +76,21 @@ public class ButtonEvents : Singleton<ButtonEvents>
 
     public void LoadScene(string sceneName)
     {
-        SceneManager.LoadScene(sceneName);
+        SceneController.Instance.LoadScene(sceneName);
     }
 
     public void DelayLoadScene(string sceneName)
     {
-        StartCoroutine(DelayLoadScene(sceneName, 2.5f));
-    }
-
-    private IEnumerator DelayLoadScene(string sceneName, float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        SceneManager.LoadScene(sceneName);
+        SceneController.Instance.DelayLoadScene(sceneName, 2.5f);
     }
 
     public void QuitGameImmediately()
     {
-        Application.Quit();
+        AppControl.Instance.QuitGameImmediately();
     }
 
     public void QuitGame()
     {
-        StartCoroutine(DelayQuitGame(1f));
-    }
-
-    private IEnumerator DelayQuitGame(float duration)
-    {
-        yield return new WaitForSeconds(duration);
-        Application.Quit();
+        AppControl.Instance.QuitGame(1f);
     }
 }

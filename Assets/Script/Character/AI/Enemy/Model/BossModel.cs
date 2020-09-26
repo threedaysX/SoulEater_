@@ -11,23 +11,22 @@ public abstract class BossModel : EnemyModel, IBossOpeningEvent, IBossRootEvemt
     public AudioClip knockOutRootSound;
     protected bool startDie = false;
 
+    protected IBossStageChangeEvent _stage;
+
     public virtual float StartOpeningAction()
     {
-        CameraOpeningMove();
+        CameraControl.Shake.Instance.ShakeCamera(1f, 10f, 1.5f, false, 0.5f);
+        CameraLockOn(2f);
         MusicOpeningPlay();
-        CameraControl.Shake.Instance.ShakeCamera(1f, 10f, 1.5f, false, 0.2f);
         float duration = openingEffect.main.startLifetime.constant + 1f;
         openingEffect.Play(true);
         this.LockOperation(LockType.TypeChange, true, false, duration);
         return duration;
     }
 
-    public abstract void CameraOpeningMove();
+    public abstract void CameraLockOn(float lockDuration);
     public abstract void MusicOpeningPlay();
-
-    /// <summary>
-    /// Trigger some story or event.
-    /// </summary>
+    public abstract void SetupStage(string stageName);
     public abstract void OnRootStart();
 
     public override void Start()
@@ -46,7 +45,7 @@ public abstract class BossModel : EnemyModel, IBossOpeningEvent, IBossRootEvemt
             // Boss would avoid die once.
             if (!startDie)
             {
-                operationSoundController.PlaySound(knockOutRootSound);
+                opsc.PlaySound(knockOutRootSound);
                 knockOutRootParticle.Play(true);
                 LockHealthAvoidDie(2f);
                 OnRootStart();
@@ -84,4 +83,20 @@ public abstract class BossModel : EnemyModel, IBossOpeningEvent, IBossRootEvemt
 
         startDie = true;
     }
+}
+
+public interface IBossOpeningEvent
+{
+    float StartOpeningAction();
+    void MusicOpeningPlay();
+}
+
+public interface IBossStageChangeEvent
+{
+    void StartStageChangeAction();
+}
+
+public interface IBossRootEvemt
+{
+    void OnRootStart();
 }

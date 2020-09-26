@@ -35,9 +35,9 @@ MonoBehaviour:
     modifiers: []
   costType: 1
   damageMagnification:
-    BaseValue: 100
+    BaseValue: 60
     AdditionalValue: 0
-    FinalValue: 120
+    FinalValue: 100
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
@@ -71,11 +71,13 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   trueCoolDown: 7.36
-  coolDownTimer: 3.2537947
+  coolDownTimer: 5.1480646
   cooling: 1
   coolDownType: 1
   duration: 0.4
   prefab: {fileID: 7390867264986258557, guid: 9a443091373ab4543a1f19b81e549b9d, type: 3}
+  castSkillClip: {fileID: 0}
+  useSkillClip: {fileID: 0}
   immediatelyEvent:
     m_PersistentCalls:
       m_Calls: []

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Events;
 
 // 複製用: 
 // [CreateAssetMenu(menuName = "Character/AI/Action/繼承的新ClassName")]
@@ -56,6 +55,9 @@ public abstract class AiAction : AiHaviourBase
 
     public bool CheckActionThatCanDo()
     {
+        if (judgeSets == null)
+            return false;
+
         // 若權重已經小於0，則重置權重。
         if (currentActionWeight < 0)
         {

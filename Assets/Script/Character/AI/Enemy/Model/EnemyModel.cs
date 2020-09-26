@@ -84,11 +84,11 @@ public abstract class EnemyModel : Character
         }
         if (overridedPreActSound != null)
         {
-            operationSoundController.PlaySound(overridedPreActSound);
+            opsc.PlaySound(overridedPreActSound);
         }
         else if (preActSound != null)
         {
-            operationSoundController.PlaySound(preActSound);
+            opsc.PlaySound(preActSound);
         }
     }
 }
