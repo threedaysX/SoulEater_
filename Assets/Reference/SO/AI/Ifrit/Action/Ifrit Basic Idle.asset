@@ -14,22 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   on: 1
   switchOnActionOnStart: 1
+  ignoreJudgement: 0
+  influenceWeight: 1
   currentActionWeight: 0
   originalActionWeight: 0
   offsetActionDelay: 0
-  additionActionDelay: 0
   minusWeightAmountWhenNotSuccess: 2
   minusWeightAmountAfterAction: 0
-  _diffCount: 0
   actionType: 0
-  judjements:
-  - actionWeightAfterJudge: 0
-    conditionTrueCount: 0
-    conditions:
-    - {fileID: 11400000, guid: 6383084489b42b041a3935a0ae88b820, type: 2}
-    - {fileID: 11400000, guid: 5d6ce5c5558f6da4ba15da4db8296d29, type: 2}
-  linkedAction:
-    delay: 0
-    ignoreJudgement: 0
-    influenceWeight: 0
-    action: {fileID: 0}
+  judgeSets: []
+  linkedActions: []

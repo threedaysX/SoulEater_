@@ -29346,7 +29346,7 @@ MonoBehaviour:
   inUsingSound: {fileID: 8300000, guid: 79b934946649ae44093cac8848d398cd, type: 3}
   inUsingParticle: {fileID: 3782881763029812157}
   castHintEffect: {fileID: 3720440695795729094}
-  waveKnockBackForce: 7
+  waveKnockBackForce: 8
   tired: "\u75B2\u7D2F"
 --- !u!61 &2024533665
 BoxCollider2D:
@@ -29372,7 +29372,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1, y: 0.4}
+  m_Size: {x: 1, y: 1}
   m_EdgeRadius: 0
 --- !u!95 &2024533666
 Animator:

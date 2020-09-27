@@ -35,7 +35,7 @@ MonoBehaviour:
     modifiers: []
   costType: 1
   damageMagnification:
-    BaseValue: 200
+    BaseValue: 500
     AdditionalValue: 0
     FinalValue: 200
     ForceValue: 0

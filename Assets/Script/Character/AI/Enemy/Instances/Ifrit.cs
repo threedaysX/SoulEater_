@@ -29,6 +29,7 @@ public class Ifrit : BossModel
     {
         base.Start();
         ResetStats();
+        _attack = new EnemyAttackControl.DirectionLock(this);
     }
 
     public override void LateUpdate()
@@ -79,7 +80,7 @@ public class Ifrit : BossModel
             DoPreActHint();
         }
         return base.StartAttack(attackType, elementType, forceActToEnd);
-    }
+    }  
 
     public override void Die()
     {

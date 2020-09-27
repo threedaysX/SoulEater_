@@ -4,8 +4,11 @@
 // [CreateAssetMenu(menuName = "Character/AI/Action/繼承的新ClassName")]
 public abstract class AiAction : AiHaviourBase
 {
+    [Header("基本設定")]
     public bool on = true;
     public bool switchOnActionOnStart = true;
+    public bool ignoreJudgement = false;    // 是否無視動作的條件判斷
+    public bool influenceWeight = true;    // 是否影響動作的權重
 
     /// <summary>
     /// 此動作的權重，基本以每2點為一個階段。
@@ -35,6 +38,7 @@ public abstract class AiAction : AiHaviourBase
         }
     }
 
+    [Header("基本權重")]
     public float originalActionWeight;
 
     [Header("行為後延遲")]
@@ -51,7 +55,7 @@ public abstract class AiAction : AiHaviourBase
     public JudgeSet[] judgeSets;
 
     [Header("接續行為")]
-    public LinkedAction linkedAction;
+    public AiAction[] linkedActions;
 
     public bool CheckActionThatCanDo()
     {
@@ -119,15 +123,6 @@ public abstract class AiAction : AiHaviourBase
     /// 做什麼動作
     /// </summary>
     public abstract bool StartActHaviour();
-}
-
-[System.Serializable]
-public struct LinkedAction
-{
-    public float delay;             // 執行連接動作前的延遲
-    public bool ignoreJudgement;    // 無視連接動作的條件判斷
-    public bool influenceWeight;    // 是否影響連接動作的權重
-    public AiAction action;
 }
 
 /// <summary>

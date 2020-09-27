@@ -37,7 +37,7 @@ public class BackStep : DisposableSkill
 
     private void InterruptAction()
     {
-        sourceCaster.LockOperation(LockType.OperationAction, false);
+        sourceCaster.LockOperation(LockType.Operation, false);
         sourceCaster.opc.InterruptAnimOperation();
     }
 

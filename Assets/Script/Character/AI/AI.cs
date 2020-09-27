@@ -19,9 +19,8 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
     public AiAction defaultAction;
     [Header("上一個行為模式")]
     public AiAction lastAction;
-    public LinkedAction linkedAction;
     private bool lastActionSuccess;
-    private List<AiAction> actionToDoList = new List<AiAction>();
+    private bool toDoLinkedActions;
 
     private bool inCombatStateTrigger = false; // 是否進入戰鬥狀態
     private bool outOfCombatTrigger = false;
@@ -141,20 +140,22 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
         // 進入戰鬥狀態
         if (inCombatStateTrigger && ChaseTarget != null)
         {
+            // 在戰鬥狀態時，會持續面對目標
+            _facement.FaceTarget(this, ChaseTarget);
+
             if (canAction && Time.time >= nextActTimes)
             {
                 // 每次開始執行動作之前，回到Idle狀態
                 ReturnDefaultAction();
-                // 在執行Action時，會持續面對目標
-                _facement.FaceTarget(this, ChaseTarget);
                 // Do action or linked action.
-                if (linkedAction.action == null)
+                if (toDoLinkedActions)
                 {
-                    DoActions();
+                    DoActions(lastAction.linkedActions);
+                    toDoLinkedActions = false;
                 }
                 else
                 {
-                    DoLinkedAction();
+                    DoActions(actions);
                 }
             }
         }
@@ -164,29 +165,24 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
         }
     }
 
-    private void DoLinkedAction()
+    private void DoActions(AiAction[] actions)
     {
-        linkedAction.action.GetCurrentAIHavior(this);
-        // Check linked action condition.(If not ignore)
-        if (linkedAction.ignoreJudgement || linkedAction.action.CheckActionThatCanDo())
-        {
-            DoAction(linkedAction.action, linkedAction.influenceWeight);
-        }
-        // Reset linked action.
-        linkedAction.action = null;
+        List<AiAction> actionToDoList = CheckActions(actions);
+
+        // 決定最後的動作
+        DoHightestWeightAction(actionToDoList);
     }
 
-    private void DoActions()
+    private List<AiAction> CheckActions(AiAction[] actions)
     {
-        actionToDoList.Clear();
-        // 判斷哪些動作符合條件，代表可以做
-        // 若上一個相同的動作執行失敗，則權重降低N一次
+        List<AiAction> actionToDoList = new List<AiAction>();
         foreach (AiAction action in actions)
         {
             if (!action.on)
                 continue;
             action.GetCurrentAIHavior(this);
-            if (action.CheckActionThatCanDo())
+            // 判斷哪些動作符合條件，代表可以做
+            if (action.ignoreJudgement || action.CheckActionThatCanDo())
             {
                 // 只留下【最大】與【最大-offset】之間權重的動作(相同權重也會留下)。
                 if (actionToDoList.Count != 0)
@@ -202,30 +198,32 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
             }
         }
 
-        // 如果沒動作可以做，就Idle
-        if (actionToDoList.Count == 0)
-        {
-            ReturnDefaultAction();
-            return;
-        }
-
-        // 決定最後的動作
-        DoHightestWeightAction(actionToDoList);
+        return actionToDoList;
     }
 
     private void DoHightestWeightAction(List<AiAction> actions)
     {
+        // 如果沒動作可以做，就Idle
+        if (actions.Count == 0)
+        {
+            // Reset linked action trigger.
+            toDoLinkedActions = false;
+            // Reset action.
+            ReturnDefaultAction(true);
+            return;
+        }
+
         AiAction action;
         if (actions.Count == 1)
         {
             action = actions[0];
-            DoAction(action, true);
+            DoAction(action, action.influenceWeight);
             return;
         }
 
         // 執行任一動作
         action = actions[UnityEngine.Random.Range(0, actions.Count - 1)];
-        DoAction(action, true);
+        DoAction(action, action.influenceWeight);
     }
 
     /// <summary>
@@ -240,7 +238,13 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
         if (lastActionSuccess)
         {
             lastAction = action;
-            linkedAction = action.linkedAction;
+
+            // To do linked actions bool trigger.
+            if (lastAction.linkedActions.Length > 0)
+            {
+                toDoLinkedActions = true;
+            }
+
             // Reset action delay.
             ResetNextActTimes(action);
         }
@@ -271,10 +275,6 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
         if (lastAction.actionType == AiActionType.Move)
             return;
         float delay = currentAction.offsetActionDelay + currentAction.AdditionActionDelay;
-        if (currentAction.linkedAction.action != null)
-        {
-            delay += currentAction.linkedAction.delay;
-        }
         if (delay <= 0)
         {
             delay = 0.02f;  // 行動下限延遲
@@ -284,7 +284,7 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
     }
 
     public void ReturnDefaultAction(bool setToLastAction = false)
-    {
+    {       
         if (defaultAction == null)
             return;
         if (lastAction != null && lastAction.actionType == AiActionType.Idle)
@@ -292,6 +292,7 @@ public class AI : MonoBehaviour, IAiBase, IAiActionBase
 
         defaultAction.GetCurrentAIHavior(this);
         defaultAction.StartActHaviour();
+
         if (setToLastAction)
             lastAction = defaultAction;
     }

@@ -10,7 +10,7 @@ public class NaraBurst : DisposableSkill
     public int burstLimitCount; // 爆炸的數量
     public AudioClip renderSound;
     public GameObject burstHint;
-    public SkillDetectArea detectArea;
+    public ColliderDetectControl detectArea;
 
     protected override void AddAffectEvent()
     {
@@ -56,7 +56,13 @@ public class NaraBurst : DisposableSkill
 
     private Vector3 GetBurstPos()
     {
-        List<Character> targets = detectArea.Detect(sourceCaster, new SkillDetectArea.CircleDetect(currentSkill.range.Value), false);
+        List<Character> targets = detectArea.Detect<Character>(
+            sourceCaster.transform.position
+            , sourceCaster.tag
+            , sourceCaster.gameObject.layer
+            , new ColliderDetectControl.CircleDetect(currentSkill.range.Value)
+            , false);
+
         float offsetX = 5f;
         float offsetFrontX = Random.Range(7f, 8.2f);
         float offsetY = 1f;

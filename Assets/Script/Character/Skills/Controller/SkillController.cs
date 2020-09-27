@@ -49,14 +49,13 @@ public class SkillController : MonoBehaviour
 
         // 詠唱，固定詠唱時間+ 結束後施放技能，持續N秒。
         float totalCastTime = GetCastTime(character, skill);
-        Vector3 skillCenterPos = skillCenterPoint.position != null ? skillCenterPoint.position : character.transform.position;
-        Vector3 skillPos = skillCenterPos + character.transform.right * skill.centerPositionOffset;
+        Vector3 skillPos = GetSkillPosition(skill);
         GameObject skillObj = SkillPools.Instance.SpawnSkillFromPool(character, skill, skillPos, character.transform.rotation);
         if (skillObj != null)
         {
             character.StartUseSkillAnim(
-                StartCastSkill(skill, totalCastTime, skillObj)
-                , StartUseSkill(skill, skillObj)
+                skillObj
+                , skill
                 , totalCastTime
                 , skill.duration
                 , forceActToEnd
@@ -74,7 +73,19 @@ public class SkillController : MonoBehaviour
         return true;
     }
 
-    private Action StartCastSkill(Skill skill, float castTime, GameObject skillObj)
+    public Vector3 GetSkillPosition(Skill skill)
+    {
+        Vector3 skillCenterPos = skillCenterPoint.position != null ? skillCenterPoint.position : character.transform.position;
+        return skillCenterPos + character.transform.right * skill.centerPositionOffset;
+    }
+
+    public Action GetSkillOperationLock(GameObject skillObj)
+    {
+        ISkillOperationLock locker = skillObj.GetComponent<ISkillOperationLock>();
+        return delegate { locker.SkillingOperationLock(); };
+    }
+
+    public Action StartCastSkill(Skill skill, float castTime, GameObject skillObj)
     {
         if (castTime <= 0)
             return null;
@@ -87,7 +98,7 @@ public class SkillController : MonoBehaviour
         return delegate { skillCaster.CastSkill(); };
     }
 
-    private Action StartUseSkill(Skill skill, GameObject skillObj)
+    public Action StartUseSkill(Skill skill, GameObject skillObj)
     {
         // 技能施放冷卻計算
         if (skill.coolDownType == SkillCoolDownType.CoolAfterUse)

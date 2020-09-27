@@ -189,7 +189,7 @@ public class PlayerMovement : MonoBehaviour
 
         public void Evade()
         {
-            rb.velocity = transform.right * new Vector2(basicEvadeSpeed * player.data.moveSpeed.Value, rb.velocity.y);           
+            rb.velocity = transform.right * new Vector2(basicEvadeSpeed * player.data.moveSpeed.Value, 0);           
         }
     }
 }
