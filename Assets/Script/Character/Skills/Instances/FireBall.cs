@@ -4,20 +4,18 @@ public class FireBall : DisposableSkill
 {
     public int igniteDuration;
     public GameObject projectile;
-    public ProjectileSetting projectileSetting = new ProjectileSetting { };
-    public ProjectileDirectSetting projectileDirectSetting = new ProjectileDirectSetting { };
+    public ProjectileSetting projectileSetting;
+    public ProjectileInitSetting projectileInitSetting;
+    private ProjectileState.StraightWithDirection projectileState = new ProjectileState.StraightWithDirection();
 
     public override void GenerateSkill(Character character, Skill skill)
     {
         base.GenerateSkill(character, skill);
 
-        projectileSetting.initialPosition = sourceCaster.transform;
-        projectileSetting.initialPosition.position += sourceCaster.transform.up * 0.7f;
+        projectileInitSetting = new ProjectileInitSetting(sourceCaster.transform.position + Vector3.up * 0.7f, 6, 60, 100);
+        projectileSetting = new ProjectileSetting { moveSpeed = 3, lifeTime = 3, elementType = ElementType.Fire, };
 
-        ProjectileDataInitializer dataInitializer = new ProjectileDataInitializer(projectileSetting);
-        projectileDirectSetting.initialAngleArray = dataInitializer.GetInitialAngle();
-        projectileDirectSetting.sourceCaster = sourceCaster;
-        ProjectileSpawner.Instance.InstantiateProjectile(projectile, new ProjectileState.StraightWithDirection(), projectileSetting, projectileDirectSetting);
+        ProjectileSpawner.Instance.InstantiateProjectile(projectile,projectileState, projectileInitSetting, projectileSetting);
     }
 
     protected override void AddAffectEvent()

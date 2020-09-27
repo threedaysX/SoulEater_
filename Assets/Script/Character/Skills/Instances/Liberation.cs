@@ -21,7 +21,7 @@ public class Liberation : DisposableSkill
     {
         foreach (Projectile proj in projectiles)
         { 
-            ProjectileDirectSetting setting = new ProjectileDirectSetting
+            ProjectileSetting setting = new ProjectileSetting
             {
                 sourceCaster = sourceCaster,
                 moveSpeed = 10f,

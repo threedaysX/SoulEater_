@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+enum DialogueState{
+    InDialogue,
+    InDialogueEvent,
+    NotInDialogue
+}
+
 public class DialogueManager : Singleton<DialogueManager>
 {
     public Player player;
@@ -87,7 +93,6 @@ public class DialogueManager : Singleton<DialogueManager>
 
     private void StartPotentialChunk(int btnIndex)
     {
-        Debug.Log(btnIndex);
         foreach(Button btn in dialogueChoiceButton)
         {
             btn.gameObject.SetActive(false);
@@ -107,21 +112,7 @@ public class DialogueManager : Singleton<DialogueManager>
         btn.onClick.AddListener(() => StartPotentialChunk(btnIndex));
     }
 
-    /// /// /// ///
+    private void StartEvent(){
 
-    //public void jumptodailoguechunk(dialoguechunk[] dialoguechunks, int index)
-    //{
-    //    if (dialoguedictionary == null)
-    //        return;
-    //    this.index = 0;
-    //    dialoguedictionary.clear();
-    //    queue<string> s = new queue<string>();
-    //    foreach (string sentence in dialoguechunks[index].stenences)
-    //    {
-    //        s.enqueue(sentence);
-    //    }
-    //    dialoguedictionary.add(index, s);
-
-    //    shownextdialoguechunk();
-    //}
+    }
 }
