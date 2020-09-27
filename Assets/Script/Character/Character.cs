@@ -158,7 +158,7 @@ public class Character : MonoBehaviour
     [HideInInspector] public Rigidbody2D rb;
     #region Anim
     [HideInInspector] public Animator anim;
-    public AnimatorOverrideController animController;
+    [HideInInspector] public AnimatorOverrideController animController;
     private AnimationClip defaultCastSkillClip;
     private AnimationClip defaultUseSkillClip;
     #endregion
@@ -168,6 +168,7 @@ public class Character : MonoBehaviour
     #region Interface
     public IJumpControl _jump;
     public IEvadeControl _evade;
+    public IAttackControl _attack;
     #endregion
 
     private void Awake()
@@ -185,6 +186,7 @@ public class Character : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
         animController = new AnimatorOverrideController(anim.runtimeAnimatorController);
+        _attack = new CommonAttackControl(this);
         anim.runtimeAnimatorController = animController;
         cycleAttackCount = data.cycleAttackCount;
         nextAttackResetTime = 0;
@@ -398,11 +400,7 @@ public class Character : MonoBehaviour
         bool attackSuccess = false;
         if (attack.CanDo)
         {
-            attackSuccess = StartAttackAnim(delegate 
-            { 
-                return combatController.Attack(attackType, elementType); 
-            }
-            , forceActToEnd);
+            attackSuccess = StartAttackAnim(attackType, elementType, forceActToEnd);
         }
 
         if (attackSuccess)
@@ -411,7 +409,7 @@ public class Character : MonoBehaviour
         }
 
         return attackSuccess;
-    }
+    }    
     #endregion
 
     #region Operation
@@ -482,17 +480,14 @@ public class Character : MonoBehaviour
     }
 
     /// <param name="skillUseDurtaion">技能施放持續的時間(與使用技能的動作動畫時間不同)</param>
-    public void StartUseSkillAnim(Action skillCastMethod, Action skillUseMethod, float castTime, float skillUseDurtaion, bool forceActToEnd = false, AnimationClip castSkillClip = default, AnimationClip useSkillClip = default)
+    public void StartUseSkillAnim(GameObject skillObj, Skill skill, float castTime, float skillUseDurtaion, bool forceActToEnd = false, AnimationClip castSkillClip = default, AnimationClip useSkillClip = default)
     {
-        if (skillUseMethod == null)
-            return;
-
         string operationName = "StartUseSkillAnim";
         // 檢查動作列狀態
         if (opc.CheckOperation(operationName))
         {
             Operation skillUse = new Operation(operationName);
-            skillUse.SetAction(StartTrueSkillUse(skillCastMethod, skillUseMethod, castTime, skillUseDurtaion, castSkillClip, useSkillClip));
+            skillUse.SetAction(StartTrueSkillUse(skillObj, skill, castTime, skillUseDurtaion, castSkillClip, useSkillClip));
             skillUse.SetEndEvent(
                 delegate {
                     SetOperationEndEvent();
@@ -507,7 +502,7 @@ public class Character : MonoBehaviour
         }
     }
 
-    public bool StartAttackAnim(Func<bool> attackMethod, bool forceActToEnd = false)
+    public bool StartAttackAnim(AttackType attackType = AttackType.Attack, ElementType elementType = ElementType.None, bool forceActToEnd = false)
     {
         bool attackSuccess = false;
         string operationName = "StartAttackAnim";
@@ -515,7 +510,7 @@ public class Character : MonoBehaviour
         if (opc.CheckOperation(operationName))
         {
             Operation attack = new Operation(operationName);
-            attack.SetAction(StartTrueAttack(attack.SetOperationState, attack.SetDelay, attackMethod));
+            attack.SetAction(StartTrueAttack(attack.SetOperationState, attack.SetDelay, attackType, elementType));
             attack.SetEndEvent(SetOperationEndEvent);
             opc.AddOperation(attack, forceActToEnd);
             attackSuccess = true;
@@ -527,7 +522,7 @@ public class Character : MonoBehaviour
     private void SetOperationEndEvent()
     {
         // 重置角色動作
-        LockOperation(LockType.OperationAction, false);
+        LockOperation(LockType.Operation, false);
         // 重置角色動畫
         opc.InterruptAnimOperation();
     }
@@ -573,16 +568,16 @@ public class Character : MonoBehaviour
     private IEnumerator StartTrueEvade(Action<OperationStateType> setOperationState, Action<float> setDelay, Action evadeMethod)
     {
         opc.isEvading = true;
-        GetIntoImmune(0.4f);
+        GetIntoImmune(0.15f);
 
         // 重置閃避時間
         ResetEvadeCoolDownDuration();
         setDelay(evadeCoolDownDuration);
 
         // 鎖定攻擊、移動、方向
-        attack.Lock(LockType.OperationAction);
-        move.Lock(LockType.OperationAction);
-        freeDirection.Lock(LockType.OperationAction);
+        attack.Lock(LockType.Operation);
+        move.Lock(LockType.Operation);
+        freeDirection.Lock(LockType.Operation);
 
         setOperationState(OperationStateType.Interrupt);
         yield return new WaitForSeconds(GetFrameTimeOffset(1));   // 等待一幀，使動畫開始撥放，否則會取到上一個動畫的狀態。
@@ -592,19 +587,18 @@ public class Character : MonoBehaviour
         float evadeAnimDuration = AnimationBase.Instance.GetCurrentAnimationLength(anim);
         yield return new WaitForSeconds(evadeAnimDuration * 0.7f);    // 等待動畫播放至準備收尾
 
-        attack.UnLock(LockType.OperationAction); // 收尾動作的時候才可以開始攻擊
+        attack.UnLock(LockType.Operation); // 收尾動作的時候才可以開始攻擊
 
         yield return new WaitForSeconds(evadeAnimDuration * 0.3f);    // 等待動畫播放結束
         opc.isEvading = false;
     }
 
-    private IEnumerator StartTrueAttack(Action<OperationStateType> setOperationState, Action<float> setDelay, Func<bool> attackMethod)
+    private IEnumerator StartTrueAttack(Action<OperationStateType> setOperationState, Action<float> setDelay, AttackType attackType = AttackType.Attack, ElementType elementType = ElementType.None)
     {
         /// 攻擊前搖
         opc.isPreAttacking = true;
 
-        // 鎖定移動
-        move.Lock(LockType.OperationAction);
+        _attack.AttackOperationLock();
 
         // 重置每段攻擊時間間隔
         AttackAnimNumber++;
@@ -629,9 +623,9 @@ public class Character : MonoBehaviour
         opc.isAttacking = true;
 
         // 鎖定跳躍與閃避、方向
-        jump.Lock(LockType.OperationAction);
-        evade.Lock(LockType.OperationAction);
-        freeDirection.Lock(LockType.OperationAction);
+        jump.Lock(LockType.Operation);
+        evade.Lock(LockType.Operation);
+        freeDirection.Lock(LockType.Operation);
 
         if (!CheckIsFinalAttack())
         {
@@ -648,7 +642,7 @@ public class Character : MonoBehaviour
 
         // 攻擊觸發
         opsc.PlaySound(opsc.attackSound);
-        if (attackMethod.Invoke())
+        if (combatController.Attack(attackType, elementType))
         {
             opsc.PlaySound(opsc.hitSound);
         }
@@ -673,45 +667,42 @@ public class Character : MonoBehaviour
         opc.isAttacking = false;
     }
 
-    private IEnumerator StartTrueSkillUse(Action skillCastMethod, Action skillUseMethod, float castTime, float skillUseDurtaion, AnimationClip castSkillClip = default, AnimationClip useSkillClip = default)
+    private IEnumerator StartTrueSkillUse(GameObject skillObj, Skill skill, float castTime, float skillUseDurtaion, AnimationClip castSkillClip = default, AnimationClip useSkillClip = default)
     {
-        // 鎖定行動
-        LockOperation(LockType.OperationAction, true);
+        skillController.GetSkillOperationLock(skillObj).Invoke();
 
-        if (skillCastMethod != null)
+        // 詠唱開始
+        opc.isSkillCasting = true;
+        skillController.StartCastSkill(skill, castTime, skillObj)?.Invoke();
+        yield return new WaitForSeconds(GetFrameTimeOffset(1));
+
+        // 設定詠唱技能動作
+        string castSkillName = anim.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+        if (defaultCastSkillClip == null)
+            defaultCastSkillClip = animController[castSkillName];
+        animController[castSkillName] = castSkillClip;
+
+        // 計時(詠唱中)
+        float timer = 0;
+        while (timer < castTime)
         {
-            opc.isSkillCasting = true;
-            skillCastMethod.Invoke();
-            yield return new WaitForSeconds(GetFrameTimeOffset(1));
-
-            // 設定詠唱技能動作
-            string castSkillName = anim.GetCurrentAnimatorClipInfo(0)[0].clip.name;
-            // Reset
-            if (defaultCastSkillClip == null)
-                defaultCastSkillClip = animController[castSkillName];
-            animController[castSkillName] = castSkillClip;
-
-            // 計時(詠唱中)
-            float timer = 0;
-            while (timer < castTime)
-            {
-                timer += GetFrameTimeOffset(1);
-                // Render Casting GUI
-                yield return null;
-            }
-
-            opc.isSkillCasting = false;
+            skillObj.transform.position = skillController.GetSkillPosition(skill);
+            timer += GetFrameTimeOffset(1);
+            // Render Casting GUI
+            yield return null;
         }
 
+        opc.isSkillCasting = false;
+
+
         // 詠唱結束，施放技能
-        skillUseMethod.Invoke();
+        skillController.StartUseSkill(skill, skillObj).Invoke();
 
         opc.isSkillUsing = true;
         yield return new WaitForSeconds(GetFrameTimeOffset(2));
 
         // 設定使用技能動作
         string useSkillName = anim.GetCurrentAnimatorClipInfo(0)[0].clip.name;
-        // Reset
         if (defaultUseSkillClip == null)
             defaultUseSkillClip = animController[useSkillName];
         animController[useSkillName] = useSkillClip;
@@ -719,7 +710,7 @@ public class Character : MonoBehaviour
         if (skillUseDurtaion > 0)
         {
             // 計時(持續施放中)
-            float timer = 0;
+            timer = 0;
             while (timer < skillUseDurtaion)
             {
                 timer += GetFrameTimeOffset(1);
@@ -1091,4 +1082,25 @@ public interface IJumpControl
 public interface IEvadeControl
 {
     void Evade();
+}
+
+public interface IAttackControl
+{
+    void AttackOperationLock();
+}
+
+public class CommonAttackControl : IAttackControl
+{
+    private readonly Character character;
+
+    public CommonAttackControl(Character character)
+    {
+        this.character = character;
+    }
+
+    public void AttackOperationLock()
+    {
+        // 鎖定移動
+        character.move.Lock(LockType.Operation);
+    }
 }

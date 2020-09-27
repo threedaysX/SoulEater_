@@ -14,6 +14,8 @@ public class SceneController : Singleton<SceneController>
             {
                 AudioControl.Fmod.Instance.ReleaseAll();
                 CameraControl.OnDisableCall();
+                Counter.Instance.OnDisableCall();
+                TimeScaleController.Instance.OnDisableCall();
             });
         SceneManager.sceneLoaded += SceneManager_sceneLoaded;     
     }

@@ -78,12 +78,12 @@ public enum BasicOperationType
 public enum LockType 
 {
     All,
-    OperationAction,
-    SkillAction,
+    Operation,
     Stun,
     Freeze,
     Silence,
     Afraid,
+    Bind, // 無法進行任何行動  
     Lame, // 無法移動
     TypeChange,  // 型態改變(變身or變化...)
     InDialogue,

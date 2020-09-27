@@ -7,7 +7,7 @@ using UnityEngine.Events;
 /// 各類技能的事件。
 /// 包含對自身的、對敵人...等等的行為模式(Buff、擊退、暈眩...事件)。
 /// </summary>
-public abstract class SkillEventBase : MonoBehaviour, ISkillGenerator, ISkillUse, ISkillCaster
+public abstract class SkillEventBase : MonoBehaviour, ISkillGenerator, ISkillUse, ISkillCaster, ISkillOperationLock
 {
     private const string skillAnimTrigger = "Trigger";
 
@@ -101,6 +101,13 @@ public abstract class SkillEventBase : MonoBehaviour, ISkillGenerator, ISkillUse
     public virtual void CastSkill()
     {
         PlayCastSound();
+        SkillingOperationLock();
+    }
+
+    public virtual void SkillingOperationLock()
+    {
+        // 鎖定行動(預設技能使用期間，動作為全鎖定)
+        sourceCaster.LockOperation(LockType.Operation, true);
     }
 
     /// <summary>
@@ -136,6 +143,16 @@ public abstract class SkillEventBase : MonoBehaviour, ISkillGenerator, ISkillUse
         {
             col.enabled = enable;
         }
+    }
+
+    /// <summary>
+    /// 技能開始施放，可將Enabled為True
+    /// </summary>
+    protected IEnumerator SetSkillCollisionEnable(bool enable, float delaySet)
+    {
+        yield return new WaitForSeconds(delaySet);
+
+        SetSkillCollisionEnable(enable);
     }
 
     protected IEnumerator SetActiveAfterSkillDone(float duration)
@@ -211,8 +228,8 @@ public abstract class SkillEventBase : MonoBehaviour, ISkillGenerator, ISkillUse
     protected string lockDirectionBuffName = "方向鎖定";
     public virtual void LockDirectionTillEnd()
     {
-        void affect() { sourceCaster.freeDirection.Lock(LockType.OperationAction); }
-        void remove() { sourceCaster.freeDirection.UnLock(LockType.OperationAction); }
+        void affect() { sourceCaster.freeDirection.Lock(LockType.Operation); }
+        void remove() { sourceCaster.freeDirection.UnLock(LockType.Operation); }
         sourceCaster.buffController.AddBuff(lockDirectionBuffName, affect, remove, currentSkill.duration);
     }
 
@@ -239,4 +256,26 @@ public abstract class SkillEventBase : MonoBehaviour, ISkillGenerator, ISkillUse
         }
     }
     #endregion
+}
+
+public interface ISkillGenerator
+{
+    void GenerateSkill(Character character, Skill skill);
+}
+
+public interface ISkillCaster
+{
+    void CastSkill();
+
+    void PlayCastSound();
+}
+
+public interface ISkillUse
+{
+    void UseSkill();
+}
+
+public interface ISkillOperationLock
+{
+    void SkillingOperationLock();
 }

@@ -56,8 +56,22 @@ public class Debuff : Singleton<Debuff>
             icon = bindIcon,
             name = bindDebuffName,
             duration = duration,
-            applyAffect = delegate { target.LockOperation(LockType.SkillAction, true); },
-            endAffect = delegate { target.LockOperation(LockType.SkillAction, false); },
+            applyAffect = delegate 
+            { 
+                target.move.Lock(LockType.Bind);
+                target.attack.Lock(LockType.Bind);
+                target.evade.Lock(LockType.Bind);
+                target.jump.Lock(LockType.Bind);
+                target.useSkill.Lock(LockType.Bind);
+            },
+            endAffect = delegate 
+            {
+                target.move.UnLock(LockType.Bind);
+                target.attack.UnLock(LockType.Bind);
+                target.evade.UnLock(LockType.Bind);
+                target.jump.UnLock(LockType.Bind);
+                target.useSkill.UnLock(LockType.Bind);
+            },
         };
 
         ApplyDebuff(target, debuffData);
@@ -107,11 +121,11 @@ public class Debuff : Singleton<Debuff>
     }
 
     /// <summary>
-    /// 破甲Lv1: 對命中的目標造成-10%基礎防禦，持續N秒。			
-    /// 破甲Lv2: -25%			
-    /// 破甲Lv3: -40%		
+    /// 破甲Lv1: 對命中的目標造成-20%基礎防禦，持續N秒。			
+    /// 破甲Lv2: -30%			
+    /// 破甲Lv3: -45%		
     /// 破甲Lv4: -60%			
-    /// 破甲Lv5: -90%			
+    /// 破甲Lv5: -80%			
     /// </summary>
     public void ArmorBreakWithLevel(Character target, int level, float duration)
     {
@@ -120,19 +134,19 @@ public class Debuff : Singleton<Debuff>
         switch (level) 
         {
             case 1:
-                value = -10f;
+                value = -20f;
                 break;
             case 2:
-                value = -25f;
+                value = -30f;
                 break;
             case 3:
-                value = -40f;
+                value = -45f;
                 break;
             case 4:
                 value = -60f;
                 break;
             case 5:
-                value = -90f;
+                value = -80f;
                 break;
         }
 

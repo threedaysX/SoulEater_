@@ -14,30 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   on: 1
   switchOnActionOnStart: 1
-  currentActionWeight: 4
+  ignoreJudgement: 0
+  influenceWeight: 1
+  currentActionWeight: 10
   originalActionWeight: 6
   offsetActionDelay: 0.4
-  additionActionDelay: 2.1000001
   minusWeightAmountWhenNotSuccess: 2
   minusWeightAmountAfterAction: 2
-  beforeActionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  beforeActionAddEvent:
-    m_PersistentCalls:
-      m_Calls: []
   actionType: 5
   judgeSets:
-  - additionalBeforeActionEvent:
-      m_PersistentCalls:
-        m_Calls: []
-    actionWeightAfterJudge: 6
+  - actionWeightAfterJudge: 10
     judgement:
       conditions:
       - {fileID: 11400000, guid: 99c6da398197b5241972189fd2b7f102, type: 2}
-  linkedAction:
-    delay: 0
-    ignoreJudgement: 0
-    influenceWeight: 0
-    action: {fileID: 0}
+  linkedActions: []
   skillActionObject: {fileID: 11400000, guid: 4a6746252b787b446a98a7062845f160, type: 2}

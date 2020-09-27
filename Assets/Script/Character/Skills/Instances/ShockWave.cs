@@ -42,7 +42,6 @@ public class ShockWave : DisposableSkill
         Debuff.Instance.SlowMoveSpeed(target, 50, 1f);
     }
 
-    public string tired = "疲累";
     /// <summary>
     /// 被命中的敵人無法使用跳躍，持續0.6秒
     /// </summary>

@@ -27,13 +27,19 @@ public class TimeScaleController : Singleton<TimeScaleController>
         }
     }
 
-    public void ResetTimeScale(bool forceReset = false)
+    public void ResetTimeScale(bool forceReset = false, bool includesResetMotion = false)
     {
         if (!forceReset && TimeScale.global.forced)
         {
             return;
         }
+
         TimeScale.global.currentTimeScale = 1f;
+
+        if (includesResetMotion)
+        {
+            TimeScale.global.Reset();
+        }
     }
 
     /// <summary>
@@ -47,7 +53,7 @@ public class TimeScaleController : Singleton<TimeScaleController>
     /// <param name="forced">If true, this slow motion can not be overwritted by others【DoSlowMotion】, it will run to end.</param>
     public void DoSlowMotion(float slowdownFactor, float recoverDelay, float slowdownLength, float recoverFactor = 1f, string motionName = "", bool forced = false, bool overwrite = true)
     {
-        if (SlowSetup(slowdownFactor, motionName, forced, overwrite))
+        if (Setup(slowdownFactor, motionName, forced, overwrite))
         {
             RecoverSlowMotion(recoverDelay, slowdownLength, recoverFactor);
         }
@@ -59,40 +65,42 @@ public class TimeScaleController : Singleton<TimeScaleController>
     public void DoSlowMotion(float slowdownFactor, string motionName = "", bool forced = false, bool overwrite = true)
     {
         TimeScale.global.originTimeScale = TimeScale.global.currentTimeScale;
-        SlowSetup(slowdownFactor, motionName, forced, overwrite);
+        Setup(slowdownFactor, motionName, forced, overwrite);
     }
 
-    private bool SlowSetup(float slowdownFactor, string motionName, bool forced, bool overwrite)
+    private bool Setup(float slowdownFactor, string motionName, bool forced, bool overwrite)
     {
-        bool result = false;
+        bool success = false;
         if (overwrite)
         {
             if (TimeScale.global.forced)
             {
                 if (motionName == TimeScale.global.name)
                 {
-                    result = true;
+                    success = true;
                 }
             }
             else
             {
-                result = true;
+                success = true;
             }
         }
         else
         {
             if (!TimeScale.global.running)
             {
-                result = true;
+                success = true;
             }
         }
-        if (result)
+
+        // If can setup, start set time scale.
+        if (success)
         {
             TimeScale.global.currentTimeScale = slowdownFactor;
             TimeScale.global.forced = forced;
             TimeScale.global.name = motionName;
         }
-        return result;
+        return success;
     }
 
     /// <summary>
@@ -147,6 +155,12 @@ public class TimeScaleController : Singleton<TimeScaleController>
     {
         anim.speed = newSpeed;
     }
+
+    public void OnDisableCall()
+    {
+        StopAllCoroutines();
+        ResetTimeScale();
+    }
 }
 
 public enum SlowMotionTargetType
@@ -174,18 +188,18 @@ public class TimeScaleData
     public bool paused;
     public bool finished;
     public bool forced;
-    private bool @lock;
+    private bool _lock;
 
     public IEnumerator CallMotion(IEnumerator action)
     {
         // To block another motion, because there is a motion running now and it forced to run till it end.
-        if (@lock)
+        if (_lock)
         {
             yield break;
         }
         if (forced)
         {
-            this.@lock = true;
+            this._lock = true;
         }
 
         if (running)
@@ -222,7 +236,7 @@ public class TimeScaleData
         finished = true;
         if (forced)
         {
-            this.@lock = false;
+            this._lock = false;
             forced = false;
         }
     }
@@ -244,5 +258,16 @@ public class TimeScaleData
     public void PauseMotion(bool paused)
     {
         this.paused = paused;
+    }
+
+    public void Reset()
+    {
+        name = "";
+        stop = false;
+        running = false;
+        paused = false;
+        finished = false;
+        forced = false;
+        _lock = false;
     }
 }

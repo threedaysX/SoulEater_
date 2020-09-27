@@ -14,63 +14,29 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   on: 1
   switchOnActionOnStart: 1
-  currentActionWeight: 0
+  ignoreJudgement: 0
+  influenceWeight: 1
+  currentActionWeight: 7
   originalActionWeight: 7
   offsetActionDelay: 0.2
-  additionActionDelay: 1.4333334
   minusWeightAmountWhenNotSuccess: 2
   minusWeightAmountAfterAction: 1
-  beforeActionEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  beforeActionAddEvent:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11400000}
-        m_TargetAssemblyTypeName: BasicAttack, Assembly-CSharp
-        m_MethodName: BreakAttack
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
   actionType: 4
   judgeSets:
-  - additionalBeforeActionEvent:
-      m_PersistentCalls:
-        m_Calls: []
-    actionWeightAfterJudge: 10
+  - actionWeightAfterJudge: 10
     judgement:
       conditions:
       - {fileID: 11400000, guid: 819e1468151e5b94f8c70c5fb00e82e9, type: 2}
       - {fileID: 11400000, guid: 0dad0486a9915c747b4b26991dc4b077, type: 2}
-  - additionalBeforeActionEvent:
-      m_PersistentCalls:
-        m_Calls: []
-    actionWeightAfterJudge: 8
+  - actionWeightAfterJudge: 8
     judgement:
       conditions:
       - {fileID: 11400000, guid: 819e1468151e5b94f8c70c5fb00e82e9, type: 2}
       - {fileID: 11400000, guid: 6a7e0346b0ddcc0419c7605e9cdd086b, type: 2}
       - {fileID: 11400000, guid: 4cd89c6335d2bd445b2ff3125085dcba, type: 2}
-  - additionalBeforeActionEvent:
-      m_PersistentCalls:
-        m_Calls: []
-    actionWeightAfterJudge: 7
+  - actionWeightAfterJudge: 7
     judgement:
       conditions:
       - {fileID: 11400000, guid: 819e1468151e5b94f8c70c5fb00e82e9, type: 2}
-  linkedAction:
-    delay: 0
-    ignoreJudgement: 0
-    influenceWeight: 0
-    action: {fileID: 0}
-  clips:
-  - type: 0
-    clip: {fileID: 7400000, guid: 670e634f9d9884e489ba7620038d7b11, type: 2}
-  - type: 1
-    clip: {fileID: 7400000, guid: 824e0f5df29572645aac1566c43f6ad3, type: 2}
+  linkedActions:
+  - {fileID: 11400000, guid: 43d803d913b03e640b08edc58de2c3cc, type: 2}

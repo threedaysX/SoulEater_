@@ -55,6 +55,11 @@ public class Counter : Singleton<Counter>
     {
         this.StopAllCoroutines();
     }
+    
+    public void OnDisableCall()
+    {
+        StopAllCountDown();
+    }
 
     #region IEnumerator
     private IEnumerator CountDownCoroutine(float timer, bool ignoreTimeScale, Action<float> setter, params Action[] callback)

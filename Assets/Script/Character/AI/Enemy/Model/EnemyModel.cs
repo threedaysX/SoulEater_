@@ -122,3 +122,23 @@ public class HorizontalFacement : IFacement
         }
     }
 }
+
+public class EnemyAttackControl
+{
+    public class DirectionLock : IAttackControl
+    {
+        private readonly Character character;
+
+        public DirectionLock(Character character)
+        {
+            this.character = character;
+        }
+
+        public void AttackOperationLock()
+        {
+            // 鎖定移動
+            character.move.Lock(LockType.Operation);
+            character.freeDirection.Lock(LockType.Operation);
+        }
+    }
+}

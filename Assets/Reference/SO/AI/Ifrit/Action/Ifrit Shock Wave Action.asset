@@ -14,7 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   on: 1
   switchOnActionOnStart: 1
-  currentActionWeight: 6
+  ignoreJudgement: 0
+  influenceWeight: 1
+  currentActionWeight: 8
   originalActionWeight: 6
   offsetActionDelay: 0.2
   minusWeightAmountWhenNotSuccess: 2
@@ -32,9 +34,7 @@ MonoBehaviour:
       conditions:
       - {fileID: 11400000, guid: 819e1468151e5b94f8c70c5fb00e82e9, type: 2}
       - {fileID: 11400000, guid: 4c438329aa0aa4141ae12dcb7867639d, type: 2}
-  linkedAction:
-    delay: 0
-    ignoreJudgement: 0
-    influenceWeight: 1
-    action: {fileID: 11400000, guid: a3f92054214322846b09e825468dac6a, type: 2}
+  linkedActions:
+  - {fileID: 11400000, guid: a3f92054214322846b09e825468dac6a, type: 2}
+  - {fileID: 11400000, guid: b4c8ca3235ed0f34e8821ea664e32c93, type: 2}
   skillActionObject: {fileID: 11400000, guid: e245430a4ff153840b88d153fe9dbbd3, type: 2}

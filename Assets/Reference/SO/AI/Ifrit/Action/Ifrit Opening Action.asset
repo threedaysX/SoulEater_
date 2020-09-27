@@ -12,17 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8467bde95f3468740b273978e569bd13, type: 3}
   m_Name: Ifrit Opening Action
   m_EditorClassIdentifier: 
-  on: 1
+  on: 0
   switchOnActionOnStart: 1
-  currentActionWeight: -901
+  ignoreJudgement: 0
+  influenceWeight: 1
+  currentActionWeight: 99
   originalActionWeight: 99
   offsetActionDelay: 0
   minusWeightAmountWhenNotSuccess: 1000
   minusWeightAmountAfterAction: 1000
   actionType: 1
   judgeSets: []
-  linkedAction:
-    delay: 0
-    ignoreJudgement: 1
-    influenceWeight: 0
-    action: {fileID: 11400000, guid: 62ed477627d6dee49adb86610a882723, type: 2}
+  linkedActions:
+  - {fileID: 11400000, guid: be7429f965244dd4fa660257956a2a4f, type: 2}

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3481d461ca94ca240b2092c729b9f91b, type: 3}
+  m_Name: Ifrit Shock Wave Action Linked
+  m_EditorClassIdentifier: 
+  on: 1
+  switchOnActionOnStart: 1
+  ignoreJudgement: 1
+  influenceWeight: 0
+  currentActionWeight: 6
+  originalActionWeight: 6
+  offsetActionDelay: 0
+  minusWeightAmountWhenNotSuccess: 2
+  minusWeightAmountAfterAction: 1
+  actionType: 4
+  judgeSets: []
+  linkedActions:
+  - {fileID: 11400000, guid: a3f92054214322846b09e825468dac6a, type: 2}
+  - {fileID: 11400000, guid: b4c8ca3235ed0f34e8821ea664e32c93, type: 2}
+  skillActionObject: {fileID: 11400000, guid: e245430a4ff153840b88d153fe9dbbd3, type: 2}
