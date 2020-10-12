@@ -24,19 +24,22 @@ public class CurrentData : Singleton<CurrentData>
         chip2Mouse.gameObject.SetActive(false);
         currentFragmentID = -1;
     }
+
+    int overFragID = -1;
+
     void Update()
     {
         if (chip2Mouse != null)
         {
             Vector3 temp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            chip2Mouse.transform.position = new Vector3(temp.x, temp.y, 10) ;
+            chip2Mouse.transform.position = new Vector3(temp.x, temp.y, 10);
         }
 
         if (!EventSystem.current.IsPointerOverGameObject())
             return;
 
         //點到範圍外
-        if (Input.GetMouseButtonDown(0) )
+        if (Input.GetMouseButtonDown(0))
         {
             if (chip2Mouse.sprite != null && ExtendedStandaloneInputModule.GetPointerEventData().pointerCurrentRaycast.gameObject.tag != "putFrag" && ExtendedStandaloneInputModule.GetPointerEventData().pointerCurrentRaycast.gameObject.tag != "slot")
             {
@@ -68,38 +71,63 @@ public class CurrentData : Singleton<CurrentData>
 
         if (currentFragmentID == -1)            //手中沒有碎片
         {
-            if (Input.GetMouseButtonDown(1))    //查看觸發多少條邊
+            //滑鼠滑到天賦盤上
+            star getTemp = ExtendedStandaloneInputModule.GetPointerEventData().pointerCurrentRaycast.gameObject.GetComponent<star>();
+
+            if (overFragID != getTemp.fragID)   //此刻 和 上一刻 不在同一個碎片上
+            {
+                overFragID = getTemp.fragID;
+
+                //沒有在碎片上，顏色改變後，之後事情都不用做
+                if (getTemp.fragID == -1)
+                {
+                    for (int i = 0; i < AllFragment.Instance.fragments.Count; i++)//其他的碎片就暗下來
+                    {
+                        Chip.Instance.LightUpStar(AllFragment.Instance.fragments[i]);
+                    }
+                    return;
+                }
+
+                //有在碎片上，顏色重新計算
+                for (int i = 0; i < AllFragment.Instance.fragments.Count; i++)//其他的碎片就暗下來
+                {
+                    if (i == overFragID)
+                    {
+                        Chip.Instance.LightUpStar(AllFragment.Instance.fragments[i]);
+                        continue;
+                    }
+                    Chip.Instance.DarkDownStar(AllFragment.Instance.fragments[i]);
+                }
+
+                //顯示當前碎片的原始圖案
+                //AllFragment.Instance.fragments[overFragID].m_Data.ShowOriginPicture();
+            }
+
+
+
+            /*if (Input.GetMouseButtonDown(1))    //滑鼠右鍵，查看觸發多少條邊
             {
                 if (AllFragment.Instance.fragments.Count == 0)
                     return;
                 star getTemp = ExtendedStandaloneInputModule.GetPointerEventData().pointerCurrentRaycast.gameObject.GetComponent<star>();
-                if (getTemp.fragID == -1) return;
-                //文字框顯示
-                /*appearTriggerCount.text = AllFragment.Instance.fragments[getTemp.fragID].m_Data.PrintTriggerCount();
-                appearTriggerCount.transform.position = Input.mousePosition;
-                textImage.transform.position = Input.mousePosition;
-                textImage.color = new Color(1, 1, 0, 0.7f);
-                appearTriggerCount.color = new Color(0, 0, 0, 1);
-                windowsAppear = true;
-                */
+                if (overFragID == -1) return;
 
-                //Debug顯示
-                Debug.Log( AllFragment.Instance.fragments[getTemp.fragID].m_Data.PrintAndExeAffixs());
+                Debug.Log( AllFragment.Instance.fragments[overFragID].m_Data.PrintAndExeAffixs());
 
                 return;
-            }
+            }*/
             if (Input.GetMouseButtonDown(0))    //拿起來
             {
-                star getTemp = ExtendedStandaloneInputModule.GetPointerEventData().pointerCurrentRaycast.gameObject.GetComponent<star>();
+                //star getTemp = ExtendedStandaloneInputModule.GetPointerEventData().pointerCurrentRaycast.gameObject.GetComponent<star>();
                 if (getTemp.isLocked)
                 {
-                    currentFragmentID = getTemp.fragID;
+                    currentFragmentID = overFragID;
                     //Debug.Log("拿起來currentFragmentID:" + currentFragmentID);
-                    //Debug.Log("拿起來fragmentID:" + getTemp.fragID);
+                    //Debug.Log("拿起來fragmentID:" + overFragID);
                     Chip.Instance.PullUp(AllFragment.Instance.fragments[currentFragmentID]);
                     chip2Mouse.gameObject.SetActive(true);
                     chip2Mouse.sprite = AllFragment.Instance.fragments[currentFragmentID].m_Data.fragImage;
-                    //Debug.LogWarning("getTemp.fragID---" + currentFragmentID);
+                    //Debug.LogWarning("overFragID---" + currentFragmentID);
                 }
                 return;
             }
