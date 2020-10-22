@@ -2,6 +2,48 @@
 using System.Collections;
 using UnityEngine;
 
+[System.Serializable]
+public struct ProjectileInitSetting{
+    public Vector2 initialPosition;
+    public int amount;
+    [Range(0, 360)] public int restrictAngle;
+    [Range(0, 360)] public int angleOffset;     //從rotation的0度開始加
+    [HideInInspector] public float initialAngle{ get; private set; }    //return deg
+
+    public ProjectileInitSetting(Vector2 initialPosition, int amount, int restrictAngle, int angleOffset){
+        this.initialPosition = initialPosition;
+        this.amount = amount;
+        this.restrictAngle = restrictAngle;
+        this.angleOffset = angleOffset;
+        this.initialAngle = 0;
+        this.initialAngle = GetInitialAngle();
+    }
+
+    [HideInInspector] public float GetInitialAngle(){
+        int angleChunk = restrictAngle / amount;    //在限制角度中平分角度
+        int angle = angleOffset;
+
+        float dirX = initialPosition.x + Mathf.Sin(angle * Mathf.Deg2Rad);
+        float dirY = initialPosition.y + Mathf.Cos(angle * Mathf.Deg2Rad);
+
+        Vector2 projectileVector = new Vector2(dirX, dirY);
+        Vector2 projectileDir = (projectileVector - initialPosition).normalized;
+
+        return Mathf.Atan2(projectileDir.y, projectileDir.x) * Mathf.Rad2Deg;
+    }
+}
+
+[System.Serializable]
+public struct ProjectileSetting{
+    public float initialAngle;
+    public float moveSpeed;
+    public int lifeTime;
+    public float shootDelay;     //每顆projectile射出ㄉ間格時間
+    public Transform target;
+    public ElementType elementType;
+    [HideInInspector] public Character sourceCaster;
+}
+
 public class Projectile : MonoBehaviour
 {
     #region 基礎參數
@@ -14,6 +56,7 @@ public class Projectile : MonoBehaviour
     #endregion
 
     private IProjectileState _state;
+    private IProjectileHitState _hitState;
 
     protected virtual void Start()
     {
@@ -25,44 +68,41 @@ public class Projectile : MonoBehaviour
     {
         if (_state != null)
             _state.Pattern();
+        
+    }
+
+    public void Setup(IProjectileState state, ProjectileSetting projectileSetting)
+    {
+        // 通用的setup
+        if (projectileSetting.sourceCaster != null)
+        {
+            this.sourceCaster = projectileSetting.sourceCaster;
+            this.elementType = sourceCaster.data.attackElement;
+        }
+        this.moveSpeed = projectileSetting.moveSpeed;
+        this.lifeTime = projectileSetting.lifeTime;
+        this.initialAngle = projectileSetting.initialAngle;  //deg
+        this.target = projectileSetting.target;
+
+        _state = state;
+        DetectHitState();
+        // 該State專屬的Setup
+        _state.Setup(this);
+        _hitState.HitStateSetUp(this);
+    }
+
+    private void DetectHitState(){
+        if(target == null)
+            _hitState = new ProjectileHitState.HitCharacterWithoutTargetIt();
+        else
+            _hitState = new ProjectileHitState.HitCharacterWithTargetIt();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        Character target = collision.GetComponent<Character>();
+        _hitState.CheckWhatFinalHitColIs(collision);
 
-        if (target != null && target != sourceCaster && sourceCaster != null)
-        {
-            float damage = DamageController.Instance.GetAttackDamage(sourceCaster, target, AttackType.Attack, elementType, out bool isCritical);
-            target.TakeDamage(new DamageData(sourceCaster.gameObject, sourceCaster.data.attackElement, (int)damage, isCritical));
-        }
-        else if (sourceCaster == null)   //not character shooting projectile
-        {
-            //write a GetTrapDamage Function in DamageController
-        }
-        else if (target == sourceCaster)
-        {
-            return;
-        }
         gameObject.SetActive(false);
-    }
-
-    public void Setup(IProjectileState state, ProjectileDirectSetting projectileDirectSetting)
-    {
-        // 通用的setup
-        if (projectileDirectSetting.sourceCaster != null)
-        {
-            this.sourceCaster = projectileDirectSetting.sourceCaster;
-            this.elementType = sourceCaster.data.attackElement;
-        }
-        this.moveSpeed = projectileDirectSetting.moveSpeed;
-        this.lifeTime = projectileDirectSetting.lifeTime;
-        this.initialAngle = projectileDirectSetting.initialAngle;  //rad
-        this.target = projectileDirectSetting.target;
-
-        _state = state;
-        // 該State專屬的Setup
-        _state.Setup(this);
     }
 
     private void ResetProjectileInTime(GameObject obj, bool isActive, float time)
@@ -74,18 +114,10 @@ public class Projectile : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         _state = null;
+        _hitState = null;
         obj.SetActive(isActive);
         yield break;
     }
-}
-
-public enum ProjectileStateType
-{
-    StraightWithTarget,
-    StraightWithDirection,
-    ParabolaWithTarget,
-    ParabolaWithDirection,
-    // Others..........
 }
 
 public interface IProjectileState
@@ -189,6 +221,66 @@ public class ProjectileState
             initialAngle += angleIncrement * Mathf.Deg2Rad * Time.deltaTime;
             Vector3 direction = new Vector2(Mathf.Cos(initialAngle), Mathf.Sin(initialAngle)).normalized;
             projectile.transform.position += direction * projectile.moveSpeed * Time.deltaTime;
+        }
+    }
+}
+
+public interface IProjectileHitState{
+    void HitStateSetUp(Projectile projectile);
+    void CheckWhatFinalHitColIs(Collider2D hitCol);
+}
+
+public class ProjectileHitState{
+    private Projectile projectile;
+    private float damage;
+    private Character finalHitTarget;
+    private bool isCritical;
+
+    protected void CalculateDamage(Character finalHitTarget){
+        damage = DamageController.Instance.GetAttackDamage(projectile.sourceCaster, finalHitTarget, AttackType.Attack, projectile.elementType, out bool isCritical);
+        this.isCritical = isCritical;
+    }
+
+    public void DoDamage(Character finalHitTarget){
+        finalHitTarget.TakeDamage(new DamageData(projectile.sourceCaster.gameObject, projectile.sourceCaster.data.attackElement, (int)damage, isCritical));
+    }
+
+    public class HitCharacterWithTargetIt :　ProjectileHitState, IProjectileHitState{
+        private Character target;
+
+        public void HitStateSetUp(Projectile projectile){
+            this.projectile = projectile;
+            target = projectile.target.GetComponent<Character>();
+            CalculateDamage(target);
+        }
+
+        public void CheckWhatFinalHitColIs(Collider2D hitCol){
+            finalHitTarget = hitCol.GetComponent<Character>();
+            if(finalHitTarget == null)
+                return;
+
+            if(finalHitTarget != target)
+                CalculateDamage(finalHitTarget);
+            
+            DoDamage(finalHitTarget);
+        }
+    }
+
+    public class HitCharacterWithoutTargetIt :　ProjectileHitState, IProjectileHitState{
+        private Character hitCol;
+        
+        public void HitStateSetUp(Projectile projectile){
+            this.projectile = projectile;
+        }
+
+        public void CheckWhatFinalHitColIs(Collider2D hitCol){
+            finalHitTarget = hitCol.GetComponent<Character>();
+            if(finalHitTarget != null)
+                return;
+
+            CalculateDamage(finalHitTarget);
+            DoDamage(finalHitTarget);
+            
         }
     }
 }

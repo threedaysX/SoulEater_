@@ -65,7 +65,7 @@ public class Chip : Singleton<Chip>
 
     }
 
-    public void LockStar(Fragment theF)////////////////////////////////////////////////////////////OK
+    public void LockStar(Fragment theF)
     {
         for (int i = 0; i < theF.m_Data.touchStarsID.Count; i++)
         {
@@ -78,7 +78,7 @@ public class Chip : Singleton<Chip>
         }
     }
 
-    public void UnlockStar(Fragment theF)//////////////////////////////////////////////////////////OK
+    public void UnlockStar(Fragment theF)
     {
         for (int i = 0; i < theF.m_Data.touchStarsID.Count; i++)
         {
@@ -91,8 +91,23 @@ public class Chip : Singleton<Chip>
         }
     }
 
+    public void DarkDownStar(Fragment theF)//////////////////////////////////////////////////////////讓碎片暗下來(灰色)
+    {
+        for (int i = 0; i < theF.m_Data.touchStarsID.Count; i++)
+        {
+            AllStar.Instance.stars[theF.m_Data.touchStarsID[i]].gameObject.GetComponent<Image>().color = Color.gray;
+        }
+    }
+    public void LightUpStar(Fragment theF)//////////////////////////////////////////////////////////讓碎片恢復原本的顏色
+    {
+        for (int i = 0; i < theF.m_Data.touchStarsID.Count; i++)
+        {
+            AllStar.Instance.stars[theF.m_Data.touchStarsID[i]].gameObject.GetComponent<Image>().color = theF.m_Data.fragColor;
+        }
+    }
+
     //重新計算此碎片的觸發邊
-    /*public void ThisReDetectEdge(Fragment theF)/////////////////////////////////////////////////////////////////OK
+    /*public void ThisReDetectEdge(Fragment theF)
     {
         theF.m_Data.triggerCount = 0;               //中多少條邊就triggerCount++
 
@@ -115,17 +130,10 @@ public class Chip : Singleton<Chip>
         }
     }*/
 
-    /************************************************************/
-    /************************************************************/
-    /************************************************************/
-    /************************************************************/
-    /************************************************************/
-    /************************************************************/
-    /************************************************************/
-    /************************************************************/
+    //____________________________________________________________________________________________________________________________________________
 
     //檢查哪些Affix可以用
-    public void ThisReDetectAffix(Fragment theF)/////////////////////////////////////////////////////////////////OK
+    public void ThisReDetectAffix(Fragment theF)
     {
         theF.m_Data.triggerCount = 0;               //中多少條邊就triggerCount++
 
@@ -186,18 +194,10 @@ public class Chip : Singleton<Chip>
         }
     }
     
-
-    /************************************************************/
-    /************************************************************/
-    /************************************************************/
-    /************************************************************/
-    /************************************************************/
-    /************************************************************/
-    /************************************************************/
-
+    //____________________________________________________________________________________________________________________________________________
 
     //鄰居碎片們重新計算邊的觸發
-    public void NeighborReDetectEdge(Fragment theF)//////////////////////////////////////////////////////////OK
+    public void NeighborReDetectEdge(Fragment theF)
     {
         //if (theF.m_Data.neighborStars.Count == 0) return;
         //呼叫鄰居的ThisReDetectEdge
@@ -209,7 +209,7 @@ public class Chip : Singleton<Chip>
         }
     }
 
-    public void FreshNeighborStars(Fragment theF)/////////////////////////////////////////////////////////// OK
+    public void FreshNeighborStars(Fragment theF)
     {
         for (int i = 0; i < theF.m_Data.neighbors.Count; i++)
         {
