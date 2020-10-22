@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth:
     BaseValue: 3595
-    AdditionalValue: 12000
+    AdditionalValue: 17000
     FinalValue: 95
     ForceValue: 0
     toForceChangeValue: 0

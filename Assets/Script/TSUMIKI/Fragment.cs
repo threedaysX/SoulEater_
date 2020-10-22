@@ -266,7 +266,8 @@ public class F_Data
             if (neighborRelativeInfo[i].check)
             {
                 //執行Affix
-                Test.Instance.AddBuffs(neighborRelativeInfo[i].theAffix.name);
+                //Test.Instance.AddBuffs(neighborRelativeInfo[i].theAffix.name);
+                neighborRelativeInfo[i].theAffix.Trigger();
                 reternString += "/" + neighborRelativeInfo[i].theAffix.description + "/";
             }
         }

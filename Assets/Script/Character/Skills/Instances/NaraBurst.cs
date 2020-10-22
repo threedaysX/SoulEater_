@@ -63,18 +63,31 @@ public class NaraBurst : DisposableSkill
             , new ColliderDetectControl.CircleDetect(currentSkill.range.Value)
             , false);
 
+
         float offsetX = 5f;
         float offsetFrontX = Random.Range(7f, 8.2f);
         float offsetY = 1f;
+        float targetX;
+        float targetY;
+        Transform targetTrans;
 
-        // Random Choose one target.
-        int randomIndex = Random.Range(0, targets.Count - 1);
+        if (targets.Count == 0)
+        {
+            targetTrans = sourceCaster.transform;
+        }
+        else
+        {
+            // Random Choose one target.
+            int randomIndex = Random.Range(0, targets.Count - 1);
 
-        var targetTrans = targets[randomIndex].transform;
-        float targetX = targetTrans.position.x;
-        float targetY = targetTrans.position.y;
-        float x;
+            targetTrans = targets[randomIndex].transform;
+        }
+
+        targetX = targetTrans.position.x;
+        targetY = targetTrans.position.y;
         float y = Random.Range(targetY - offsetY, targetY + offsetY);
+        float x;
+
         // Means that target is [right side] of caster.
         if (targetTrans.position.x - sourceCaster.transform.position.x > 0)
         {
@@ -86,7 +99,6 @@ public class NaraBurst : DisposableSkill
             x = Random.Range(targetX - offsetFrontX, targetX + offsetX);
         }
 
-        
         return new Vector3(x, y, 0);
     }
 }

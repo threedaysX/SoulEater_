@@ -34,37 +34,37 @@ MonoBehaviour:
         edgeT: 0
       - triPos: {x: 1, y: 0}
         edgeT: 0
-      theAffix: {fileID: 11400000, guid: d82c5b26ad1fcd1488bd4f207681b959, type: 2}
+      theAffix: {fileID: 11400000, guid: 659e0a7b5ed80224a95008be7a9b68ab, type: 2}
       check: 0
     - relativeInfo:
       - triPos: {x: 2, y: 0}
         edgeT: 3
-      theAffix: {fileID: 11400000, guid: c40fb0f0c1d070640967d40bf125bf6a, type: 2}
+      theAffix: {fileID: 0}
       check: 0
     - relativeInfo:
       - triPos: {x: 2, y: 0}
         edgeT: 1
-      theAffix: {fileID: 11400000, guid: 590506675c23b5f4cbc816d789a13e68, type: 2}
+      theAffix: {fileID: 0}
       check: 0
     - relativeInfo:
       - triPos: {x: 2, y: -1}
         edgeT: 3
-      theAffix: {fileID: 11400000, guid: df13d16c2936ccb46b52e29d299b6255, type: 2}
+      theAffix: {fileID: 0}
       check: 0
     - relativeInfo:
       - triPos: {x: 1, y: -1}
         edgeT: 1
       - triPos: {x: -1, y: -1}
         edgeT: 1
-      theAffix: {fileID: 11400000, guid: 0c6d696a8db5b724093471277ec2ebbd, type: 2}
+      theAffix: {fileID: 0}
       check: 0
     - relativeInfo:
       - triPos: {x: -1, y: -1}
         edgeT: 2
-      theAffix: {fileID: 11400000, guid: d82c5b26ad1fcd1488bd4f207681b959, type: 2}
+      theAffix: {fileID: 0}
       check: 0
     - relativeInfo:
       - triPos: {x: -1, y: 0}
         edgeT: 2
-      theAffix: {fileID: 11400000, guid: c40fb0f0c1d070640967d40bf125bf6a, type: 2}
+      theAffix: {fileID: 0}
       check: 0
