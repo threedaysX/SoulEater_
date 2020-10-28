@@ -48,7 +48,7 @@ public abstract class EnemyModel : Character
     {
         if (isHealthDirty)
         {
-            EnemyUIControl.Instance.SetHealthUI(characterName, data.maxHealth.Value, CurrentHealth);
+            EnemyUIControl.Instance.SetHealthUI(characterName, RemainHealthPercentage);
             isHealthDirty = false;
         }
     }

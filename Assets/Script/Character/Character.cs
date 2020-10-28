@@ -34,6 +34,8 @@ public class Character : MonoBehaviour
         set
         {
             _currentHealth = value;
+            // 計算剩餘%數
+            RemainHealthPercentage = data.maxHealth.Value / _currentHealth;
             if (_currentHealth > data.maxHealth.Value)
             {
                 _currentHealth = data.maxHealth.Value;
@@ -55,6 +57,8 @@ public class Character : MonoBehaviour
         set
         {
             _currentMana = value;
+            // 計算剩餘%數
+            RemainHealthPercentage = data.maxMana.Value / _currentMana;
             if (_currentMana > data.maxMana.Value)
             {
                 _currentMana = data.maxMana.Value;
@@ -67,6 +71,11 @@ public class Character : MonoBehaviour
             }
         }
     }
+
+    public float RemainHealthPercentage { get; private set; }
+    private bool resetHealthTrigger = true;
+    public float RemainManaPercentage { get; private set; }
+    private bool resetManaTrigger = true;
     #endregion
 
     #region 狀態判定
@@ -788,9 +797,20 @@ public class Character : MonoBehaviour
         data.evadeCoolDown.BaseValue = dataInitializer.GetEvadeCoolDownDuration();
         data.recoverFromKnockStunTime.BaseValue = dataInitializer.GetRecoverFromKnockStunTime();
 
-        CurrentHealth = data.maxHealth.Value;
-        CurrentMana = data.maxMana.Value;
+        if (resetHealthTrigger)
+        {
+            RemainHealthPercentage = 1;
+            resetHealthTrigger = false;
+        }
+        if (resetManaTrigger)
+        {
+            RemainManaPercentage = 1;
+            resetManaTrigger = false;
+        }
+        CurrentHealth = data.maxHealth.Value * RemainHealthPercentage;
+        CurrentMana = data.maxMana.Value * RemainManaPercentage;
     }
+
 
     public void ResetStatsDirtyData()
     {

@@ -227,3 +227,12 @@ public struct DebuffData
     public UnityAction applyAffect;
     public UnityAction endAffect;
 }
+
+public enum DebuffEnum 
+{ 
+    Ignite,
+    Bind,
+    Lame,
+    Slow,
+    ArmorBreak,
+}

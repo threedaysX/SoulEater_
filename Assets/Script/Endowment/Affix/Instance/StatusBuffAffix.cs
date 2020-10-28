@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Endowment/Affix/StatusBuff")]
-public class StatusBuffAffix : NormalAffix
+public class StatusBuffAffix : ImediatellyTriggerAffix
 {
     public List<StatusAdds> stats;
 
@@ -12,18 +12,20 @@ public class StatusBuffAffix : NormalAffix
     {
         foreach (StatusAdds s in stats)
         {
-            Stats stats = GetStatus(character, s.status);
+            Stats stats = GetStatus(owner, s.status);
             stats.AddModifier(s.Modifier);
         }
+        owner.ResetBaseData();
     }
 
     protected override void RemoveAffixAffect()
     {
         foreach (StatusAdds s in stats)
         {
-            Stats stats = GetStatus(character, s.status);
+            Stats stats = GetStatus(owner, s.status);
             stats.RemoveModifier(s.Modifier);
         }
+        owner.ResetBaseData();
     }  
 
     public Stats GetStatus(Character character, Status status)
@@ -42,6 +44,24 @@ public class StatusBuffAffix : NormalAffix
                 return character.data.status.dexterity;
             case Status.LUK:
                 return character.data.status.lucky;
+            case Status.AP_Value:
+                return character.data.penetrationValue;
+            case Status.AP_Percentage:
+                return character.data.penetrationMagnification;
+            case Status.DEF:
+                return character.data.defense;
+            case Status.HP:
+                return character.data.maxHealth;
+            case Status.Mana:
+                return character.data.maxMana;
+            case Status.AttackLifeSteal:
+                return character.data.attackLifeSteal;
+            case Status.SkillLifeSteal:
+                return character.data.skillLifeSteal;
+            case Status.SkillCoolDown:
+                return character.data.reduceSkillCoolDown;
+            case Status.FireResistance:
+                return character.data.resistance.fire;
         }
 
         return null;
@@ -89,5 +109,14 @@ public class StatusBuffAffix : NormalAffix
         INT,
         DEX,
         LUK,
+        AP_Value,
+        AP_Percentage,
+        DEF,
+        HP,
+        Mana,
+        AttackLifeSteal,
+        SkillLifeSteal,
+        SkillCoolDown,
+        FireResistance,
     }
 }

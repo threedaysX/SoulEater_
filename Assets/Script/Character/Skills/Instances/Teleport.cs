@@ -18,7 +18,7 @@ public class Teleport : DisposableSkill
     /// </summary>
     private void TeleportToTargetBack()
     {
-        lastAttackTarget = sourceCaster.combatController.lastAttackTarget;
+        lastAttackTarget = sourceCaster.combatController.lastAttackTarget.transform;
         // Still can teleport.
         if (lastAttackTarget == null)
         {

@@ -213,6 +213,7 @@ public abstract class SkillEventBase : MonoBehaviour, ISkillGenerator, ISkillUse
     {
         float damage = GetSkillDamage(out bool isCritical);
         sourceCaster.DamageDealtSteal(damage, false);
+        sourceCaster.combatController.SetLastAttackTarget(target);
         DamageData damageData = new DamageData(sourceCaster.gameObject, currentSkill.elementType, (int)damage, isCritical, damageDirectionX);
         return target.TakeDamage(damageData);
     }

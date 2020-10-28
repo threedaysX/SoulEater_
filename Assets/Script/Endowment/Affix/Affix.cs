@@ -6,16 +6,18 @@
 /// 複製用: [CreateAssetMenu(menuName = "Endowment/Affix/對應詞綴名稱")]
 public abstract class Affix : ScriptableObject
 {
-    public Character character; // 誰擁有這個詞綴效果
+    public Character owner;
     public string description;
-    public string affectName;
+    protected string affectName;
 
     /// <summary>
     /// 激活碎片時，觸發效果
     /// </summary>
     public void Trigger()
     {
-        AddBuff();
+        // Warning: need to avoid duplicate with another affix(Cannot exist same name buff).
+        affectName = "Frag_" + Time.time + "." + System.DateTime.UtcNow.ToString();
+        InitAffix();
     }
 
     /// <summary>
@@ -23,7 +25,12 @@ public abstract class Affix : ScriptableObject
     /// </summary>
     public void Remove()
     {
-        character.buffController.RemoveBuff(affectName);
+        owner.buffController.RemoveBuff(affectName);
+    }
+
+    protected Character GetAffectTarget()
+    {
+        return owner.combatController.lastAttackTarget;
     }
 
     /// <summary>
@@ -32,25 +39,5 @@ public abstract class Affix : ScriptableObject
     /// </summary>
     protected abstract void SetAffect();
     protected abstract void RemoveAffixAffect();
-    protected abstract void AddBuff();
-}
-
-public abstract class NormalAffix : Affix
-{
-    protected override void AddBuff()
-    {
-        // duration: -1, 代表永久
-        character.buffController.AddBuff(affectName, SetAffect, RemoveAffixAffect, -1, null);
-    }
-}
-
-public abstract class ConditionAffix : Affix
-{
-    protected override void AddBuff()
-    {
-        // duration: -1, 代表永久
-        character.buffController.AddBuff(affectName, SetAffect, RemoveAffixAffect, -1, delegate { return GetAffectCondition(); });
-    }
-
-    protected abstract bool GetAffectCondition();
+    protected abstract void InitAffix();
 }

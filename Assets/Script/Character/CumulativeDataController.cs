@@ -6,16 +6,13 @@ public class CumulativeDataController : MonoBehaviour
     public const string Cumulative_DamageTake_KnockBack = "Cumulative_DamageTake_KnockBack";    // 累積受到的擊退傷害
     public const string Cumulative_DamageDealt_ManaAbsorb = "Cumulative_DamageDealt_ManaAbsorb";   // 累積造成的吸魔傷害
 
-    private CumulativeData<int> damageTakeObservers;
-    private CumulativeData<int> damageDealtObservers;
-    private CumulativeData<int> attackHitTimesObservers;
+    private CumulativeData<int> damageTakeObservers = new CumulativeData<int>();
+    private CumulativeData<int> damageDealtObservers = new CumulativeData<int>();
+    private CumulativeData<int> attackHitTimesObservers = new CumulativeData<int>();
 
     // Start is called before the first frame update
     private void Start()
     {
-        damageTakeObservers = new CumulativeData<int>();
-        damageDealtObservers = new CumulativeData<int>();
-        attackHitTimesObservers = new CumulativeData<int>();
         AddData(Cumulative_DamageTake_KnockBack, CumulativeDataType.Take, 0);
         AddData(Cumulative_DamageDealt_ManaAbsorb, CumulativeDataType.Dealt, 0);
     }
@@ -32,6 +29,11 @@ public class CumulativeDataController : MonoBehaviour
     public int GetData(string name, CumulativeDataType type)
     {
         var datas = GetCumulativeDataDict(type);
+        if (!datas.ContainsKey(name))
+        {
+            datas.TryAdd(name, 0);
+            return 0;
+        }
         if (datas != null && datas.TryGetValue(name, out int resultData))
         {
             return resultData;

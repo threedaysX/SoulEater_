@@ -3,7 +3,7 @@ using System.Linq;
 
 public class SkillDatabase : MonoBehaviour
 {
-    public Character player;
+    public Player player;
     public Transform skillInventory;
     public SkillSlot[] skillSlots;
     public AttackType dbSkillType;
@@ -12,6 +12,14 @@ public class SkillDatabase : MonoBehaviour
     {
         skillSlots = skillInventory.GetComponentsInChildren<SkillSlot>();
         ResetSkillInventory();
+    }
+
+    private void Update()
+    {
+        if (player.isSkillFieldsModifiedTrigger)
+        {
+            ResetSkillInventory();
+        }
     }
 
     public void ResetSkillInventory()

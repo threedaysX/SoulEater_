@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class KnockStunSystem : MonoBehaviour
 {
-    public void KnockStun(Character character, float damageDirectionX, float knockBackForce)
+    public void KnockStun(Character target, float damageDirectionX, float knockBackForce)
     {
         // 播放擊退硬直動畫
-        StartCoroutine(KnockStunCoroutine(character, damageDirectionX, knockBackForce));
-        character.isKnockStun = true;
-        RecoverFromKnockStun(character);
+        StartCoroutine(KnockStunCoroutine(target, damageDirectionX, knockBackForce));
+        target.isKnockStun = true;
+        RecoverFromKnockStun(target);
     }
     public void RecoverFromKnockStun(Character character)
     {

@@ -31,7 +31,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: FMOD/Build/Desktop/Master.strings.bank
   SubDir: 
-  lastModified: 637372547595054066
+  lastModified: 637363927750795589
   LoadResult: 0
   FileSizes:
   - Name: Desktop
@@ -165,6 +165,23 @@ MonoBehaviour:
   FileSizes: []
   Exists: 1
 --- !u!114 &-7631153533013560036
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Ifrit/Stage_2
+  m_EditorClassIdentifier: 
+  Name: Stage_2
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
+--- !u!114 &-7494522021797261239
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -542,7 +559,7 @@ MonoBehaviour:
   Banks:
   - {fileID: 8737110747937987834}
   - {fileID: 909058876861635838}
-  - {fileID: 3532778207803522479}
+  - {fileID: 612780846241843121}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -813,17 +830,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EditorBanks:
   - {fileID: -8679191943795514020}
-  - {fileID: 3532778207803522479}
+  - {fileID: 612780846241843121}
   EditorEvents:
   - {fileID: 3468639399683558395}
   - {fileID: 3949410217013363831}
   - {fileID: -2973993613613896685}
   EditorParameters: []
   MasterBanks:
-  - {fileID: 3532778207803522479}
+  - {fileID: 612780846241843121}
   StringsBanks:
   - {fileID: -8679191943795514020}
-  stringsBankWriteTime: 637372547595054066
+  stringsBankWriteTime: 637363927750795589
   cacheVersion: 3
 --- !u!114 &266221787558062227
 MonoBehaviour:
@@ -860,6 +877,24 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &612780846241843121
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637363927750735534
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
 --- !u!114 &866094531634882927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1062,6 +1097,23 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 1
+--- !u!114 &3808172960219736489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Ifrit/Stage_Die
+  m_EditorClassIdentifier: 
+  Name: Stage_Die
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &3828721751780488338
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1097,14 +1149,14 @@ MonoBehaviour:
   Banks:
   - {fileID: 8737110747937987834}
   - {fileID: 909058876861635838}
-  - {fileID: 3532778207803522479}
+  - {fileID: 612780846241843121}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: -3159193629037534400}
-  - {fileID: -9216141815100023145}
-  - {fileID: -7631153533013560036}
+  - {fileID: 3808172960219736489}
+  - {fileID: 7297511508208692595}
+  - {fileID: -7494522021797261239}
   MinDistance: 0
   MaxDistance: 0
   Length: 104250
@@ -1331,6 +1383,23 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &7297511508208692595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Ifrit/Stage_1
+  m_EditorClassIdentifier: 
+  Name: Stage_1
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &7315075916809485158
 MonoBehaviour:
   m_ObjectHideFlags: 0

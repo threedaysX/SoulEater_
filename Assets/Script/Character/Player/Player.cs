@@ -20,6 +20,7 @@ public class Player : Character
     public UIShake healthUI;
     public Image staminaBarUI;
     public Image manaAbsorbBarUI;
+    public bool isSkillFieldsModifiedTrigger;
 
     private string dscManaAbsorbName;
 
@@ -82,6 +83,18 @@ public class Player : Character
         }
         base.ManaSteal(damage);
         manaAbsorbBarUI.fillAmount = percent;
+    }
+
+    public override void LearnSkill(Skill skill)
+    {
+        base.LearnSkill(skill);
+        isSkillFieldsModifiedTrigger = true;
+    }
+
+    public override void RemoveSkill(Skill skill)
+    {
+        base.RemoveSkill(skill);
+        isSkillFieldsModifiedTrigger = true;
     }
 
     public void TriggerAttractorBurstEffect(float delay)
