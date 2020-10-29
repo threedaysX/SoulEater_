@@ -267,6 +267,7 @@ public class F_Data
             {
                 //執行Affix
                 //Test.Instance.AddBuffs(neighborRelativeInfo[i].theAffix.name);
+                neighborRelativeInfo[i].theAffix.owner = GameObject.Find("Player").GetComponent<Player>();
                 neighborRelativeInfo[i].theAffix.Trigger();
                 reternString += "/" + neighborRelativeInfo[i].theAffix.description + "/";
             }

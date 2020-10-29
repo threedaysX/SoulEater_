@@ -8,6 +8,7 @@ public class PutFrag : Singleton<PutFrag>
     public Frag_m leftDown;  
     public Frag_m rightUp;      
     public Frag_m rightDown;
+    public Frag_m right;
 
     public void PutFragment(Fragment _putfrag, FragSpot _spot)
     {
@@ -24,7 +25,10 @@ public class PutFrag : Singleton<PutFrag>
             case FragSpot.right_Down:
                 rightDown.PutNewFrag(_putfrag);
                 break;
+            case FragSpot.right:
+                right.PutNewFrag(_putfrag);
+                break;
             }
     }
 }
-    public enum FragSpot { left_Up, left_Down, right_Up, right_Down };
+    public enum FragSpot { left_Up, left_Down, right_Up, right_Down , right };
