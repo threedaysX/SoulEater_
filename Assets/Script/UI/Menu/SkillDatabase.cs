@@ -24,6 +24,7 @@ public class SkillDatabase : MonoBehaviour
 
     public void ResetSkillInventory()
     {
+        player.isSkillFieldsModifiedTrigger = false;
         Skill[] skills = player.skillFields.Where(x => x.skillType == this.dbSkillType).ToArray();
         int slotIndex = 0;
         foreach (var skill in skills)
