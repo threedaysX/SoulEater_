@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Status Buff Affix(DEF, +25)
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
-  description: 
+  description: DEF+25
   stats:
   - status: 8
     modType: 0

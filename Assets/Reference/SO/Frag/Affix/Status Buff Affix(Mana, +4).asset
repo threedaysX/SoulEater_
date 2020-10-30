@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Status Buff Affix(Mana, +4)
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
-  description: 
+  description: Mana+4
   stats:
   - status: 10
     modType: 0

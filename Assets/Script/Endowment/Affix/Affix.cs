@@ -9,6 +9,7 @@ public abstract class Affix : ScriptableObject
     public Character owner;
     public string description;
     protected string affectName;
+    private bool initNameTrigger;
 
     /// <summary>
     /// 激活碎片時，觸發效果
@@ -16,7 +17,11 @@ public abstract class Affix : ScriptableObject
     public void Trigger()
     {
         // Warning: need to avoid duplicate with another affix(Cannot exist same name buff).
-        affectName = "Frag_" + Time.time + "." + System.DateTime.UtcNow.ToString();
+        if (!initNameTrigger)
+        {
+            initNameTrigger = true;
+            affectName = "Frag_" + Time.time + "." + System.DateTime.UtcNow.ToString();
+        }
         InitAffix();
     }
 

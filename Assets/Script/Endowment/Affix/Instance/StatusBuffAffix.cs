@@ -13,7 +13,7 @@ public class StatusBuffAffix : ImediatellyTriggerAffix
         foreach (StatusAdds s in stats)
         {
             Stats stats = GetStatus(owner, s.status);
-            stats.AddModifier(s.Modifier);
+            owner.buffController.AddBuff(affectName, delegate { stats.AddModifier(s.Modifier); }, delegate { stats.RemoveModifier(s.Modifier); }, -1);
         }
         owner.ResetBaseData();
     }
@@ -23,7 +23,7 @@ public class StatusBuffAffix : ImediatellyTriggerAffix
         foreach (StatusAdds s in stats)
         {
             Stats stats = GetStatus(owner, s.status);
-            stats.RemoveModifier(s.Modifier);
+            owner.buffController.RemoveBuff(affectName);
         }
         owner.ResetBaseData();
     }  
@@ -44,6 +44,12 @@ public class StatusBuffAffix : ImediatellyTriggerAffix
                 return character.data.status.dexterity;
             case Status.LUK:
                 return character.data.status.lucky;
+            case Status.Cri:
+                return character.data.critical;
+            case Status.CriDamage:
+                return character.data.criticalDamage;
+            case Status.AttackDelay:
+                return character.data.attackDelay;
             case Status.AP_Value:
                 return character.data.penetrationValue;
             case Status.AP_Percentage:
@@ -60,6 +66,8 @@ public class StatusBuffAffix : ImediatellyTriggerAffix
                 return character.data.skillLifeSteal;
             case Status.SkillCoolDown:
                 return character.data.reduceSkillCoolDown;
+            case Status.MoveSpeed:
+                return character.data.moveSpeed;
             case Status.FireResistance:
                 return character.data.resistance.fire;
         }
@@ -79,9 +87,9 @@ public class StatusBuffAffix : ImediatellyTriggerAffix
         {
             get
             {
-                if (resetModTrigger)
+                if (!resetModTrigger)
                 {
-                    resetModTrigger = false;
+                    resetModTrigger = true;
                     _modifier = new StatModifier(value, modType);
                     return _modifier;
                 }
@@ -94,11 +102,6 @@ public class StatusBuffAffix : ImediatellyTriggerAffix
 
         [Header("增減量")]
         public int value;
-
-        public StatModifier GetModifier()
-        {
-            return new StatModifier(value, modType);
-        }
     }
 
     public enum Status
@@ -109,14 +112,22 @@ public class StatusBuffAffix : ImediatellyTriggerAffix
         INT,
         DEX,
         LUK,
+
+        Cri,
+        CriDamage,
+        AttackDelay,
         AP_Value,
         AP_Percentage,
+
         DEF,
         HP,
         Mana,
+
         AttackLifeSteal,
         SkillLifeSteal,
         SkillCoolDown,
+        MoveSpeed,
+
         FireResistance,
     }
 }

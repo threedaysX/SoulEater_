@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Learn Skilll Affix(Power Up)
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
-  description: 
+  description: '[Skill] PowerUp'
   skill: {fileID: 11400000, guid: 3c729da956d461443aeceddcea16b54a, type: 2}

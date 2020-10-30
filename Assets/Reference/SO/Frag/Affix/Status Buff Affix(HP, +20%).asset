@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Status Buff Affix(HP, +20%)
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
-  description: 
+  description: HP+20%
   stats:
   - status: 9
     modType: 4

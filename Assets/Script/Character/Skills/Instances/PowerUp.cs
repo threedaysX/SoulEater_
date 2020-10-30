@@ -48,13 +48,14 @@ public class PowerUp : DisposableSkill
         else
             offset += 2;
 
+        var mod = new StatModifier(offset, StatModType.FlatAdd, buffName);
         void affect()
         {
-            stats.AddModifier(new StatModifier(offset, StatModType.FlatAdd, buffName));
+            stats.AddModifier(mod);
         }
         void remove()
         {
-            stats.RemoveModifier(new StatModifier(-offset, StatModType.FlatAdd, buffName));
+            stats.RemoveModifier(mod);
         }
         sourceCaster.buffController.AddBuff(buffName, affect, remove, duration);
     }

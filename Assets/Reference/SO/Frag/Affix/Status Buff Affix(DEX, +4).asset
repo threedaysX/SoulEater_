@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Status Buff Affix(DEX, +4)
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
-  description: "\u9748\u5DE7\u52A0\u6210"
+  description: DEX+4
   stats:
   - status: 4
     modType: 0

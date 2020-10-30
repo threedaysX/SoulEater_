@@ -259,6 +259,7 @@ public class F_Data
             }
     }*/
 
+    private Player player;
     public string PrintAndExeAffixs() {
         string reternString="";
         for (int i = 0; i < neighborRelativeInfo.Count; i++)
@@ -267,7 +268,11 @@ public class F_Data
             {
                 //執行Affix
                 //Test.Instance.AddBuffs(neighborRelativeInfo[i].theAffix.name);
-                neighborRelativeInfo[i].theAffix.owner = GameObject.Find("Player").GetComponent<Player>();
+                if (player == null)
+                {
+                    player = GameObject.Find("Player").GetComponent<Player>();
+                }
+                neighborRelativeInfo[i].theAffix.owner = player;
                 neighborRelativeInfo[i].theAffix.Trigger();
                 reternString += "/" + neighborRelativeInfo[i].theAffix.description + "/";
             }

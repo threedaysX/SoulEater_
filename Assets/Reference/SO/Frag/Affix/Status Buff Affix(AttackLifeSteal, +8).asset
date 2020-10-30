@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Status Buff Affix(AttackLifeSteal, +8)
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
-  description: 
+  description: AttackLifeSteal+8
   stats:
   - status: 11
     modType: 0

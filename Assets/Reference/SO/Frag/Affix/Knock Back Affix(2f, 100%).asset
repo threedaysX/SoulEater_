@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: Knock Back Affix(2f, 100%)
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
-  description: "\u653B\u64CA\u64CA\u9000"
-  affectName: "\u653B\u64CA\u64CA\u9000_\u8A5E\u7DB4"
+  description: Attack KnockBack
   chance: 100
   knockBackForce: 2

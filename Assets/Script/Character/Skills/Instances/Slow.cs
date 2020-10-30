@@ -14,8 +14,9 @@ public class Slow : DisposableSkill
     public void DebuffSlowDown()
     {
         var speedstat = target.data.moveSpeed;
-        void affect() { speedstat.AddModifier(new StatModifier(-0.5f, StatModType.PercentageTime, debuff)); }
-        void remove() { speedstat.RemoveModifier(new StatModifier(0.5f, StatModType.PercentageTime, debuff)); }
+        var mod = new StatModifier(-0.5f, StatModType.PercentageTime, debuff);
+        void affect() { speedstat.AddModifier(mod); }
+        void remove() { speedstat.RemoveModifier(mod); }
         target.buffController.AddBuff(debuff, affect, remove, 4f);
     }
 }
