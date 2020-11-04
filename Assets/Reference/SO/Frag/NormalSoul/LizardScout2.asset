@@ -37,7 +37,7 @@ MonoBehaviour:
       check: 0
     - relativeInfo:
       - triPos: {x: 0, y: -1}
-        edgeT: 1
+        edgeT: 3
       theAffix: {fileID: 11400000, guid: 4ec4a34b89abe1a43843764cc1e0b285, type: 2}
       check: 0
     - relativeInfo:

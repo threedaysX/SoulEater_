@@ -30,6 +30,7 @@ public abstract class Affix : ScriptableObject
     /// </summary>
     public void Remove()
     {
+        if(affectName!=null)
         owner.buffController.RemoveBuff(affectName);
     }
 

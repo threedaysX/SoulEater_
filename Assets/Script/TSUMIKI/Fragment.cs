@@ -264,15 +264,16 @@ public class F_Data
         string reternString="";
         for (int i = 0; i < neighborRelativeInfo.Count; i++)
         {
+            if (player == null)
+            {
+                player = GameObject.Find("Player").GetComponent<Player>();
+            }
+            neighborRelativeInfo[i].theAffix.owner = player;
+            neighborRelativeInfo[i].theAffix.Remove();
             if (neighborRelativeInfo[i].check)
             {
                 //執行Affix
                 //Test.Instance.AddBuffs(neighborRelativeInfo[i].theAffix.name);
-                if (player == null)
-                {
-                    player = GameObject.Find("Player").GetComponent<Player>();
-                }
-                neighborRelativeInfo[i].theAffix.owner = player;
                 neighborRelativeInfo[i].theAffix.Trigger();
                 reternString += "/" + neighborRelativeInfo[i].theAffix.description + "/";
             }

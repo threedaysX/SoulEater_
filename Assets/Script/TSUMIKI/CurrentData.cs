@@ -67,7 +67,14 @@ public class CurrentData : Singleton<CurrentData>
         }
 
         if (ExtendedStandaloneInputModule.GetPointerEventData().pointerCurrentRaycast.gameObject.tag != "slot")
+        {
+            //全部碎片反亮
+            for (int i = 0; i < AllFragment.Instance.fragments.Count; i++)//其他的碎片就暗下來
+            {
+                Chip.Instance.LightUpStar(AllFragment.Instance.fragments[i]);
+            }
             return;
+        }
 
         if (currentFragmentID == -1)            //手中沒有碎片
         {
@@ -153,6 +160,9 @@ public class CurrentData : Singleton<CurrentData>
                 coverStarsID.Clear();
                 currentFragmentID = -1;
                 lastStarID = -1;
+
+                CallAllTriggeredAffixs.Instance._CallAllTriggeredAffixs();
+
                 return;
             }
 

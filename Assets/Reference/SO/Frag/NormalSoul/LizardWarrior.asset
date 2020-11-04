@@ -17,12 +17,12 @@ MonoBehaviour:
     touchPos_v2:
     - {x: 0, y: 0}
     - {x: -1, y: 0}
-    - {x: -1, y: 1}
-    - {x: -2, y: 1}
-    - {x: -3, y: 1}
+    - {x: -2, y: 0}
     - {x: 0, y: -1}
     - {x: 1, y: -1}
-    - {x: -1, y: -1}
+    - {x: 1, y: -2}
+    - {x: 0, y: -2}
+    - {x: 2, y: -2}
     fragColor: {r: 1, g: 0.40633553, b: 0, a: 1}
     fragImage: {fileID: 21300000, guid: 80b79ebb79291d14aa08ad2f381ef9ae, type: 3}
     centerAbsPos: {x: 0, y: 0}
@@ -31,43 +31,43 @@ MonoBehaviour:
     touchStarsID: 
     neighborRelativeInfo:
     - relativeInfo:
-      - triPos: {x: -2, y: 1}
+      - triPos: {x: -2, y: 0}
         edgeT: 2
       theAffix: {fileID: 11400000, guid: aeb6eb524b27dca4ab716d29b7988092, type: 2}
       check: 0
     - relativeInfo:
-      - triPos: {x: -1, y: 1}
+      - triPos: {x: -1, y: 0}
         edgeT: 0
       theAffix: {fileID: 11400000, guid: 9c471f562f75d6c488b58d91f31b851a, type: 2}
       check: 0
     - relativeInfo:
-      - triPos: {x: 0, y: 1}
+      - triPos: {x: 0, y: 0}
         edgeT: 3
-      - triPos: {x: 1, y: 0}
+      - triPos: {x: 1, y: -1}
         edgeT: 3
-      - triPos: {x: 2, y: -1}
+      - triPos: {x: 2, y: -2}
         edgeT: 3
       theAffix: {fileID: 11400000, guid: 6e3258ad25098a9458b6a67d00afb452, type: 2}
       check: 0
     - relativeInfo:
-      - triPos: {x: 0, y: -1}
+      - triPos: {x: 0, y: -2}
         edgeT: 1
-      - triPos: {x: 2, y: -1}
+      - triPos: {x: 2, y: -2}
         edgeT: 1
       theAffix: {fileID: 11400000, guid: 63a7eb7c3c39bdd4aa0ca1313d2c43b8, type: 2}
       check: 0
     - relativeInfo:
-      - triPos: {x: 0, y: -1}
+      - triPos: {x: 0, y: -2}
         edgeT: 2
       theAffix: {fileID: 11400000, guid: 41acfddf64dfc824d9ad1d28597fa0f5, type: 2}
       check: 0
     - relativeInfo:
-      - triPos: {x: 0, y: 0}
+      - triPos: {x: 0, y: -1}
         edgeT: 2
       theAffix: {fileID: 11400000, guid: 4ec4a34b89abe1a43843764cc1e0b285, type: 2}
       check: 0
     - relativeInfo:
-      - triPos: {x: -2, y: 1}
+      - triPos: {x: -2, y: 0}
         edgeT: 1
       theAffix: {fileID: 11400000, guid: 00208de6ff8ba504685752f7888bbad9, type: 2}
       check: 0
