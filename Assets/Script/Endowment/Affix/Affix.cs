@@ -6,22 +6,20 @@
 /// 複製用: [CreateAssetMenu(menuName = "Endowment/Affix/對應詞綴名稱")]
 public abstract class Affix : ScriptableObject
 {
+    public string affectName;
     public Character owner;
     public string description;
-    protected string affectName;
-    private bool initNameTrigger;
+
+    public void ResetAffectName(string fragName)
+    {
+        affectName = fragName + description;
+    }
 
     /// <summary>
     /// 激活碎片時，觸發效果
     /// </summary>
     public void Trigger()
-    {
-        // Warning: need to avoid duplicate with another affix(Cannot exist same name buff).
-        if (!initNameTrigger)
-        {
-            initNameTrigger = true;
-            affectName = "Frag_" + Time.time + "." + System.DateTime.UtcNow.ToString();
-        }
+    {       
         InitAffix();
     }
 
@@ -30,8 +28,8 @@ public abstract class Affix : ScriptableObject
     /// </summary>
     public void Remove()
     {
-        if(affectName!=null)
-        owner.buffController.RemoveBuff(affectName);
+        if (affectName != string.Empty && affectName != null)
+            owner.buffController.RemoveBuff(affectName);
     }
 
     protected Character GetAffectTarget()

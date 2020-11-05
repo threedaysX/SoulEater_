@@ -387,6 +387,11 @@ public class Character : MonoBehaviour
 
     public virtual void LearnSkill(Skill skill)
     {
+        if (skillDictionary.ContainsKey(skill.skillName))
+        {
+            return;
+        }
+
         skillFields.Add(skill);
         skillDictionary.Add(skill.skillName, skillFields.Count - 1);
     }

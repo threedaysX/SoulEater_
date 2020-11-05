@@ -15,6 +15,6 @@ MonoBehaviour:
   owner: {fileID: 0}
   description: AttackLifeSteal+4
   stats:
-  - status: 11
+  - status: 14
     modType: 0
     value: 4

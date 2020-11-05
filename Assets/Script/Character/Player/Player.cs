@@ -39,7 +39,11 @@ public class Player : Character
         {
             StartAttack(AttackType.Attack, data.attackElement);
         }
+    }
 
+    public override void LateUpdate()
+    {
+        base.LateUpdate();
         ResetBarUI();
     }
 

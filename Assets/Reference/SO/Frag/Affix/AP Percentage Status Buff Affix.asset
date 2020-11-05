@@ -15,6 +15,6 @@ MonoBehaviour:
   owner: {fileID: 0}
   description: "\u9632\u79A6\u7A7F\u900F\u7387"
   stats:
-  - status: 7
+  - status: 10
     modType: 0
     value: 3

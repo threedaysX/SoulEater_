@@ -48,7 +48,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Path: FMOD/Build/Desktop/Master.strings.bank
   SubDir: 
-  lastModified: 637372547595054066
+  lastModified: 637363927750795589
   LoadResult: 0
   FileSizes:
   - Name: Desktop
@@ -267,6 +267,23 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 1
+--- !u!114 &-7580760748709365662
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Ifrit/Stage_1
+  m_EditorClassIdentifier: 
+  Name: Stage_1
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &-7494522021797261239
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -285,6 +302,23 @@ MonoBehaviour:
   Default: 0
   Exists: 1
 --- !u!114 &-7466370368644430244
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Ifrit/Stage_1
+  m_EditorClassIdentifier: 
+  Name: Stage_1
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 0
+--- !u!114 &-7407148631484911627
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -423,6 +457,24 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 0
+--- !u!114 &-6509316688613745357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637363927750735534
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
 --- !u!114 &-6337823053812628746
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -765,6 +817,23 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &-4690324348870575847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Ifrit/Stage_1
+  m_EditorClassIdentifier: 
+  Name: Stage_1
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 0
 --- !u!114 &-3999652218238280127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -813,6 +882,23 @@ MonoBehaviour:
   m_Name: parameter:/Ifrit/Stage_1
   m_EditorClassIdentifier: 
   Name: Stage_1
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 0
+--- !u!114 &-3696271290288327479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Ifrit/Stage_2
+  m_EditorClassIdentifier: 
+  Name: Stage_2
   Min: 0
   Max: 1
   Default: 0
@@ -1027,7 +1113,9 @@ MonoBehaviour:
   - {fileID: 3524925498780913795}
   - {fileID: 8650972156027208265}
   - {fileID: 6220697913857956981}
-  - {fileID: -2833851752109598191}
+  - {fileID: -6509316688613745357}
+  - {fileID: 6332731699828131210}
+  - {fileID: 33193632533884729}
   IsStream: 0
   Is3D: 0
   IsOneShot: 1
@@ -1608,19 +1696,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   EditorBanks:
   - {fileID: -8679191943795514020}
-  - {fileID: -2833851752109598191}
+  - {fileID: 33193632533884729}
   EditorEvents:
   - {fileID: 3468639399683558395}
   - {fileID: 3949410217013363831}
   - {fileID: -2973993613613896685}
   EditorParameters: []
   MasterBanks:
-  - {fileID: -2833851752109598191}
+  - {fileID: 33193632533884729}
   StringsBanks:
   - {fileID: -8679191943795514020}
-  stringsBankWriteTime: 637372547595054066
+  stringsBankWriteTime: 637363927750795589
   cacheVersion: 3
 --- !u!114 &19880074547693168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637363927750735534
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
+--- !u!114 &33193632533884729
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1669,6 +1775,23 @@ MonoBehaviour:
   m_Name: parameter:/Ifrit/Stage_1
   m_EditorClassIdentifier: 
   Name: Stage_1
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
+--- !u!114 &264675827886743291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Ifrit/Stage_Die
+  m_EditorClassIdentifier: 
+  Name: Stage_Die
   Min: 0
   Max: 1
   Default: 0
@@ -1726,6 +1849,23 @@ MonoBehaviour:
   LoadResult: 0
   FileSizes: []
   Exists: 1
+--- !u!114 &673250730627538225
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Ifrit/Stage_Die
+  m_EditorClassIdentifier: 
+  Name: Stage_Die
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 0
 --- !u!114 &808247157074577125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1951,6 +2091,23 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &2248728168141835920
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Ifrit/Stage_2
+  m_EditorClassIdentifier: 
+  Name: Stage_2
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 1
 --- !u!114 &2576969943207106095
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1985,6 +2142,23 @@ MonoBehaviour:
   lastModified: 637363163500171324
   LoadResult: 0
   FileSizes: []
+  Exists: 0
+--- !u!114 &2650216950410502454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Ifrit/Stage_Die
+  m_EditorClassIdentifier: 
+  Name: Stage_Die
+  Min: 0
+  Max: 1
+  Default: 0
   Exists: 0
 --- !u!114 &2671423615185412274
 MonoBehaviour:
@@ -2296,14 +2470,16 @@ MonoBehaviour:
   - {fileID: 3524925498780913795}
   - {fileID: 8650972156027208265}
   - {fileID: 6220697913857956981}
-  - {fileID: -2833851752109598191}
+  - {fileID: -6509316688613745357}
+  - {fileID: 6332731699828131210}
+  - {fileID: 33193632533884729}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-  - {fileID: -6791668096667874017}
-  - {fileID: 2576969943207106095}
-  - {fileID: -5020642089735007491}
+  - {fileID: 264675827886743291}
+  - {fileID: -7580760748709365662}
+  - {fileID: 2248728168141835920}
   MinDistance: 0
   MaxDistance: 0
   Length: 104250
@@ -2478,6 +2654,23 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 1
+--- !u!114 &4621968043578330020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: parameter:/Ifrit/Stage_2
+  m_EditorClassIdentifier: 
+  Name: Stage_2
+  Min: 0
+  Max: 1
+  Default: 0
+  Exists: 0
 --- !u!114 &4628219953482251494
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2790,6 +2983,24 @@ MonoBehaviour:
   Max: 1
   Default: 0
   Exists: 0
+--- !u!114 &6332731699828131210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
+  m_Name: bank:/Master.bank
+  m_EditorClassIdentifier: 
+  Path: FMOD/Build/Desktop/Master.bank
+  SubDir: 
+  lastModified: 637363927750735534
+  LoadResult: 0
+  FileSizes: []
+  Exists: 1
 --- !u!114 &6394627977462753055
 MonoBehaviour:
   m_ObjectHideFlags: 0

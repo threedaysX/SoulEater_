@@ -26,10 +26,13 @@ public class SkillDatabase : MonoBehaviour
     {
         player.isSkillFieldsModifiedTrigger = false;
         Skill[] skills = player.skillFields.Where(x => x.skillType == this.dbSkillType).ToArray();
-        int slotIndex = 0;
-        foreach (var skill in skills)
+        for (int i = 0; i < skillSlots.Length; i++)
         {
-            skillSlots[slotIndex++].AddSkill(skill.icon, skill);
+            skillSlots[i].RemoveSlot();
+            if (i < skills.Length)
+            {
+                skillSlots[i].AddSkill(skills[i].icon, skills[i]);
+            }
         }
     }
 }

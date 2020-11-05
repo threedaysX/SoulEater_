@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Player_Status
   m_EditorClassIdentifier: 
   strength:
+    floatDigits: 0
     BaseValue: 5
     AdditionalValue: 0
     FinalValue: 5
@@ -20,6 +21,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   agility:
+    floatDigits: 0
     BaseValue: 5
     AdditionalValue: 0
     FinalValue: 5
@@ -27,6 +29,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   vitality:
+    floatDigits: 0
     BaseValue: 5
     AdditionalValue: 0
     FinalValue: 5
@@ -34,6 +37,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   dexterity:
+    floatDigits: 0
     BaseValue: 5
     AdditionalValue: 0
     FinalValue: 5
@@ -41,6 +45,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   intelligence:
+    floatDigits: 0
     BaseValue: 5
     AdditionalValue: 0
     FinalValue: 5
@@ -48,6 +53,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   lucky:
+    floatDigits: 0
     BaseValue: 5
     AdditionalValue: 0
     FinalValue: 5

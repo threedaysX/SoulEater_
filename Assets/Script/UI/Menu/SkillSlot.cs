@@ -119,5 +119,6 @@ public class SkillSlot : ButtonSlotBase
     {
         this.icon.sprite = null;
         this.skill = null;
+        isIconColorResetTrigger = true;
     }
 }

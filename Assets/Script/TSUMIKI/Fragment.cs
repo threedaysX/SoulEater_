@@ -260,21 +260,23 @@ public class F_Data
     }*/
 
     private Player player;
-    public string PrintAndExeAffixs() {
-        string reternString="";
+    public string PrintAndExeAffixs(string fragName) {
+        string reternString = "";
         for (int i = 0; i < neighborRelativeInfo.Count; i++)
         {
             if (player == null)
             {
                 player = GameObject.Find("Player").GetComponent<Player>();
             }
-            neighborRelativeInfo[i].theAffix.owner = player;
-            neighborRelativeInfo[i].theAffix.Remove();
+            Affix affix = neighborRelativeInfo[i].theAffix;
+            affix.owner = player;
+            affix.ResetAffectName(fragName);
+            affix.Remove();
             if (neighborRelativeInfo[i].check)
             {
                 //執行Affix
-                //Test.Instance.AddBuffs(neighborRelativeInfo[i].theAffix.name);
-                neighborRelativeInfo[i].theAffix.Trigger();
+                //Test.Instance.AddBuffs(neighborRelativeInfo[i].theAffix.name);               
+                affix.Trigger();
                 reternString += "/" + neighborRelativeInfo[i].theAffix.description + "/";
             }
         }

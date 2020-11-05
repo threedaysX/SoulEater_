@@ -61,7 +61,7 @@ public class DataInitializer
     public float GetAttackDelay()
     {
         // 無條件捨去到小數3位 => 乘以 1000 再除以 1000
-        var delay = Mathf.Floor((1f / (1f + 0.3f * Agi)) * 1000) / 1000;
+        var delay = Mathf.Floor((1f / (1f + 0.15f * Agi)) * 1000) / 1000;
         return delay;
     }
 

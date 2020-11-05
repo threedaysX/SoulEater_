@@ -9,7 +9,8 @@ public class CallAllTriggeredAffixs : Singleton<CallAllTriggeredAffixs>
     {
         for (int i = 0; i < AllFragment.Instance.fragments.Count; i++)
         {
-            Debug.Log(AllFragment.Instance.fragments[i].m_Data.PrintAndExeAffixs());
+            F_Data fragData = AllFragment.Instance.fragments[i].m_Data;
+            Debug.Log(fragData.PrintAndExeAffixs(fragData.fName));
         }
     }
 }

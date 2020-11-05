@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
   description: HP+500
-  stats: []
+  stats:
+  - status: 12
+    modType: 0
+    value: 500

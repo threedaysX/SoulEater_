@@ -145,15 +145,20 @@ public class CurrentData : Singleton<CurrentData>
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////確認好位置要放下了
             if (Input.GetMouseButtonDown(0) && !positionError)  //放下
             {
+                Fragment fragment = AllFragment.Instance.fragments[currentFragmentID];
+                if (f_m.putFrag != null)
+                {
+                    fragment.m_Data.fName = f_m.putFrag.name;
+                }
+                fragment.m_Data.centerAbsPos = currentPos;
+                Chip.Instance.PutOn(fragment, coverStarsID);
+
                 if (chip2Mouse != null)
                 {
                     chip2Mouse.gameObject.SetActive(false);
                     //原本位置(左右上下)的資料清空-------------------------------------------------------
                     f_m.Clean();
                 }
-
-                AllFragment.Instance.fragments[currentFragmentID].m_Data.centerAbsPos = currentPos;
-                Chip.Instance.PutOn(AllFragment.Instance.fragments[currentFragmentID], coverStarsID);
 
                 //Debug.Log("放下currentFragmentID:" + currentFragmentID);
                 //Debug.Log("放下ChipID:" + AllFragment.Instance.fragments[currentFragmentID].m_Data.fragmentID);

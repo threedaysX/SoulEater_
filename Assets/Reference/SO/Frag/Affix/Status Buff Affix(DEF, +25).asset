@@ -15,6 +15,6 @@ MonoBehaviour:
   owner: {fileID: 0}
   description: DEF+25
   stats:
-  - status: 8
+  - status: 11
     modType: 0
     value: 25

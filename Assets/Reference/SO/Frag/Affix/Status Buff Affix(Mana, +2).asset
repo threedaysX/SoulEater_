@@ -15,6 +15,6 @@ MonoBehaviour:
   owner: {fileID: 0}
   description: Mana+2
   stats:
-  - status: 10
+  - status: 13
     modType: 0
     value: 2

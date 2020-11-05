@@ -13,7 +13,7 @@ public class StatusBuffAffix : ImediatellyTriggerAffix
         foreach (StatusAdds s in stats)
         {
             Stats stats = GetStatus(owner, s.status);
-            owner.buffController.AddBuff(affectName, delegate { stats.AddModifier(s.Modifier); }, delegate { stats.RemoveModifier(s.Modifier); }, -1);
+            stats.AddModifier(s.Modifier);
         }
         owner.ResetBaseData();
     }
@@ -23,7 +23,7 @@ public class StatusBuffAffix : ImediatellyTriggerAffix
         foreach (StatusAdds s in stats)
         {
             Stats stats = GetStatus(owner, s.status);
-            owner.buffController.RemoveBuff(affectName);
+            stats.RemoveModifier(s.Modifier);
         }
         owner.ResetBaseData();
     }  

@@ -15,6 +15,6 @@ MonoBehaviour:
   owner: {fileID: 0}
   description: SkillCD-10%
   stats:
-  - status: 13
+  - status: 16
     modType: 4
     value: -10

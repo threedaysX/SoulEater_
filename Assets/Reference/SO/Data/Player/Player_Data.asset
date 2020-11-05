@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Player_Data
   m_EditorClassIdentifier: 
   maxHealth:
+    floatDigits: 0
     BaseValue: 2195
     AdditionalValue: 0
     FinalValue: 3695
@@ -20,6 +21,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   maxMana:
+    floatDigits: 0
     BaseValue: 5
     AdditionalValue: 0
     FinalValue: 13
@@ -27,6 +29,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   attack:
+    floatDigits: 0
     BaseValue: 134
     AdditionalValue: 0
     FinalValue: 134
@@ -34,6 +37,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   magicAttack:
+    floatDigits: 0
     BaseValue: 82
     AdditionalValue: 0
     FinalValue: 7
@@ -41,6 +45,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   defense:
+    floatDigits: 2
     BaseValue: 8.8
     AdditionalValue: 0
     FinalValue: 14.56
@@ -48,6 +53,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   critical:
+    floatDigits: 0
     BaseValue: 20
     AdditionalValue: 0
     FinalValue: 40
@@ -55,6 +61,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   criticalDamage:
+    floatDigits: 0
     BaseValue: 150
     AdditionalValue: 0
     FinalValue: 150
@@ -62,6 +69,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   knockBackDamage:
+    floatDigits: 0
     BaseValue: 823
     AdditionalValue: 0
     FinalValue: 823
@@ -69,6 +77,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   penetrationValue:
+    floatDigits: 2
     BaseValue: 0
     AdditionalValue: 0
     FinalValue: 0
@@ -76,6 +85,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   penetrationMagnification:
+    floatDigits: 2
     BaseValue: 0
     AdditionalValue: 0
     FinalValue: 0
@@ -86,6 +96,7 @@ MonoBehaviour:
   status: {fileID: 11400000, guid: 1ab81751b173d454496b33a3ac4ed2b2, type: 2}
   characterSize: 2
   jumpForce:
+    floatDigits: 2
     BaseValue: 1.2
     AdditionalValue: 0
     FinalValue: 1.2
@@ -93,6 +104,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   moveSpeed:
+    floatDigits: 2
     BaseValue: 1
     AdditionalValue: 0
     FinalValue: 1
@@ -100,6 +112,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   attackDelay:
+    floatDigits: 4
     BaseValue: 0.4
     AdditionalValue: 0
     FinalValue: 0.4
@@ -107,6 +120,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   attackRange:
+    floatDigits: 2
     BaseValue: 2
     AdditionalValue: 0
     FinalValue: 2
@@ -114,6 +128,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   reduceSkillCoolDown:
+    floatDigits: 4
     BaseValue: 8
     AdditionalValue: 0
     FinalValue: 8
@@ -121,6 +136,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   reduceCastTime:
+    floatDigits: 4
     BaseValue: 25
     AdditionalValue: 0
     FinalValue: 25
@@ -128,6 +144,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   evadeCoolDown:
+    floatDigits: 4
     BaseValue: 0.75488
     AdditionalValue: 0
     FinalValue: 0.7549
@@ -135,6 +152,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   recoverFromKnockStunTime:
+    floatDigits: 4
     BaseValue: 0.1
     AdditionalValue: 0
     FinalValue: 0.1
@@ -142,6 +160,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   attackLifeSteal:
+    floatDigits: 2
     BaseValue: 0
     AdditionalValue: 0
     FinalValue: 3
@@ -149,6 +168,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   skillLifeSteal:
+    floatDigits: 2
     BaseValue: 0
     AdditionalValue: 0
     FinalValue: 0
@@ -156,6 +176,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   manaStealOfPoint:
+    floatDigits: 0
     BaseValue: 1
     AdditionalValue: 0
     FinalValue: 1
@@ -163,6 +184,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   manaStealOfDamage:
+    floatDigits: 0
     BaseValue: 1700
     AdditionalValue: 0
     FinalValue: 1700
