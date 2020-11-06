@@ -24,7 +24,9 @@ public class Character : MonoBehaviour
     [SerializeField] private float _currentHealth = 0;
     [SerializeField] private float _currentMana = 0;
     private float lastHealth = 0;   // 儲存上次的血量
+    private float lastMaxHealth = 0; 
     private float lastMana = 0;   // 儲存上次的魔力
+    private float lastMaxMana = 0;
     public float CurrentHealth
     {
         get
@@ -33,9 +35,16 @@ public class Character : MonoBehaviour
         }
         set
         {
-            _currentHealth = value;
-            // 計算剩餘%數
-            RemainHealthPercentage = data.maxHealth.Value / _currentHealth;
+            // 計算剩餘%數(最大血量沒有變動時才會計算)
+            if (data.maxHealth.Value == lastMaxHealth)
+            {
+                _currentHealth = Mathf.Floor(value);
+                RemainHealthPercentage = _currentHealth / data.maxHealth.Value;
+            }
+            else
+            {
+                _currentHealth = Mathf.Floor(data.maxHealth.Value * RemainHealthPercentage);
+            }
             if (_currentHealth > data.maxHealth.Value)
             {
                 _currentHealth = data.maxHealth.Value;
@@ -56,9 +65,16 @@ public class Character : MonoBehaviour
         }
         set
         {
-            _currentMana = value;
-            // 計算剩餘%數
-            RemainHealthPercentage = data.maxMana.Value / _currentMana;
+            // 計算剩餘%數(最大魔力沒有變動時才會計算)
+            if (data.maxMana.Value == lastMaxMana)
+            {
+                _currentMana = Mathf.Floor(value);
+                RemainManaPercentage = _currentMana / data.maxMana.Value;
+            }
+            else
+            {
+                _currentMana = Mathf.Floor(data.maxMana.Value * RemainManaPercentage);
+            }
             if (_currentMana > data.maxMana.Value)
             {
                 _currentMana = data.maxMana.Value;
@@ -385,21 +401,30 @@ public class Character : MonoBehaviour
         return skillController.Trigger(skill, ignoreCoolDown, forceActToEnd);
     }
 
-    public virtual void LearnSkill(Skill skill)
+    public bool CheckSkillExists(Skill skill)
     {
         if (skillDictionary.ContainsKey(skill.skillName))
+            return true;
+        return false;
+    }
+
+    public virtual void LearnSkill(Skill skill)
+    {
+        if (CheckSkillExists(skill))
         {
             return;
         }
 
         skillFields.Add(skill);
         skillDictionary.Add(skill.skillName, skillFields.Count - 1);
+        skillController.ResetSkillCoolDown(skill);
     }
 
     public virtual void RemoveSkill(Skill skill)
     {
         skillFields.RemoveAll(x => x.skillName == skill.skillName);
         ResetSkillDictionaryIndex();
+        skillController.ResetSkillCoolDown(skill);
     }
 
     public Skill GetSkillByName(string skillName)
@@ -775,6 +800,16 @@ public class Character : MonoBehaviour
     #region DataInitialize
     public virtual void ReBorn()
     {
+        if (resetHealthTrigger)
+        {
+            RemainHealthPercentage = 1;
+            resetHealthTrigger = false;
+        }
+        if (resetManaTrigger)
+        {
+            RemainManaPercentage = 1;
+            resetManaTrigger = false;
+        }
         ResetBaseData();
         ResetStatsDirtyData();
         ResetSkillDictionaryIndex();
@@ -802,18 +837,10 @@ public class Character : MonoBehaviour
         data.evadeCoolDown.BaseValue = dataInitializer.GetEvadeCoolDownDuration();
         data.recoverFromKnockStunTime.BaseValue = dataInitializer.GetRecoverFromKnockStunTime();
 
-        if (resetHealthTrigger)
-        {
-            RemainHealthPercentage = 1;
-            resetHealthTrigger = false;
-        }
-        if (resetManaTrigger)
-        {
-            RemainManaPercentage = 1;
-            resetManaTrigger = false;
-        }
         CurrentHealth = data.maxHealth.Value * RemainHealthPercentage;
         CurrentMana = data.maxMana.Value * RemainManaPercentage;
+        lastMaxHealth = data.maxHealth.Value;
+        lastMaxMana = data.maxMana.Value;
     }
 
 

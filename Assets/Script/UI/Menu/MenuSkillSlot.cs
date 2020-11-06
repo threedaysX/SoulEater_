@@ -18,7 +18,7 @@ public class MenuSkillSlot : SkillSlot
         ResetPlayerCombatSkillSlotUI();
     }
 
-    private void ResetPlayerCombatSkillSlotUI()
+    public void ResetPlayerCombatSkillSlotUI()
     {
         // 連結Menu與戰鬥畫面UI的技能快捷鍵
         if (linkSkillSlotOnCombatUI == null)

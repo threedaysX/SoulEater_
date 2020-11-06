@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 038ab4629f9f84644858432fc2447ac3, type: 3}
-  m_Name: Status Buff Affix(SkillCD, -10%)
+  m_Name: Status Buff Affix(INT, +8)
   m_EditorClassIdentifier: 
+  affectName: 
   owner: {fileID: 0}
-  description: SkillCD-10%
+  description: INT+8
   stats:
-  - status: 16
-    modType: 4
-    value: -10
+  - status: 3
+    modType: 0
+    value: 8

@@ -14,23 +14,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth:
     floatDigits: 0
-    BaseValue: 3595
-    AdditionalValue: 17000
-    FinalValue: 95
+    BaseValue: 3274
+    AdditionalValue: 7500
+    FinalValue: 9274
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   maxMana:
     floatDigits: 0
-    BaseValue: 13
+    BaseValue: 10
     AdditionalValue: 0
-    FinalValue: 13
+    FinalValue: 10
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   attack:
     floatDigits: 0
-    BaseValue: 226
+    BaseValue: 185
     AdditionalValue: 0
     FinalValue: 226
     ForceValue: 0
@@ -38,7 +38,7 @@ MonoBehaviour:
     modifiers: []
   magicAttack:
     floatDigits: 0
-    BaseValue: 275
+    BaseValue: 215
     AdditionalValue: 0
     FinalValue: 275
     ForceValue: 0
@@ -70,7 +70,7 @@ MonoBehaviour:
     modifiers: []
   knockBackDamage:
     floatDigits: 0
-    BaseValue: 1528
+    BaseValue: 1391
     AdditionalValue: 1000
     FinalValue: 2528
     ForceValue: 0
@@ -113,7 +113,7 @@ MonoBehaviour:
     modifiers: []
   attackDelay:
     floatDigits: 4
-    BaseValue: 0.25
+    BaseValue: 0.4
     AdditionalValue: 0
     FinalValue: 0.25
     ForceValue: 0.9
@@ -123,7 +123,7 @@ MonoBehaviour:
     floatDigits: 0
     BaseValue: 3.5
     AdditionalValue: 0
-    FinalValue: 3.5
+    FinalValue: 4
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
@@ -137,7 +137,7 @@ MonoBehaviour:
     modifiers: []
   reduceCastTime:
     floatDigits: 4
-    BaseValue: 35
+    BaseValue: 34
     AdditionalValue: 0
     FinalValue: 35
     ForceValue: 0
@@ -185,7 +185,7 @@ MonoBehaviour:
     modifiers: []
   manaStealOfDamage:
     floatDigits: 0
-    BaseValue: 1100
+    BaseValue: 1250
     AdditionalValue: 0
     FinalValue: 1100
     ForceValue: 0

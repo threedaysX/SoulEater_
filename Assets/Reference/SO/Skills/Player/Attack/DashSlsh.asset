@@ -21,6 +21,7 @@ MonoBehaviour:
     \u4F7F\u7528\u6280\u80FD\u6642\uFF0C\u6703\u9032\u5165\u77ED\u66AB\u7684\u7121\u6575\u72C0\u614B\u3002"
   centerPositionOffset: 0
   range:
+    floatDigits: 1
     BaseValue: 6
     AdditionalValue: 0
     FinalValue: 6
@@ -28,6 +29,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   cost:
+    floatDigits: 0
     BaseValue: 2
     AdditionalValue: 0
     FinalValue: 2
@@ -36,6 +38,7 @@ MonoBehaviour:
     modifiers: []
   costType: 1
   damageMagnification:
+    floatDigits: 0
     BaseValue: 70
     AdditionalValue: 0
     FinalValue: 70
@@ -43,6 +46,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   damageHitTimes:
+    floatDigits: 0
     BaseValue: 7
     AdditionalValue: 0
     FinalValue: 7
@@ -51,6 +55,7 @@ MonoBehaviour:
     modifiers: []
   timesOfPerDamage: 0.1
   castTime:
+    floatDigits: 4
     BaseValue: 0.4
     AdditionalValue: 0
     FinalValue: 0
@@ -58,22 +63,24 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   fixedCastTime:
+    floatDigits: 4
     BaseValue: 0
     AdditionalValue: 0
-    FinalValue: 1
+    FinalValue: 0
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   coolDown:
+    floatDigits: 4
     BaseValue: 6
     AdditionalValue: 0
     FinalValue: 6
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
-  trueCoolDown: 5.52
-  coolDownTimer: 2.621989
-  cooling: 1
+  trueCoolDown: 5.76
+  coolDownTimer: 0
+  cooling: 0
   coolDownType: 1
   duration: 0.6
   prefab: {fileID: 4264536277670069577, guid: a42cd9ada3057dc489e69140f3653445, type: 3}

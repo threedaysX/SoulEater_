@@ -6,13 +6,20 @@
 /// 複製用: [CreateAssetMenu(menuName = "Endowment/Affix/對應詞綴名稱")]
 public abstract class Affix : ScriptableObject
 {
-    public string affectName;
+    [HideInInspector] public string affectName;
     public Character owner;
     public string description;
 
+    protected bool eventSubscribedTrigger = false;
+
+    public void OnStart()
+    {
+        eventSubscribedTrigger = false;
+    }
+
     public void ResetAffectName(string fragName)
     {
-        affectName = fragName + description;
+        affectName = fragName + "_" + description;
     }
 
     /// <summary>

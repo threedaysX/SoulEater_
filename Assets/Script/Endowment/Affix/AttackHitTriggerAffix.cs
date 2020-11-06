@@ -5,14 +5,13 @@ public abstract class AttackHitTriggerAffix : ConditionTriggerAffix
 {
     [Range(0, 100)]
     public float chance = 100;
-    private bool eventSubscribed = false;
     private bool attackHitTrigger = false;
 
     protected override void InitAffix()
     {
-        if (!eventSubscribed)
+        if (!eventSubscribedTrigger)
         {
-            eventSubscribed = true;
+            eventSubscribedTrigger = true;
             owner.combatController.AttackHitAsObservable
                 .ObserveOnMainThread()
                 .Subscribe(target => {

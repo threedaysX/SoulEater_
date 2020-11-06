@@ -135,8 +135,15 @@ public class SkillController : MonoBehaviour
             return;
         foreach (var skill in character.skillFields)
         {
-            skill.cooling = false;
-            skill.coolDownTimer = 0;
+            ResetSkillCoolDown(skill);
         }
+    }
+
+    /// <summary>
+    /// 重新計算冷卻
+    /// </summary>
+    public void ResetSkillCoolDown(Skill skill)
+    {
+        StartCoroutine(GetIntoCoolDown(skill));
     }
 }

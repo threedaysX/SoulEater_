@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: Ifrit_Status
   m_EditorClassIdentifier: 
   strength:
+    floatDigits: 0
     BaseValue: 10
-    AdditionalValue: 20
-    FinalValue: 10
+    AdditionalValue: 15
+    FinalValue: 20
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   agility:
+    floatDigits: 0
     BaseValue: 10
     AdditionalValue: 0
     FinalValue: 10
@@ -27,13 +29,15 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   vitality:
+    floatDigits: 0
     BaseValue: 10
     AdditionalValue: 16
-    FinalValue: 10
+    FinalValue: 26
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   dexterity:
+    floatDigits: 0
     BaseValue: 10
     AdditionalValue: 0
     FinalValue: 10
@@ -41,13 +45,15 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   intelligence:
+    floatDigits: 0
     BaseValue: 10
-    AdditionalValue: 20
-    FinalValue: 10
+    AdditionalValue: 15
+    FinalValue: 20
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   lucky:
+    floatDigits: 0
     BaseValue: 10
     AdditionalValue: 0
     FinalValue: 10

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca122dba960027f4fa6c90476be074e3, type: 3}
   m_Name: Knock Back Affix(2f, 100%)
   m_EditorClassIdentifier: 
+  affectName: Ifrit5_Attack KnockBack
   owner: {fileID: 0}
-  description: Attack KnockBack
+  description: "\u653B\u64CA\u64CA\u9000"
   chance: 100
   knockBackForce: 2

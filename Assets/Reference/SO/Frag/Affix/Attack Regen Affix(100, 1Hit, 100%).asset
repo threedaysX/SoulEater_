@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d5b618c8f056ef46aeeefa00d79cad1, type: 3}
-  m_Name: Attack Regen Affix(50, 1Hit, 100%)
+  m_Name: Attack Regen Affix(100, 1Hit, 100%)
   m_EditorClassIdentifier: 
+  affectName: "\u653B\u64CA\u6CBB\u7642_\u8A5E\u7DB4"
   owner: {fileID: 0}
   description: "\u653B\u64CA\u6CBB\u7642"
-  affectName: "\u653B\u64CA\u6CBB\u7642_\u8A5E\u7DB4"
   chance: 100
-  regenValue: 50
+  regenValue: 100

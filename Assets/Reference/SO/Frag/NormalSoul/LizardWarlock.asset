@@ -20,8 +20,9 @@ MonoBehaviour:
     - {x: -2, y: 0}
     - {x: 0, y: -1}
     - {x: 1, y: -1}
-    fragColor: {r: 1, g: 0.77448, b: 0, a: 1}
+    fragColor: {r: 1, g: 0, b: 0.60640574, a: 1}
     fragImage: {fileID: 21300000, guid: 1818172ef6e27bf459ba3163d616085d, type: 3}
+    fragIndexImage: {fileID: 21300000, guid: 094c3f38b8774da43ae332a2b60eac37, type: 3}
     centerAbsPos: {x: 0, y: 0}
     fragmentID: 0
     triggerCount: 0
@@ -30,7 +31,7 @@ MonoBehaviour:
     - relativeInfo:
       - triPos: {x: -2, y: 0}
         edgeT: 2
-      theAffix: {fileID: 11400000, guid: 1600ce388caf72940891556d248a4943, type: 2}
+      theAffix: {fileID: 11400000, guid: 5ca763a56be8c56418cfec969acbbdbb, type: 2}
       check: 0
     - relativeInfo:
       - triPos: {x: -1, y: 0}
@@ -47,7 +48,7 @@ MonoBehaviour:
     - relativeInfo:
       - triPos: {x: 1, y: -1}
         edgeT: 1
-      theAffix: {fileID: 11400000, guid: c354d28d28bd34349a52558cc6b69afb, type: 2}
+      theAffix: {fileID: 11400000, guid: 1f1e100f0998cdd4698d949902d13270, type: 2}
       check: 0
     - relativeInfo:
       - triPos: {x: 0, y: -1}

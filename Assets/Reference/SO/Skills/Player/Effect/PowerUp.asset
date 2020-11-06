@@ -17,9 +17,10 @@ MonoBehaviour:
   skillType: 2
   elementType: 0
   skillName: "\u7FFB\u9A30"
-  description: 
+  description: "\u589E\u52A0\u81EA\u8EAB\u9632\u79A6\u3001\u529B\u91CF\u3001\u654F\u6377\u3001\u9748\u5DE7\u5C6C\u6027\uFF0C\u6301\u7E8C12\u79D2\u3002"
   centerPositionOffset: 0
   range:
+    floatDigits: 1
     BaseValue: 0
     AdditionalValue: 0
     FinalValue: 0
@@ -27,14 +28,16 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   cost:
+    floatDigits: 0
     BaseValue: 1
     AdditionalValue: 0
-    FinalValue: 0
+    FinalValue: 1
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   costType: 1
   damageMagnification:
+    floatDigits: 0
     BaseValue: 0
     AdditionalValue: 0
     FinalValue: 0
@@ -42,6 +45,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   damageHitTimes:
+    floatDigits: 0
     BaseValue: 0
     AdditionalValue: 0
     FinalValue: 0
@@ -50,6 +54,7 @@ MonoBehaviour:
     modifiers: []
   timesOfPerDamage: 0
   castTime:
+    floatDigits: 4
     BaseValue: 0
     AdditionalValue: 0
     FinalValue: 0
@@ -57,6 +62,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   fixedCastTime:
+    floatDigits: 4
     BaseValue: 0
     AdditionalValue: 0
     FinalValue: 0
@@ -64,18 +70,21 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   coolDown:
+    floatDigits: 4
     BaseValue: 10
     AdditionalValue: 0
-    FinalValue: 0
+    FinalValue: 10
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
-  trueCoolDown: 0
+  trueCoolDown: 9.6
   coolDownTimer: 0
   cooling: 0
   coolDownType: 1
   duration: 0
   prefab: {fileID: 4587757317276013141, guid: 5ad0693a78b76114eaebce96db59f1ae, type: 3}
+  castSkillClip: {fileID: 0}
+  useSkillClip: {fileID: 0}
   immediatelyEvent:
     m_PersistentCalls:
       m_Calls: []

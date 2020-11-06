@@ -52,6 +52,8 @@ public class F_Data
     public Color fragColor;
     [Header("碎片圖片")]
     public Sprite fragImage;
+    [Header("碎片索引圖片")]
+    public Sprite fragIndexImage;
 
     //int edgeCount;
     //int triggerAffixIndex;
@@ -115,6 +117,8 @@ public class F_Data
         NeighborInfo temp = new NeighborInfo(neighbors.Count, Star_pos, _tri, _to);
         neighbors.Add(temp);
     }
+
+    #region Old
     /*
     void NeighborRelative()//////////////////////////////////////////////////////////////////////////////////////////////////
     {
@@ -258,6 +262,7 @@ public class F_Data
                 }
             }
     }*/
+    #endregion
 
     private Player player;
     public string PrintAndExeAffixs(string fragName) {
@@ -270,20 +275,39 @@ public class F_Data
             }
             Affix affix = neighborRelativeInfo[i].theAffix;
             affix.owner = player;
-            affix.ResetAffectName(fragName);
+            affix.ResetAffectName(fragName + i.ToString());
             affix.Remove();
             if (neighborRelativeInfo[i].check)
             {
                 //執行Affix
                 //Test.Instance.AddBuffs(neighborRelativeInfo[i].theAffix.name);               
                 affix.Trigger();
-                reternString += "/" + neighborRelativeInfo[i].theAffix.description + "/";
+                reternString += " [" + neighborRelativeInfo[i].theAffix.description + "] ";
             }
         }
         if (reternString == "")
             return fName+" : 無";
         //return  "此碎片"+ fName+"觸發了" + triggerCount+"條邊";
         return fName + " : "+reternString;
+    }
+
+    public void ResetAffixOnStart()
+    {
+        for (int i = 0; i < neighborRelativeInfo.Count; i++)
+        {
+            Affix affix = neighborRelativeInfo[i].theAffix;
+            affix.OnStart();
+        }
+    }
+
+    public string GetFragAllAffixsInfo()
+    {
+        string resultString = "";
+        for (int i = 0; i < neighborRelativeInfo.Count; i++)
+        {
+            resultString += (i + 1) + ". " + neighborRelativeInfo[i].theAffix.description + "\n\n";
+        }
+        return fName + "\n\n" + resultString;
     }
 }
 

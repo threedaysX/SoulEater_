@@ -2,7 +2,6 @@
 
 public class Teleport : DisposableSkill
 {
-    public Transform lastAttackTarget;
     public AudioClip teleportSound;
     public float timeSlowDuration;
 
@@ -18,7 +17,7 @@ public class Teleport : DisposableSkill
     /// </summary>
     private void TeleportToTargetBack()
     {
-        lastAttackTarget = sourceCaster.combatController.lastAttackTarget.transform;
+        Character lastAttackTarget = sourceCaster.combatController.lastAttackTarget;
         // Still can teleport.
         if (lastAttackTarget == null)
         {

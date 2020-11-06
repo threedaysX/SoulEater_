@@ -98,6 +98,7 @@ public class Player : Character
     public override void RemoveSkill(Skill skill)
     {
         base.RemoveSkill(skill);
+        PlayerUIControl.Instance.RemoveSkillFromSlot();
         isSkillFieldsModifiedTrigger = true;
     }
 

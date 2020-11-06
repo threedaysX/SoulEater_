@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class PlayerUIControl : Singleton<PlayerUIControl>
 {
+    public Player player;
+
     [Header("Hp")]
     public Image healthBar;
     public Image healthBarWhite;
@@ -31,11 +33,25 @@ public class PlayerUIControl : Singleton<PlayerUIControl>
         {
             skillSlotsIsDirtyDict.Add(skillSlot, true);
         }
+
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     private void Update()
     {
         StartSkillCoolDownHint();
+    }
+
+    public void RemoveSkillFromSlot()
+    {
+        foreach (MenuSkillSlot skillSlot in skillUISlots)
+        {
+            if (skillSlot.skill != null && !player.CheckSkillExists(skillSlot.skill))
+            {
+                skillSlot.RemoveSlot();
+                skillSlot.ResetPlayerCombatSkillSlotUI();
+            }
+        }
     }
 
     public void SetHealthUI(float maxHealth, float currentHealth)

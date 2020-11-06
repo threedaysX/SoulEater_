@@ -10,11 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 038ab4629f9f84644858432fc2447ac3, type: 3}
-  m_Name: Status Buff Affix(DEF, +25)
+  m_Name: Status Buff Affix(DEF, +100)
   m_EditorClassIdentifier: 
+  affectName: LizardWarrior3_DEF+100
   owner: {fileID: 0}
-  description: DEF+25
+  description: DEF+100
   stats:
   - status: 11
     modType: 0
-    value: 25
+    value: 100
