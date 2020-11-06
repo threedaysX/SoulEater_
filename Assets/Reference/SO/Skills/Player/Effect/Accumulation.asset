@@ -20,6 +20,7 @@ MonoBehaviour:
   description: 
   centerPositionOffset: 0
   range:
+    floatDigits: 1
     BaseValue: 0
     AdditionalValue: 0
     FinalValue: 0
@@ -27,6 +28,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   cost:
+    floatDigits: 0
     BaseValue: 1
     AdditionalValue: 0
     FinalValue: 1
@@ -35,6 +37,7 @@ MonoBehaviour:
     modifiers: []
   costType: 1
   damageMagnification:
+    floatDigits: 0
     BaseValue: 0
     AdditionalValue: 0
     FinalValue: 0
@@ -42,6 +45,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   damageHitTimes:
+    floatDigits: 0
     BaseValue: 0
     AdditionalValue: 0
     FinalValue: 0
@@ -50,6 +54,7 @@ MonoBehaviour:
     modifiers: []
   timesOfPerDamage: 1
   castTime:
+    floatDigits: 4
     BaseValue: 0
     AdditionalValue: 0
     FinalValue: 0
@@ -57,6 +62,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   fixedCastTime:
+    floatDigits: 4
     BaseValue: 0.4
     AdditionalValue: 0
     FinalValue: 0.4
@@ -64,6 +70,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   coolDown:
+    floatDigits: 4
     BaseValue: 12
     AdditionalValue: 0
     FinalValue: 12
@@ -76,6 +83,8 @@ MonoBehaviour:
   coolDownType: 1
   duration: 0
   prefab: {fileID: 946227562164428516, guid: 7a13cf14359a056469b9089e67d49b88, type: 3}
+  castSkillClip: {fileID: 0}
+  useSkillClip: {fileID: 0}
   immediatelyEvent:
     m_PersistentCalls:
       m_Calls: []

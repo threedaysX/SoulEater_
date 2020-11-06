@@ -91,6 +91,7 @@ public class CurrentData : Singleton<CurrentData>
                     for (int i = 0; i < AllFragment.Instance.fragments.Count; i++)//其他的碎片就暗下來
                     {
                         Chip.Instance.LightUpStar(AllFragment.Instance.fragments[i]);
+                        FragInfoControl.Instance.fragInfoBackground.SetActive(false);
                     }
                     return;
                 }
@@ -100,7 +101,9 @@ public class CurrentData : Singleton<CurrentData>
                 {
                     if (i == overFragID)
                     {
-                        Chip.Instance.LightUpStar(AllFragment.Instance.fragments[i]);
+                        Fragment targetFrag = AllFragment.Instance.fragments[i];
+                        FragInfoControl.Instance.ShowFragInfo(targetFrag.m_Data.fragIndexImage, targetFrag.m_Data.GetFragAllAffixsInfo());
+                        Chip.Instance.LightUpStar(targetFrag);
                         continue;
                     }
                     Chip.Instance.DarkDownStar(AllFragment.Instance.fragments[i]);
@@ -145,15 +148,22 @@ public class CurrentData : Singleton<CurrentData>
             ///////////////////////////////////////////////////////////////////////////////////////////////////////////////確認好位置要放下了
             if (Input.GetMouseButtonDown(0) && !positionError)  //放下
             {
+                Fragment fragment = AllFragment.Instance.fragments[currentFragmentID];
+                if (f_m.putFrag != null)
+                {
+                    fragment.m_Data.fName = f_m.putFrag.m_Data.fName;
+                    fragment.m_Data.fragIndexImage = f_m.putFrag.m_Data.fragIndexImage;
+                }
+                fragment.m_Data.centerAbsPos = currentPos;
+                Chip.Instance.PutOn(fragment, coverStarsID);
+
                 if (chip2Mouse != null)
                 {
                     chip2Mouse.gameObject.SetActive(false);
                     //原本位置(左右上下)的資料清空-------------------------------------------------------
                     f_m.Clean();
+                    f_m.gameObject.SetActive(false);
                 }
-
-                AllFragment.Instance.fragments[currentFragmentID].m_Data.centerAbsPos = currentPos;
-                Chip.Instance.PutOn(AllFragment.Instance.fragments[currentFragmentID], coverStarsID);
 
                 //Debug.Log("放下currentFragmentID:" + currentFragmentID);
                 //Debug.Log("放下ChipID:" + AllFragment.Instance.fragments[currentFragmentID].m_Data.fragmentID);

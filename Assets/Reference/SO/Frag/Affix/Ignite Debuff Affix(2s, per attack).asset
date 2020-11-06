@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94f930539771c524ba8ede55ab9ac074, type: 3}
   m_Name: Ignite Debuff Affix(2s, per attack)
   m_EditorClassIdentifier: 
+  affectName: "Ifrit0_\u653B\u64CA\u9EDE\u71C3"
   owner: {fileID: 0}
   description: "\u653B\u64CA\u9EDE\u71C3"
-  affectName: "\u653B\u64CA\u9EDE\u71C3_\u8A5E\u7DB4"
   chance: 5
   duration: 2

@@ -15,6 +15,6 @@ MonoBehaviour:
   owner: {fileID: 0}
   description: FireRes+15
   stats:
-  - status: 14
+  - status: 18
     modType: 0
     value: -15

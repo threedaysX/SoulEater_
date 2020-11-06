@@ -155,7 +155,7 @@ public class BuffController : MonoBehaviour
     /// <summary>
     /// 檢查Buff是否已經存在，存在則回傳True。(相同的Buff加成只能有一個)
     /// </summary>
-    private bool CheckIsBuffInList(string name)
+    public bool CheckIsBuffInList(string name)
     {
         if (buffList.ContainsKey(name))
             return true;

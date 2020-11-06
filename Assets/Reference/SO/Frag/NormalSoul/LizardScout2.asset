@@ -20,6 +20,7 @@ MonoBehaviour:
     - {x: 0, y: -1}
     fragColor: {r: 0.9737315, g: 1, b: 0, a: 1}
     fragImage: {fileID: 21300000, guid: 8c7d2e06e79cae247802b098bb4e7396, type: 3}
+    fragIndexImage: {fileID: 21300000, guid: a6a964fa4b170f547b509f277c9f8c5f, type: 3}
     centerAbsPos: {x: 0, y: 0}
     fragmentID: 0
     triggerCount: 0

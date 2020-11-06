@@ -20,6 +20,7 @@ MonoBehaviour:
   description: 
   centerPositionOffset: 0
   range:
+    floatDigits: 1
     BaseValue: 20
     AdditionalValue: 0
     FinalValue: 0
@@ -27,6 +28,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   cost:
+    floatDigits: 0
     BaseValue: 0
     AdditionalValue: 0
     FinalValue: 0
@@ -35,13 +37,15 @@ MonoBehaviour:
     modifiers: []
   costType: 1
   damageMagnification:
+    floatDigits: 0
     BaseValue: 60
     AdditionalValue: 0
-    FinalValue: 100
+    FinalValue: 60
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   damageHitTimes:
+    floatDigits: 0
     BaseValue: 0
     AdditionalValue: 0
     FinalValue: 0
@@ -50,20 +54,23 @@ MonoBehaviour:
     modifiers: []
   timesOfPerDamage: 0.1
   castTime:
+    floatDigits: 4
     BaseValue: 1.2
     AdditionalValue: 0
-    FinalValue: 0.6
+    FinalValue: 1
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   fixedCastTime:
+    floatDigits: 4
     BaseValue: 0.5
     AdditionalValue: 0
-    FinalValue: 0.5
+    FinalValue: 0
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   coolDown:
+    floatDigits: 4
     BaseValue: 8
     AdditionalValue: 0
     FinalValue: 8
@@ -71,7 +78,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   trueCoolDown: 7.36
-  coolDownTimer: 5.1480646
+  coolDownTimer: 3.8698978
   cooling: 1
   coolDownType: 1
   duration: 0.4

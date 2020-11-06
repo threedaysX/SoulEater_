@@ -10,6 +10,7 @@ namespace StatsModel
     [Serializable]
     public class Stats
     {
+        public FloatDigitsType floatDigits;
         public float BaseValue;
         public float AdditionalValue;
         public float Value
@@ -28,7 +29,7 @@ namespace StatsModel
                 }
                 return FinalValue;
             }
-        }
+        }        
 
         [SerializeField] private float FinalValue;
         [SerializeField] private float ForceValue;    // Force to change value to this value (this would ignore BaseValue, Addition, Modifiers....)
@@ -90,8 +91,8 @@ namespace StatsModel
                 finalValue *= timesMod;
             }
 
-            // 取至小數點後4位
-            return (float)Math.Round(finalValue, 4);
+            // 取至小數點後N位
+            return (float)Math.Round(finalValue, (int)floatDigits);
         }
 
         /// <summary>
@@ -167,6 +168,15 @@ namespace StatsModel
         {
             FinalValue = GetFinalValue();
             isDirty = false;
+        }
+
+        public enum FloatDigitsType
+        {
+            To_Int = 0,
+            Digit_1 = 1,
+            Digit_2 = 2,
+            Digit_3 = 3,
+            Digit_4 = 4,    // Default
         }
     }
 }

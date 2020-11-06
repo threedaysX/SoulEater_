@@ -15,6 +15,6 @@ MonoBehaviour:
   owner: {fileID: 0}
   description: HP+20%
   stats:
-  - status: 9
+  - status: 12
     modType: 4
     value: 20

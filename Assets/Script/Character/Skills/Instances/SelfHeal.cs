@@ -10,12 +10,12 @@ public class SelfHeal : DisposableSkill
     }
 
     /// <summary>
-    /// 恢復自身[最大生命10%+DEX*5+INT*10]生命
+    /// 恢復自身[最大生命10%+DEX*15+INT*50]生命
     /// </summary>
     private void Heal()
     {
         StartCoroutine(FollowCaster(effectDuration, delegate { this.SetActiveAfterSkillDone(false); }));
         sourceCaster.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        sourceCaster.CurrentHealth += (int)(sourceCaster.data.maxHealth.Value * 0.1f + sourceCaster.data.status.dexterity.Value * 5 + sourceCaster.data.status.intelligence.Value * 10);
+        sourceCaster.CurrentHealth += (int)(sourceCaster.data.maxHealth.Value * 0.1f + sourceCaster.data.status.dexterity.Value * 15 + sourceCaster.data.status.intelligence.Value * 50);
     }
 }

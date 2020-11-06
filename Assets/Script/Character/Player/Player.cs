@@ -39,7 +39,11 @@ public class Player : Character
         {
             StartAttack(AttackType.Attack, data.attackElement);
         }
+    }
 
+    public override void LateUpdate()
+    {
+        base.LateUpdate();
         ResetBarUI();
     }
 
@@ -94,6 +98,7 @@ public class Player : Character
     public override void RemoveSkill(Skill skill)
     {
         base.RemoveSkill(skill);
+        PlayerUIControl.Instance.RemoveSkillFromSlot();
         isSkillFieldsModifiedTrigger = true;
     }
 

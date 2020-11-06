@@ -14,4 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
   description: AGI+2
-  stats: []
+  stats:
+  - status: 1
+    modType: 0
+    value: 2

@@ -13,34 +13,39 @@ MonoBehaviour:
   m_Name: Ifrit_Data
   m_EditorClassIdentifier: 
   maxHealth:
-    BaseValue: 3595
-    AdditionalValue: 17000
-    FinalValue: 95
+    floatDigits: 0
+    BaseValue: 3274
+    AdditionalValue: 7500
+    FinalValue: 9274
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   maxMana:
-    BaseValue: 13
+    floatDigits: 0
+    BaseValue: 10
     AdditionalValue: 0
-    FinalValue: 13
+    FinalValue: 10
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   attack:
-    BaseValue: 226
+    floatDigits: 0
+    BaseValue: 185
     AdditionalValue: 0
     FinalValue: 226
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   magicAttack:
-    BaseValue: 275
+    floatDigits: 0
+    BaseValue: 215
     AdditionalValue: 0
     FinalValue: 275
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   defense:
+    floatDigits: 2
     BaseValue: 10.4
     AdditionalValue: 0
     FinalValue: 10.4
@@ -48,6 +53,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   critical:
+    floatDigits: 0
     BaseValue: 20
     AdditionalValue: 40
     FinalValue: 60
@@ -55,6 +61,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   criticalDamage:
+    floatDigits: 0
     BaseValue: 150
     AdditionalValue: 0
     FinalValue: 150
@@ -62,13 +69,15 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   knockBackDamage:
-    BaseValue: 1528
+    floatDigits: 0
+    BaseValue: 1391
     AdditionalValue: 1000
     FinalValue: 2528
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   penetrationValue:
+    floatDigits: 2
     BaseValue: 0
     AdditionalValue: 0
     FinalValue: 0
@@ -76,6 +85,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   penetrationMagnification:
+    floatDigits: 2
     BaseValue: 0
     AdditionalValue: 0
     FinalValue: 0
@@ -86,6 +96,7 @@ MonoBehaviour:
   status: {fileID: 11400000, guid: b11631bd49701d14ba2e8a4af3a0f3f8, type: 2}
   characterSize: 0
   jumpForce:
+    floatDigits: 2
     BaseValue: 1.3
     AdditionalValue: 0
     FinalValue: 1.3
@@ -93,6 +104,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   moveSpeed:
+    floatDigits: 2
     BaseValue: 1.1
     AdditionalValue: 0
     FinalValue: 1.1
@@ -100,20 +112,23 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   attackDelay:
-    BaseValue: 0.25
+    floatDigits: 4
+    BaseValue: 0.4
     AdditionalValue: 0
     FinalValue: 0.25
     ForceValue: 0.9
     toForceChangeValue: 1
     modifiers: []
   attackRange:
+    floatDigits: 0
     BaseValue: 3.5
     AdditionalValue: 0
-    FinalValue: 3.5
+    FinalValue: 4
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   reduceSkillCoolDown:
+    floatDigits: 4
     BaseValue: 8
     AdditionalValue: 0
     FinalValue: 8
@@ -121,13 +136,15 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   reduceCastTime:
-    BaseValue: 35
+    floatDigits: 4
+    BaseValue: 34
     AdditionalValue: 0
     FinalValue: 35
     ForceValue: 0
     toForceChangeValue: 0
     modifiers: []
   evadeCoolDown:
+    floatDigits: 4
     BaseValue: 0.70696
     AdditionalValue: 0
     FinalValue: 0.707
@@ -135,6 +152,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   recoverFromKnockStunTime:
+    floatDigits: 4
     BaseValue: 0.1
     AdditionalValue: 0
     FinalValue: 0.1
@@ -142,6 +160,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   attackLifeSteal:
+    floatDigits: 2
     BaseValue: 0
     AdditionalValue: 0
     FinalValue: 0
@@ -149,6 +168,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   skillLifeSteal:
+    floatDigits: 2
     BaseValue: 0
     AdditionalValue: 0
     FinalValue: 0
@@ -156,6 +176,7 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   manaStealOfPoint:
+    floatDigits: 0
     BaseValue: 1
     AdditionalValue: 0
     FinalValue: 1
@@ -163,7 +184,8 @@ MonoBehaviour:
     toForceChangeValue: 0
     modifiers: []
   manaStealOfDamage:
-    BaseValue: 1100
+    floatDigits: 0
+    BaseValue: 1250
     AdditionalValue: 0
     FinalValue: 1100
     ForceValue: 0
